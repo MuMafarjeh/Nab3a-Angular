@@ -1,0 +1,8 @@
+<h1>Home</h1>
+
+<ul *ngIf="users">
+  <li *ngFor="let user of users" >
+    <p> {{ user.name }} {{ user.email }} </p>
+    <button (click)="delete(user)">x</button>
+  </li>
+</ul>

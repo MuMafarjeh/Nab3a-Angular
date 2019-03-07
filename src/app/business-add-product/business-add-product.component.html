@@ -1,0 +1,73 @@
+<p>
+  business-add-product works!
+</p>
+<form [formGroup]="validity" (ngSubmit)="onSubmit()">
+  <div class="example-container">
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="" disabled value="Add Product">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Enter The Name" formControlName="Name" required>
+      <mat-error *ngIf="Name.invalid">{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Enter The Tags" formControlName="Tags" required>
+      <mat-error *ngIf="Tags.invalid">{{getErrorMessageTags()}}</mat-error>
+
+    </mat-form-field>
+
+
+    <mat-form-field>
+      <mat-select placeholder="Category" formControlName="CategoryControl" required>
+        <mat-option label="select something "></mat-option>
+        <mat-option value="option">Eating</mat-option>
+        <mat-option value="option">Drinks</mat-option>
+      </mat-select>
+      <mat-error *ngIf="CategoryControl.hasError('required')">
+        This field is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input type="number" matInput placeholder="Enter The Price" min=0 oninput="validity.valid||(value='-');"
+      formControlName="Price" required>
+      <mat-error *ngIf="Price.invalid">{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="number" matInput placeholder="Enter The Stock" min=0 oninput="validity.valid||(value='');"
+      formControlName="Stock" required>
+      <mat-error *ngIf="Stock.invalid">{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <div class="example-container1">
+      <span class="span" *ngIf="message">{{message}}</span>
+      <input md-button md-raised md-primary #file type="file" accept='image/*'  formControlName="Image"  (change)="preview(file.files)" required/>
+
+      <img [src]="imgURL" class="uploadPictuer" *ngIf="imgURL">
+      <mat-error *ngIf="Image.invalid">{{getErrorMessageImage()}}</mat-error>
+    </div>
+
+
+
+
+    <div class="example-button-row">
+      <button id="btnAdd" mat-raised-button>Add</button>
+      <button id="btnClear" mat-raised-button> Clear</button>
+
+    </div>
+  </div>
+
+</form>
+
+
+
+<!-- <div class="example-button-row">
+    <button mat-mini-fab>
+      <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+    </button>
+
+      <button mat-mini-fab>
+          <mat-icon aria-label="Example icon-button with a heart icon">remove</mat-icon>
+        </button>
+  </div> -->

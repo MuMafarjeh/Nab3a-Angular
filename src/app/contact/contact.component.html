@@ -1,0 +1,31 @@
+<h1>Contacts</h1>
+
+<form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
+  <h5 *ngIf="success">SUCCESS</h5>
+
+  <label>
+    Name
+    <input type="text" formControlName="name">
+    <div *ngIf="submitted && !!messageForm.controls?.name.errors" class="error">
+      <div *ngIf="!!messageForm.controls?.name.errors.required">Enter name, please</div>
+    </div>
+  </label>
+
+  <label>
+    Email
+    <textarea formControlName="email"> </textarea>
+    <div *ngIf="submitted && !!messageForm.controls?.email.errors" class="error">
+      <div *ngIf="!!messageForm.controls?.email.errors.required">Enter email, please</div>
+    </div>
+  </label>
+
+  <button mat-button class="cta" >Send message</button>
+</form>
+
+<div *ngIf="submitted">
+  <strong>Name: </strong>
+  <span> {{messageForm.controls?.name.value}} </span>
+
+  <strong>Message: </strong>
+  <span> {{messageForm.controls?.email.value}} </span>
+</div>

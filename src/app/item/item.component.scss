@@ -1,0 +1,61 @@
+@import '~@angular/material/theming';
+
+.item-card
+{
+    width: 100%;
+    background-color: rgb(70, 119, 224);
+    margin: 3%;
+    @include mat-elevation(8);
+    border-radius: 16px;
+   
+
+    mat-card-content
+    {
+        padding: 0px;
+        margin: 0px;    
+    }
+
+    mat-form-field
+    {
+        padding: 0;
+        margin: 0px;
+    }
+
+    p
+    {
+        margin: 0;
+        /* vertical-align: middle; */
+    }
+
+    .data
+    {
+      
+    }
+
+    .form-field
+    {
+        padding-bottom: 0px; 
+    }
+
+    .edit
+    {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .edit-button
+    {
+       
+    }
+
+    .actions
+    {
+        padding: 0px;
+    }
+
+    /* img
+    {
+        height: 50%;
+        width: 50%;
+    } */
+}

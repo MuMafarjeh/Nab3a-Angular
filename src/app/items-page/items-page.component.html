@@ -1,0 +1,8 @@
+
+  <h1>Items</h1>
+
+<mat-grid-list cols="2">
+  <div class="grid" *ngFor="let item of items">
+    <app-item [item]="item"></app-item>
+  </div>
+</mat-grid-list>
