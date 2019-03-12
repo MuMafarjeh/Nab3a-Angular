@@ -75,9 +75,17 @@ export class BusinessAddProductComponent implements OnInit {
         return ;
     }
 
-    let item: Item = this.validity.value;
+    const item: Item = this.validity.value;
+    
     item.type = "product";
     /* item.image = link; */
+
+    // الطريقة القديمة لأضافة اوب 
+    /* var newitem = {
+      type: "product",
+      price: this.validity.get("price").value
+    }  */
+
     this.itemService.addItem(item);
 
     alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.validity.value))

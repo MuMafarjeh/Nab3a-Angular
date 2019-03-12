@@ -7,6 +7,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from "@angular/fire/auth"
+
 import { environment } from '../environments/environment';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -23,6 +25,7 @@ import { BusinessAddProductComponent } from './business-add-product/business-add
 import { BusinessComponent } from './business/business.component';
 import { CustomerComponent } from './customer/customer.component';
 import { RegestrationComponent } from './regestration/regestration.component';
+
 
 @NgModule({
   declarations: [
@@ -47,7 +50,8 @@ import { RegestrationComponent } from './regestration/regestration.component';
     BrowserAnimationsModule,
     MaterialModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    AngularFireAuthModule
   ],
   providers: [UserService],
   bootstrap: [AppComponent]

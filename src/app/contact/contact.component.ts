@@ -34,9 +34,11 @@ export class ContactComponent implements OnInit {
     }
 
     this.success = true;
-
-    let user: User = this.messageForm.value;
-    console.log(user)
+  
+    var user = {} as User;
+    user.name = this.messageForm.get('name').value;
+    user.email = this.messageForm.get('email').value;
+    this.userService.createUser(user);
   }
 
 }

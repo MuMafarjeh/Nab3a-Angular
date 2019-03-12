@@ -1,3 +1,4 @@
+import { AuthService } from './../auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 
@@ -8,7 +9,7 @@ import {FormControl, Validators} from '@angular/forms';
 })
 export class BusinessComponent implements OnInit {
 
-  constructor() { }
+  constructor(private auth: AuthService) { }
 
   ngOnInit() {
   }
@@ -39,4 +40,6 @@ export class BusinessComponent implements OnInit {
   getErrorMessageCity(){
     return this.city.hasError('required') ? 'City is Required' : '';
   }
+
+ 
 }
