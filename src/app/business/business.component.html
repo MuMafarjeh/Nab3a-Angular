@@ -1,77 +1,77 @@
-<table class="example-full-width" cellspacing="0">
-    <tr>
-      <td>
-          <mat-form-field class="width">
-              <input matInput placeholder="Full Person Name" [formControl]="name" required>
-              <mat-error *ngIf="name.invalid">{{getErrorMessageName()}}</mat-error>
-            </mat-form-field>
-      </td>
-    </tr>
-    <tr>
-        <td>
-            <mat-form-field class="width">
-                <input matInput placeholder="Owner Name" [formControl]="name" required>
-                <mat-error *ngIf="name.invalid">{{getErrorMessageName()}}</mat-error>
-              </mat-form-field>
-        </td>
-      </tr>
-      <tr>
-          <td>
-              <mat-form-field class="width">
-                  <input matInput placeholder="Email" [formControl]="email" required>
-                  <mat-error *ngIf="email.invalid">{{getErrorMessageEmail()}}</mat-error>
+<form [formGroup]="businessForm">
+    <table class="example-full-width" cellspacing="0">
+        <tr>
+            <td>
+                <mat-form-field class="width">
+                    <input matInput placeholder="Full Person Name" formControlName="Pname" required>
+                    <mat-error *ngIf="businessForm.controls['Pname'].invalid">{{getErrorMessagePName()}}</mat-error>
                 </mat-form-field>
-          </td>
-      </tr>
-      <tr>
-          <td>
-              <mat-form-field class="width">
-                  <span matPrefix>+972 &nbsp;</span>
-                  <input matInput placeholder="Phone Numer" [formControl]="phone" type="number">
-                  <mat-error *ngIf="phone.invalid">{{getErrorMessagePhone()}}</mat-error>
-                </mat-form-field>
-          </td>
+            </td>
         </tr>
         <tr>
             <td>
                 <mat-form-field class="width">
-                    <input matInput placeholder="City Name" [formControl]="city" type="text" required>
-                    <mat-error *ngIf="city.invalid">{{getErrorMessageCity()}}</mat-error>
-                  </mat-form-field>
+                    <input matInput placeholder="Owner Name" formControlName="Oname" required>
+                    <mat-error *ngIf="businessForm.controls['Oname'].invalid">{{getErrorMessageOName()}}</mat-error>
+                </mat-form-field>
             </td>
-          </tr>
+        </tr>
         <tr>
             <td>
                 <mat-form-field class="width">
-                    <input matInput placeholder="Location Discription" [formControl]="location" type="text" required>
-                    <mat-error *ngIf="location.invalid">{{getErrorMessageLocation()}}</mat-error>
-                  </mat-form-field>
+                    <input matInput placeholder="Email" formControlName="email" required>
+                    <mat-error *ngIf="businessForm.controls['email'].invalid">{{getErrorMessageEmail()}}</mat-error>
+                </mat-form-field>
             </td>
-          </tr>
-      <tr>
-          <td>
-              <mat-form-field class="width">
-                <input matInput placeholder="Password" [formControl]="password" type="password">
-                <mat-error *ngIf="password.invalid">{{getErrorMessagePassword()}}</mat-error>
-              </mat-form-field>
-          </td>
-      </tr>
-    <tr>
-        <td>
-            <mat-form-field class="width">
-              <input matInput placeholder="Confirem Password" [formControl]="password" type="password">
-              <mat-error *ngIf="password.invalid">{{getErrorMessagePassword()}}</mat-error>
-            </mat-form-field>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <button mat-raised-button color="primary">Submit</button>
-    
-        </td>
-        <td>
-            <button mat-raised-button color="accent">Clear</button>
-        </td>
-    </tr>
-  </table>
-  
+        </tr>
+        <tr>
+            <td>
+                <mat-form-field class="width">
+                    <input matInput placeholder="Phone Numer" formControlName="phone" type="tel">
+                    <mat-error *ngIf="businessForm.controls['phone'].invalid">{{getErrorMessagePhone()}}</mat-error>
+                </mat-form-field>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <mat-form-field class="width">
+                    <input matInput placeholder="City Name" formControlName="city" type="text" required>
+                    <mat-error *ngIf="businessForm.controls['city'].invalid">{{getErrorMessageCity()}}</mat-error>
+                </mat-form-field>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <mat-form-field class="width">
+                    <input matInput placeholder="Location Discription" formControlName="location" type="text" required>
+                    <mat-error *ngIf="businessForm.controls['location'].invalid">{{getErrorMessageLocation()}}</mat-error>
+                </mat-form-field>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <mat-form-field class="width">
+                    <input matInput placeholder="Password" formControlName="password" type="password">
+                    <mat-error *ngIf="businessForm.controls['password'].invalid">{{getErrorMessagePassword()}}</mat-error>
+                </mat-form-field>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <mat-form-field class="width">
+                    <input matInput placeholder="Confirem Password" formControlName="confirempassword" type="password">
+                    <mat-error *ngIf="businessForm.controls['confirempassword'].invalid">{{getErrorMessageConPassword()}}</mat-error>
+                </mat-form-field>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button mat-raised-button color="primary" [disabled]="businessForm.invalid">Submit</button>
+
+            </td>
+            <td>
+                <button mat-raised-button color="accent" (click)="clearAllField()">Clear</button>
+            </td>
+        </tr>
+    </table>
+</form>
