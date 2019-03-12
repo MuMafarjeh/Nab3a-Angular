@@ -20,4 +20,9 @@ export class ItemsService {
       }))
     );
   }
+
+  public addItem(item: Item)
+  {
+    return this.firestore.collection("inventory_item").add(item);
+  }
 }

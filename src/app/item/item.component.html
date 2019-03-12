@@ -1,6 +1,10 @@
-<mat-card class="item-card">
+<div class="item-card">
 
-  <mat-card-content>
+  <div class="image">
+    <img [src]="item.image" >
+  </div>
+
+  <div class="text-content">
     <div class="data" *ngIf="!isEdit" >
       <mat-card-title>{{ item.name | uppercase }}</mat-card-title>
       <div>{{ item.price | currency:'ILS':'symbol':'1.1-1' }}</div>
@@ -20,14 +24,11 @@
             placeholder="Price" name="price">
         </mat-form-field>
     </form>
+  </div>
 
-    <!-- <img mat-card-image [src]="item.image" > -->
-
-  </mat-card-content>
-
-  <mat-card-actions class="actions" align="right">
+  <div class="actions" align="right">
     <button (click)="btnToggleEdit()" mat-mini-fab>
       <mat-icon class="edit-btn" svgIcon="edit-icon"></mat-icon>
     </button>  
-  </mat-card-actions>
-</mat-card>
+  </div>
+</div>
