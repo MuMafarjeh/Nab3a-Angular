@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, Validators} from '@angular/forms';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { matchesElement } from '@angular/animations/browser/src/render/shared';
 
 @Component({
   selector: 'business',
@@ -12,31 +13,44 @@ export class BusinessComponent implements OnInit {
 
   ngOnInit() {
   }
-  name = new FormControl('', [Validators.required]);
-  phone = new FormControl('', [Validators.required,]);
-  password = new FormControl('', [Validators.required,]);
-  location = new FormControl('', [Validators.required,]);
-  email = new FormControl('', [Validators.required, Validators.email]);
-  city = new FormControl('', [Validators.required,]);
-
-  getErrorMessageName(){
-    return this.name.hasError('required') ? 'Name is Required' : '';
-    
+  businessForm: FormGroup = new FormGroup({
+    Pname: new FormControl('', [Validators.required]),
+    Oname: new FormControl('', [Validators.required]),
+    city: new FormControl('', [Validators.required]),
+    phone: new FormControl('', [Validators.required, Validators.pattern("[0-9]{10,10}")]),
+    location: new FormControl('', [Validators.required,]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required,]),
+    confirempassword: new FormControl('', [Validators.required,]),
+  })
+  getErrorMessagePName() {
+    return this.businessForm.controls['Pname'].hasError('required') ? 'Name is Required' : '';
+  }
+  getErrorMessageOName() {
+    return this.businessForm.controls['Pname'].hasError('required') ? 'Name is Required' : '';
   }
   getErrorMessageEmail() {
-    return this.email.hasError('required') ? 'Email Is Required' :
-        this.email.hasError('email') ? 'Please enter a valid email address' : '';
+    return this.businessForm.controls['email'].hasError('required') ? 'Email Is Required' :
+      this.businessForm.controls['email'].hasError('email') ? 'Please enter a valid email address' : '';
   }
-  getErrorMessagePhone(){
-    return this.phone.hasError('required') ? 'Phone is Required' : '';
+  getErrorMessagePhone() {
+    return this.businessForm.controls['phone'].hasError('required') ? 'Phone Is Required' :
+      this.businessForm.controls['phone'].errors.pattern ? 'Please enter a valid Phone Number (eg:0595480705)' : '';
   }
-  getErrorMessageLocation(){
-    return this.location.hasError('required') ? 'Location Discription is Required' : '';
+  getErrorMessageLocation() {
+    return this.businessForm.controls['location'].hasError('required') ? 'Location Discription is Required' : '';
   }
-  getErrorMessagePassword(){
-    return this.password.hasError('required') ? 'Password is Required' : '';
+  getErrorMessagePassword() {
+    return this.businessForm.controls['password'].hasError('required') ? 'Password is Required' : '';
   }
-  getErrorMessageCity(){
-    return this.city.hasError('required') ? 'City is Required' : '';
+  getErrorMessageConPassword() {
+    return this.businessForm.controls['confirempassword'].hasError('required') ? 'Password is Required' :
+      (this.businessForm.controls['confirempassword'].value != this.businessForm.controls['password'].value) ? 'Passwords dont Match' : '';;
+  }
+  getErrorMessageCity() {
+    return this.businessForm.controls['city'].hasError('required') ? 'City is Required' : '';
+  }
+  clearAllField(){
+    this.businessForm.reset();
   }
 }
