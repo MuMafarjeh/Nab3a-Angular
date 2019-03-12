@@ -1,10 +1,13 @@
 .grid
 {
-   /*  background-color: aqua; */
+   display: grid;
+   grid-template-columns: auto auto;
+   grid-gap: 10px;
+   padding: 10px;
+   text-align: center;
 
-
-    app-item
-    {
-       width: inherit;
-    }
+   .tile
+   {
+      /* background-color: rgba(255, 0, 0, 0.438) */
+   }
 }

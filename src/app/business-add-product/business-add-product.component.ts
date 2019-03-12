@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup, FormBuilder, } from '@angular/forms';
+import { Item } from '../item/item';
+import { ItemsService } from '../item/items.service';
 
 @Component({
   selector: 'app-business-add-product',
@@ -23,7 +25,7 @@ export class BusinessAddProductComponent implements OnInit {
   CategoryControl = new FormControl('', [Validators.required]);
   Image= new FormControl('', [Validators.required]);
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private itemService: ItemsService) { }
 
 
   getErrorMessage() {
@@ -73,7 +75,10 @@ export class BusinessAddProductComponent implements OnInit {
         return ;
     }
 
-
+    let item: Item = this.validity.value;
+    item.type = "product";
+    /* item.image = link; */
+    this.itemService.addItem(item);
 
     alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.validity.value))
 }
