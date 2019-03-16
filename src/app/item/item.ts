@@ -6,5 +6,8 @@ export interface Item
     businessName: string;
     price: number;
     currency: string;
-    image: string;
+    image: any;
+    category: string;
+    stock: number;
+    barcode: string;
 }

@@ -21,6 +21,18 @@ export class ItemsService {
     );
   }
 
+ public getCategory()
+  {
+    var categories = [];
+    this.firestore.collection("category").ref.get().then(function(querySnapshot)
+    {
+      querySnapshot.forEach(function(doc) {
+        categories.push(doc.data())
+      });
+    });
+    return categories;
+  }
+
   public addItem(item: Item)
   {
     return this.firestore.collection("inventory_item").add(item);
