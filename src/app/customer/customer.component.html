@@ -4,7 +4,7 @@
       <td>
         <mat-form-field class="width">
           <input matInput placeholder="Full Name" formControlName="name" required>
-          <mat-error *ngIf="name.invalid">{{getErrorMessageName()}}</mat-error>
+          <mat-error *ngIf="customerForm.controls['name'].invalid">{{getErrorMessageName()}}</mat-error>
         </mat-form-field>
       </td>
     </tr>
@@ -12,7 +12,7 @@
       <td>
         <mat-form-field class="width">
           <input matInput placeholder="Email" formControlName="email" required>
-          <mat-error *ngIf="email.invalid">{{getErrorMessageEmail()}}</mat-error>
+          <mat-error *ngIf="customerForm.controls['email'].invalid">{{getErrorMessageEmail()}}</mat-error>
         </mat-form-field>
       </td>
     </tr>
@@ -20,23 +20,23 @@
       <td>
         <mat-form-field class="width">
           <span matPrefix>+972 &nbsp;</span>
-          <input type="tel" matInput placeholder="Telephone" formControlName="phone" type="number" min="0" >
-          <mat-error *ngIf="phone.invalid">{{getErrorMessagePhone()}}</mat-error>
+          <input type="tel" matInput placeholder="Telephone" formControlName="phone" type="number" min="0">
+          <mat-error *ngIf="customerForm.controls['phone'].invalid">{{getErrorMessagePhone()}}</mat-error>
         </mat-form-field>
       </td>
     </tr>
-    
+
     <tr>
       <td>
         <mat-form-field class="width">
-          <input matInput placeholder="Location Discription" [formControl]="location" type="text" required>
-          <mat-error *ngIf="location.invalid">{{getErrorMessageLocation()}}</mat-error>
+          <input matInput placeholder="Location Discription" formControlName="location" type="text" required>
+          <mat-error *ngIf="customerForm.controls['location'].invalid">{{getErrorMessageLocation()}}</mat-error>
         </mat-form-field>
       </td>
     </tr>
     <tr>
       <td>
-        <mat-radio-group class="example-radio-group" [(ngModel)]="favoriteSeason">
+        <mat-radio-group class="example-radio-group" >
           <mat-radio-button class="example-radio-button" *ngFor="let season of seasons" [value]="season">
             {{season}}
           </mat-radio-button>
@@ -47,26 +47,26 @@
     <tr>
       <td>
         <mat-form-field class="width">
-          <input matInput placeholder="Password" [formControl]="password" type="password">
-          <mat-error *ngIf="password.invalid">{{getErrorMessagePassword()}}</mat-error>
+          <input matInput placeholder="Password" formControlName="password" type="password">
+          <mat-error *ngIf="customerForm.controls['password'].invalid">{{getErrorMessagePassword()}}</mat-error>
         </mat-form-field>
       </td>
     </tr>
     <tr>
       <td>
         <mat-form-field class="width">
-          <input matInput placeholder="Confirem Password" [formControl]="password" type="password">
-          <mat-error *ngIf="password.invalid">{{getErrorMessagePassword()}}</mat-error>
+          <input matInput placeholder="Confirem Password" formControlName="confiremPassword" type="password">
+          <mat-error *ngIf="customerForm.controls['confiremPassword'].invalid">{{getErrorMessagePassword()}}</mat-error>
         </mat-form-field>
       </td>
     </tr>
     <tr>
       <td>
-        <button mat-raised-button color="primary">Submit</button>
+        <button mat-raised-button color="primary" [disabled]="customerForm.invalid">Submit</button>
 
       </td>
       <td>
-        <button mat-raised-button color="accent" (oncklick)="clearAllFiled()">Clear</button>
+        <button mat-raised-button color="accent" (click)="clearAllField()">Clear</button>
       </td>
     </tr>
   </table>

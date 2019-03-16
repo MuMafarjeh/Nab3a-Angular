@@ -20,6 +20,7 @@ export class UserService {
       }))
     );
   }
+  
 
   createUser(user: User){
     return this.firestore.collection('user').add(user);

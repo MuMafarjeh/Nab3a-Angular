@@ -6,5 +6,5 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./regestration.component.scss']
 })
 export class RegestrationComponent{
-
+  
 }
