@@ -17,8 +17,8 @@ export class StorageService {
 
   uploadImageProduct(path: File, item: Item)
   {
-    this.storageRef = this.storage.ref("/item_images/" + item.id + "_" + item.name);
-    const task =  this.storage.upload("/item_images/" + item.id + "_" + item.name , path);
+    this.storageRef = this.storage.ref("/item_images/" + item.id + "_" + encodeURI(item.name));
+    const task =  this.storage.upload("/item_images/" + item.id + "_" + encodeURI(item.name) , path);
     
     let observable = task.snapshotChanges();
     return { observable: observable, 

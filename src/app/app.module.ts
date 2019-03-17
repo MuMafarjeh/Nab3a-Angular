@@ -1,3 +1,5 @@
+import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
+import { MatBottomSheetRef } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -58,7 +60,10 @@ import { ItemDeleteSnackbarComponent } from './item/item-delete-snackbar/item-de
     AngularFirestoreModule,
     AngularFireStorageModule,
   ],
-  providers: [UserService],
+  providers: [
+    UserService,
+    { provide: MatBottomSheetRef, useValue: {} },
+    { provide: MAT_BOTTOM_SHEET_DATA, useValue: [] }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -84,10 +84,11 @@ $height-1col-hover: 300px;
         padding: 14px 14px 14px 0;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: flex-start;
 
         .delete-btn
         {
+            margin-top: 14px;
             align-self: flex-end;
         }
     }

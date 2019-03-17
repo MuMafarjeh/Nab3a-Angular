@@ -15,13 +15,17 @@ export class ItemsPageComponent implements OnInit {
   constructor(private itemService: ItemsService) { }
 
   ngOnInit() {
-    this.itemService.getInventory()
-    .subscribe((result: any) =>
-    {
-      this.items = result;
-      console.log(this.items)
-
-    });
+    this.items = this.itemService.getInventory()
   }
 
+  deleteItem(item: Item)
+  {
+    console.log(this.items)
+    console.log(item)
+    let index = this.items.indexOf(item);
+    if (index !== -1) {
+        this.items.splice(index, 1);
+    }  
+    console.log(this.items)
+  }
 }

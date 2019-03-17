@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
+import { Item } from '../item';
 
 @Component({
   selector: 'app-item-delete-snackbar',
@@ -7,14 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ItemDeleteSnackbarComponent implements OnInit {
 
-  constructor() { }
+  item: Item;
+
+  constructor(private bottomSheetRef: MatBottomSheetRef<ItemDeleteSnackbarComponent>,
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) { }
 
   ngOnInit() {
+    this.item = this.data;
   }
 
-  delete()
+  public onClick(isDelete: boolean)
   {
-    alert("deleted!");
+    this.bottomSheetRef.dismiss({
+      message: isDelete,
+    });
+    event.preventDefault();
   }
 
 }

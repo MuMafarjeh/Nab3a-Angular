@@ -1,11 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Item } from './item';
-import { MatIconRegistry } from '@angular/material';
+import { MatIconRegistry, MatSnackBar } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ItemsService } from './items.service';
 import { ItemDeleteSnackbarComponent } from './item-delete-snackbar/item-delete-snackbar.component';
-import { MatSnackBar } from '@angular/material' 
+import { MatBottomSheet } from '@angular/material' 
 
 @Component({
   selector: 'app-item',
@@ -21,9 +21,13 @@ export class ItemComponent implements OnInit {
   @Input()
   item: Item;
 
+  @Output() 
+  deleteEvent: EventEmitter<any> = new EventEmitter();
+
   isEdit: boolean = false;
 
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private snackBar: MatSnackBar,
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, 
+    private bottomSheet: MatBottomSheet, private snackBar: MatSnackBar,
     private formBuilder: FormBuilder, private itemsService: ItemsService) 
   {
     iconRegistry.addSvgIcon(
@@ -93,11 +97,26 @@ export class ItemComponent implements OnInit {
     this.itemsService.updateItem(this.item);
   }
 
-  btnOnDelete()
+  btnOnDelete(item: Item)
   {
-    // let reference = this.snackBar.openFromComponent(ItemDeleteSnackbarComponent);
-    let reference = this.snackBar.open("Are you sure you want to delete this item?", "Delete");
-    reference.onAction().subscribe(() => alert("okay"))
+    let ref = this.bottomSheet.open(ItemDeleteSnackbarComponent, 
+    {
+      data: item
+    });
+
+    ref.afterDismissed().subscribe(data => {
+      if(data && data.message) 
+      {
+        this.itemsService.deleteItem(this.item)
+        .finally(() => {
+          this.deleteEvent.emit(this.item);
+          this.snackBar.open(this.item.name + " deleted!", "", {duration: 1500})
+        });
+      } 
+      else if(data && !data.message) {
+        
+      }
+    })
   }
 
 }

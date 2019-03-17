@@ -14,6 +14,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 
 @NgModule({
     imports: [
@@ -33,6 +34,7 @@ import {MatRadioModule} from '@angular/material/radio';
         MatButtonToggleModule,
         MatDatepickerModule,
         MatRadioModule,
+        MatBottomSheetModule,
         MatSnackBarModule
     ],
     exports: [
@@ -52,6 +54,7 @@ import {MatRadioModule} from '@angular/material/radio';
         MatButtonToggleModule,
         MatDatepickerModule,
         MatRadioModule,
+        MatBottomSheetModule,
         MatSnackBarModule
     ]
 })

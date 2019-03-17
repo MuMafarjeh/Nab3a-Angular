@@ -10,7 +10,7 @@ export class ItemsService {
 
   constructor(private firestore: AngularFirestore) { }
 
-  public getInventory()
+  public getInventoryLive()
   {
     return this.firestore.collection("inventory_item").snapshotChanges().pipe(
       map(actions => actions.map(a => {
@@ -21,7 +21,21 @@ export class ItemsService {
     );
   }
 
- public getCategory()
+  public getInventory(): Item[]
+  {
+    var items = [];
+    this.firestore.collection("inventory_item").ref.get().then(function(querySnapshot)
+    {
+      querySnapshot.forEach(function(doc) {
+        let item = doc.data() as Item;
+        item.id = doc.id;
+        items.push(item);
+      });
+    });
+    return items;
+  }
+
+ public getCategory(): string[]
   {
     var categories = [];
     this.firestore.collection("category").ref.get().then(function(querySnapshot)
@@ -41,11 +55,17 @@ export class ItemsService {
 
   public addItem(item: Item)
   { 
-    return this.firestore.collection("inventory_item").add(item);
+    return this.firestore.doc("inventory_item/" + item.id).set(item);
   }
 
   public updateItem(item: Item)
   {
     return this.firestore.doc("inventory_item/" + item.id).set(item);
+  }
+
+  public deleteItem(item: Item)
+  {
+    console.log("inventory_item/" + item.id)
+    return this.firestore.doc("inventory_item/" + item.id).delete();
   }
 }
