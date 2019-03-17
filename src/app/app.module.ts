@@ -26,9 +26,12 @@ import { BusinessComponent } from './business/business.component';
 import { CustomerComponent } from './customer/customer.component';
 import { RegestrationComponent } from './regestration/regestration.component';
 import { AngularFireStorageModule } from '@angular/fire/storage';
-
+import { ItemDeleteSnackbarComponent } from './item/item-delete-snackbar/item-delete-snackbar.component';
 
 @NgModule({
+  entryComponents: [
+    ItemDeleteSnackbarComponent
+  ],
   declarations: [
     AppComponent,
     HomeComponent,
@@ -41,7 +44,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
     BusinessComponent,
     CustomerComponent,
     RegestrationComponent,
-
+    ItemDeleteSnackbarComponent,
   ],
   imports: [
     FormsModule,
@@ -53,7 +56,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
     MaterialModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
   ],
   providers: [UserService],
   bootstrap: [AppComponent]

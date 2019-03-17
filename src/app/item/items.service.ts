@@ -1,4 +1,4 @@
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, DocumentReference } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Item } from './item';
@@ -31,6 +31,12 @@ export class ItemsService {
       });
     });
     return categories;
+  }
+
+  public async reserveDoc()
+  {
+    let value = await this.firestore.collection("inventory_item").add({});
+    return value.id;
   }
 
   public addItem(item: Item)

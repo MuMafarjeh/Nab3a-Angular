@@ -4,6 +4,7 @@ import { storage } from 'firebase';
 import { finalize } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Item } from '../item/item';
 
 @Injectable({
   providedIn: 'root'
@@ -14,22 +15,13 @@ export class StorageService {
 
   constructor(private storage: AngularFireStorage, private firestore: AngularFirestore) { }
 
-  uploadImageProduct(path: File, productName: string)
+  uploadImageProduct(path: File, item: Item)
   {
-    this.storageRef = this.storage.ref("/item_images/");
-    const task =  this.storage.upload("/item_images/" + productName , path);
-
-    var downloadURL: Observable<string>;
-    task.snapshotChanges().pipe(
-      finalize(() =>
-      {
-        downloadURL = this.storageRef.getDownloadURL();
-        downloadURL.subscribe((observer) =>
-        {
-          console.log(observer);
-        });
-      })
-    )
-    .subscribe();
+    this.storageRef = this.storage.ref("/item_images/" + item.id + "_" + item.name);
+    const task =  this.storage.upload("/item_images/" + item.id + "_" + item.name , path);
+    
+    let observable = task.snapshotChanges();
+    return { observable: observable, 
+            storageRef: this.storageRef };
   }
 }

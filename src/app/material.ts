@@ -1,3 +1,4 @@
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgModule } from '@angular/core';
 import {MatButtonModule, MatCheckboxModule} from '@angular/material';
 import {MatCardModule} from '@angular/material/card';
@@ -31,7 +32,8 @@ import {MatRadioModule} from '@angular/material/radio';
         ReactiveFormsModule,
         MatButtonToggleModule,
         MatDatepickerModule,
-        MatRadioModule
+        MatRadioModule,
+        MatSnackBarModule
     ],
     exports: [
         MatButtonModule, 
@@ -49,7 +51,8 @@ import {MatRadioModule} from '@angular/material/radio';
         ReactiveFormsModule,
         MatButtonToggleModule,
         MatDatepickerModule,
-        MatRadioModule
+        MatRadioModule,
+        MatSnackBarModule
     ]
 })
 export class MaterialModule{

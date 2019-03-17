@@ -84,7 +84,7 @@ export class BusinessAddProductComponent implements OnInit {
   }
 
 
-  onSubmit() {
+  async onSubmit() {
     this.submitted = true;
 
     // stop here if form is invalid
@@ -92,23 +92,29 @@ export class BusinessAddProductComponent implements OnInit {
         return ;
     }
   ///  this.data;
-    this. data.name = this.addProductForm.get('Name').value;
-    this. data.barcode = this.addProductForm.get('Barcode').value;
-     this.  data.category = this.addProductForm.get("CategoryControl").value;
+
+    this.data.id = await this.itemService.reserveDoc();
+    this.data.name = this.addProductForm.get('Name').value;
+    this.data.barcode = this.addProductForm.get('Barcode').value;
+    this.data.category = this.addProductForm.get("CategoryControl").value;
     this.data.price = this.addProductForm.get('Price').value;
-    this. data.stock = this.addProductForm.get('Stock').value;
-    this. data.type = ' product';
-    this.storage.uploadImageProduct(this.imageFile, this.data.name)
-    // downloadURL.subscribe((observer) =>
-    // {
-    //   console.log(observer);
-    // });
+    this.data.stock = this.addProductForm.get('Stock').value;
+    this.data.type = 'product';
 
-          // console.log(downloadURL)
-          // this.data.image = res;
-          // this.itemService.addItem(this.data);
-          // alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.addProductForm.value))
-
+    let imageTask = this.storage.uploadImageProduct(this.imageFile, this.data);
+    imageTask.observable.pipe(
+      finalize(() =>
+      {
+        let observable = imageTask.storageRef.getDownloadURL();
+        observable.subscribe((observer) =>
+        {
+          this.data.image = observer; 
+          this.itemService.addItem(this.data);
+          alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.data));
+        });
+      })
+    )
+    .subscribe();
   }
 
 onClear() {

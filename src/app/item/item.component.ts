@@ -4,6 +4,8 @@ import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ItemsService } from './items.service';
+import { ItemDeleteSnackbarComponent } from './item-delete-snackbar/item-delete-snackbar.component';
+import { MatSnackBar } from '@angular/material' 
 
 @Component({
   selector: 'app-item',
@@ -21,15 +23,9 @@ export class ItemComponent implements OnInit {
 
   isEdit: boolean = false;
 
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer,
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private snackBar: MatSnackBar,
     private formBuilder: FormBuilder, private itemsService: ItemsService) 
   {
-    this.form = this.formBuilder.group({
-      name: ['', Validators.required],
-      price: ['', [Validators.required, Validators.pattern('[1-9][0-9]{0,3}')]],
-      stock: ['', [Validators.required, Validators.pattern('[0-9]{1,4}')]]
-    });
-
     iconRegistry.addSvgIcon(
       'edit-icon', 
       sanitizer.bypassSecurityTrustResourceUrl("assets/icons/edit_icon.svg"));
@@ -37,9 +33,21 @@ export class ItemComponent implements OnInit {
     iconRegistry.addSvgIcon(
       'save-icon', 
       sanitizer.bypassSecurityTrustResourceUrl("assets/icons/save_icon.svg"));
+
+    iconRegistry.addSvgIcon(
+      'delete-icon', 
+      sanitizer.bypassSecurityTrustResourceUrl("assets/icons/delete_icon.svg"));
   }
 
   ngOnInit() {
+  }
+
+  ngAfterViewInit() {
+     this.form = this.formBuilder.group({
+      name: [this.item.name? this.item.name : "Name", Validators.required],
+      price: [this.item.price? this.item.price : "1", [Validators.required, Validators.pattern('[1-9][0-9]{0,3}')]],
+      stock: [this.item.stock? this.item.stock : "2", [Validators.required, Validators.pattern('[0-9]{1,4}')]]
+    });
   }
 
   getErrorName()
@@ -73,13 +81,23 @@ export class ItemComponent implements OnInit {
   {
     if(this.form.invalid)
     {
-      alert("fuck off");
       return;
     }
 
     this.isEdit = false;
 
+    this.item.name = this.form.controls['name'].value;
+    this.item.price = this.form.controls['price'].value;
+    this.item.stock = this.form.controls['stock'].value;
+
     this.itemsService.updateItem(this.item);
+  }
+
+  btnOnDelete()
+  {
+    // let reference = this.snackBar.openFromComponent(ItemDeleteSnackbarComponent);
+    let reference = this.snackBar.open("Are you sure you want to delete this item?", "Delete");
+    reference.onAction().subscribe(() => alert("okay"))
   }
 
 }
