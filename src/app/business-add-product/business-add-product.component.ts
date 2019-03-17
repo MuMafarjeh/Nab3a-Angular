@@ -1,7 +1,13 @@
+import { ItemsService } from './../item/items.service';
+import { Item } from './../item/item';
+import { StorageService } from './../storage/storage.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup, FormBuilder, } from '@angular/forms';
-import { Item } from '../item/item';
-import { ItemsService } from '../item/items.service';
+import * as firebase from 'firebase';
+import { Observable, observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+
+
 
 @Component({
   selector: 'app-business-add-product',
@@ -10,22 +16,29 @@ import { ItemsService } from '../item/items.service';
 })
 export class BusinessAddProductComponent implements OnInit {
 
+
+  public data =  {} as Item;
+  public categories = [];
+
   submitted = false;
 
-  validity: FormGroup;
+  addProductForm: FormGroup;
+
+ // collection :  Observable<Item[]>;
 
 
   public imagePath;
+  imageFile;
   imgURL: any;
   public message: string;
   Name = new FormControl('', [Validators.required ]);
-  Tags = new FormControl('', [Validators.required ]);
+  Barcode = new FormControl('', [Validators.required ]);
   Price = new FormControl('', [Validators.required ]);
   Stock = new FormControl('', [Validators.required ]);
   CategoryControl = new FormControl('', [Validators.required]);
   Image= new FormControl('', [Validators.required]);
 
-  constructor(private formBuilder: FormBuilder, private itemService: ItemsService) { }
+  constructor(private formBuilder: FormBuilder, private itemService: ItemsService , private storage: StorageService) { }
 
 
   getErrorMessage() {
@@ -34,8 +47,8 @@ export class BusinessAddProductComponent implements OnInit {
             '';
   }
   getErrorMessageTags() {
-    return this.Tags.hasError('required') ? 'You must enter a Tags' :
-        this.Tags.hasError('Tags') ? 'Not a valid Tags' :
+    return this.Barcode.hasError('required') ? 'You must enter a Tags' :
+        this.Barcode.hasError('Tags') ? 'Not a valid Tags' :
             '';
   }
   getErrorMessagePrice() {
@@ -55,14 +68,18 @@ export class BusinessAddProductComponent implements OnInit {
             '';
   }
   ngOnInit() {
-    this.validity = this.formBuilder.group({
-      Name: ['', Validators.required],
-      Tags: ['', Validators.required],
-      Price: ['', Validators.required],
-      Stock: ['', Validators.required],
-      CategoryControl: ['', Validators.required],
-      Image: ['', Validators.required],
-  });
+
+  this.categories = this.itemService.getCategory();
+
+// tslint:disable-next-line: align
+      this.addProductForm = this.formBuilder.group({
+        Name: ['', Validators.required],
+        Barcode: ['', Validators.required],
+        Price: ['', Validators.required],
+        Stock: ['', Validators.required],
+        CategoryControl: ['', Validators.required],
+        Image: ['', Validators.required],
+    });
 
   }
 
@@ -71,26 +88,34 @@ export class BusinessAddProductComponent implements OnInit {
     this.submitted = true;
 
     // stop here if form is invalid
-    if (this.validity.invalid) {
+    if (this.addProductForm.invalid) {
         return ;
     }
+  ///  this.data;
+    this. data.name = this.addProductForm.get('Name').value;
+    this. data.barcode = this.addProductForm.get('Barcode').value;
+     this.  data.category = this.addProductForm.get("CategoryControl").value;
+    this.data.price = this.addProductForm.get('Price').value;
+    this. data.stock = this.addProductForm.get('Stock').value;
+    this. data.type = ' product';
+    this.storage.uploadImageProduct(this.imageFile, this.data.name)
+    // downloadURL.subscribe((observer) =>
+    // {
+    //   console.log(observer);
+    // });
 
-    const item: Item = this.validity.value;
-    
-    item.type = "product";
-    /* item.image = link; */
+          // console.log(downloadURL)
+          // this.data.image = res;
+          // this.itemService.addItem(this.data);
+          // alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.addProductForm.value))
 
-    // الطريقة القديمة لأضافة اوب 
-    /* var newitem = {
-      type: "product",
-      price: this.validity.get("price").value
-    }  */
+  }
 
-    this.itemService.addItem(item);
+onClear() {
 
-    alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.validity.value))
+  this.addProductForm.reset();
+  this.imgURL='';
 }
-
 
 
   preview(files) {
@@ -99,15 +124,18 @@ export class BusinessAddProductComponent implements OnInit {
 
     var mimeType = files[0].type;
     if (mimeType.match(/image\/*/) == null) {
-      this.message = "Only images are supported.";
+      this.message = 'Only images are supported.';
       return;
     }
+
+
 
     var reader = new FileReader();
     this.imagePath = files;
     reader.readAsDataURL(files[0]);
     reader.onload = (_event) => {
       this.imgURL = reader.result;
+      this.imageFile = files[0];
     }
 }
 }

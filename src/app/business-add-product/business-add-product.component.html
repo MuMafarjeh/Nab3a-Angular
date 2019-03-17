@@ -1,7 +1,7 @@
 <p>
   business-add-product works!
 </p>
-<form [formGroup]="validity" (ngSubmit)="onSubmit()">
+<form [formGroup]="addProductForm" >
   <div class="example-container">
     <mat-form-field class="example-full-width">
       <input matInput placeholder="" disabled value="Add Product">
@@ -12,17 +12,16 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="Enter The Tags" formControlName="Tags" required>
-      <mat-error *ngIf="Tags.invalid">{{getErrorMessageTags()}}</mat-error>
+      <input matInput placeholder="Enter The barcode" formControlName="Barcode" required>
+      <mat-error *ngIf="Barcode.invalid">{{getErrorMessageTags()}}</mat-error>
 
     </mat-form-field>
 
 
     <mat-form-field>
-      <mat-select placeholder="Category" formControlName="CategoryControl" required>
-        <mat-option label="select something "></mat-option>
-        <mat-option value="option">Eating</mat-option>
-        <mat-option value="option">Drinks</mat-option>
+      <mat-select  placeholder="Category" formControlName="CategoryControl" *ngIf="categories" required>
+        <mat-option *ngFor="let category of categories "  value="{{category.name}}"  >{{category.name}}</mat-option>
+<!--  -->
       </mat-select>
       <mat-error *ngIf="CategoryControl.hasError('required')">
         This field is required
@@ -42,7 +41,7 @@
 
     <div class="example-container1">
       <span class="span" *ngIf="message">{{message}}</span>
-      <input md-button md-raised md-primary #file type="file" accept='image/*'  formControlName="Image"  (change)="preview(file.files)" required/>
+      <input md-button md-raised md-primary #file type="file" accept='image/*'  formControlName="Image" id="mm"  (change)="preview(file.files)" required/>
 
       <img [src]="imgURL" class="uploadPictuer" *ngIf="imgURL">
       <mat-error *ngIf="Image.invalid">{{getErrorMessageImage()}}</mat-error>
@@ -52,8 +51,8 @@
 
 
     <div class="example-button-row">
-      <button id="btnAdd" mat-raised-button>Add</button>
-      <button id="btnClear" mat-raised-button> Clear</button>
+      <button id="btnAdd" mat-raised-button [disabled]="addProductForm.invalid" (click)="onSubmit()">Add</button>
+      <button id="btnClear" mat-raised-button  (click)="onClear()"> Clear</button>
 
     </div>
   </div>

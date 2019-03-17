@@ -25,6 +25,7 @@ import { BusinessAddProductComponent } from './business-add-product/business-add
 import { BusinessComponent } from './business/business.component';
 import { CustomerComponent } from './customer/customer.component';
 import { RegestrationComponent } from './regestration/regestration.component';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { RegestrationComponent } from './regestration/regestration.component';
     BusinessAddProductComponent,
     BusinessComponent,
     CustomerComponent,
-    RegestrationComponent
+    RegestrationComponent,
+
   ],
   imports: [
     FormsModule,
@@ -51,7 +53,7 @@ import { RegestrationComponent } from './regestration/regestration.component';
     MaterialModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    AngularFireAuthModule
+    AngularFireStorageModule
   ],
   providers: [UserService],
   bootstrap: [AppComponent]
