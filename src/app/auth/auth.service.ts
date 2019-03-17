@@ -37,6 +37,7 @@ export class AuthService {
 
   async sendEmailVerification() {
     await this.auth.auth.currentUser.sendEmailVerification()
+    alert("Verification email sent");
     /* this.router.navigate(['admin/verify-email']); */
   }
 

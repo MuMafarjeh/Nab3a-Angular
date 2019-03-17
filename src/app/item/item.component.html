@@ -1,34 +1,55 @@
 <div class="item-card">
 
-  <div class="image">
-    <img [src]="item.image" >
+  <div class="actions" align="right">
+    <button (click)="btnOnEdit()" *ngIf="!isEdit" mat-mini-fab>
+      <mat-icon class="edit-btn" svgIcon="edit-icon"></mat-icon>
+    </button>  
+    <button (click)="btnOnSave()" *ngIf="isEdit"  mat-mini-fab color="accent" [disabled]="form.invalid">
+      <mat-icon class="save-btn" svgIcon="save-icon"></mat-icon>
+    </button>  
   </div>
 
-  <div class="text-content">
-    <div class="data" *ngIf="!isEdit" >
-      <mat-card-title>{{ item.name | uppercase }}</mat-card-title>
-      <div>{{ item.price | currency:'ILS':'symbol':'1.1-1' }}</div>
+  <div class="text-content" >
+    <div class="data" *ngIf="!isEdit">
+      <div class="name rows">{{ item.name | uppercase }}</div>
+      <div class="category rows">{{ item.category }}</div>
+      <div class="rows">{{ item.price | currency:'ILS':'symbol':'1.1-1' }}</div>
+      <div class="rows">{{ item.stock }} pcs.</div>
     </div>
 
-    <form class="edit" *ngIf="isEdit">
-    
-        <mat-form-field class="form-field">
-          <mat-label>Name</mat-label>
-          <input matInput [(ngModel)]="item.name" (keyup.enter)="onEnter()"
-            placeholder="Name" name="name">
-        </mat-form-field>
-  
-        <mat-form-field class="form-field" appearance="outline">
-          <mat-label>Price</mat-label>
-          <input matInput type="number" [(ngModel)]="item.price" (keyup.enter)="onEnter()"
-            placeholder="Price" name="price">
-        </mat-form-field>
+    <form class="edit" *ngIf="isEdit" [formGroup]="form" (ngSubmit)="onEnter()">
+      <mat-form-field class="form-field rows" >
+        <mat-label>Name</mat-label>
+        <input matInput type="text" [(ngModel)]="item.name"
+           name="name" formControlName="name">
+        <mat-error *ngIf="form.controls['name'].invalid">{{getErrorName()}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="form-field rows" >
+        <mat-label>Price</mat-label>
+        <input matInput type="number" [(ngModel)]="item.price"
+          name="price" formControlName="price">
+        <mat-error *ngIf="form.controls['price'].invalid">{{getErrorPrice()}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="form-field rows" >
+        <mat-label>Stock</mat-label>
+        <input matInput type="number" [(ngModel)]="item.stock"
+           name="stock" formControlName="stock">
+        <mat-error *ngIf="form.controls['stock'].invalid">{{getErrorStock()}}</mat-error>
+      </mat-form-field>
+
+      <!-- <mat-form-field class="form-field rows">
+          <mat-label>Category</mat-label>
+          <mat-select placeholder="Category">
+            <mat-option *ngFor="let category of categories" [value]="category"></mat-option>
+          </mat-select>
+        </mat-form-field> -->
     </form>
   </div>
 
-  <div class="actions" align="right">
-    <button (click)="btnToggleEdit()" mat-mini-fab>
-      <mat-icon class="edit-btn" svgIcon="edit-icon"></mat-icon>
-    </button>  
+  <div *ngIf="item.image"  class="image">
+    <img [src]="item.image" >
   </div>
+
 </div>

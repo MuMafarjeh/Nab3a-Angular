@@ -1,7 +1,10 @@
+import { UserService } from './../user/user.service';
+import { User } from 'firebase';
 import { AuthService } from './../auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { matchesElement } from '@angular/animations/browser/src/render/shared';
+import { UserBusiness } from '../user/userbusiness';
 
 @Component({
   selector: 'business',
@@ -10,10 +13,22 @@ import { matchesElement } from '@angular/animations/browser/src/render/shared';
 })
 export class BusinessComponent implements OnInit {
 
-  constructor(private auth: AuthService) { }
+  passwordsNotMatch: boolean = false;
+
+  constructor(private authService: AuthService, private userService: UserService) { 
+    // LOGIN
+    this.authService.login("protoskullry@gmail.com", 'kaf12345');
+
+    // LOGOUT
+    // this.authService.logout().then(function()
+    // {
+    //   console.log("logged out")
+    // });
+  }
 
   ngOnInit() {
   }
+
   businessForm: FormGroup = new FormGroup({
     Pname: new FormControl('', [Validators.required]),
     Oname: new FormControl('', [Validators.required]),
@@ -23,12 +38,13 @@ export class BusinessComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required,]),
     confirempassword: new FormControl('', [Validators.required,]),
-  })
+  });
+
   getErrorMessagePName() {
     return this.businessForm.controls['Pname'].hasError('required') ? 'Name is Required' : '';
   }
   getErrorMessageOName() {
-    return this.businessForm.controls['Pname'].hasError('required') ? 'Name is Required' : '';
+    return this.businessForm.controls['Oname'].hasError('required') ? 'Name is Required' : '';
   }
   getErrorMessageEmail() {
     return this.businessForm.controls['email'].hasError('required') ? 'Email Is Required' :
@@ -55,5 +71,29 @@ export class BusinessComponent implements OnInit {
     this.businessForm.reset();
   }
 
- 
+  submitForm()
+  {
+    if(this.businessForm.controls['confirempassword'].value 
+      != this.businessForm.controls['password'].value)
+      {
+        this.passwordsNotMatch = true;
+        return;
+      }
+
+      this.passwordsNotMatch = false;
+
+    var user = {} as UserBusiness;
+    
+    user.name = this.businessForm.controls['Pname'].value;
+    user.ownerName = this.businessForm.controls['Oname'].value;
+    user.email = this.businessForm.controls['email'].value;
+    user.phoneNumber = this.businessForm.controls['phone'].value;
+    user.city = this.businessForm.controls['city'].value;
+    user.locationDescription = this.businessForm.controls['location'].value; 
+    user.type = "business";
+    
+    this.userService.createUser(user);
+
+    this.authService.register(user.email, this.businessForm.controls['password'].value);
+  }
 }

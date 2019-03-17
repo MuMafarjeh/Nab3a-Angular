@@ -3,7 +3,7 @@
         <tr>
             <td>
                 <mat-form-field class="width">
-                    <input matInput placeholder="Full Person Name" formControlName="Pname" required>
+                    <input matInput placeholder="Business/Store name" formControlName="Pname" required>
                     <mat-error *ngIf="businessForm.controls['Pname'].invalid">{{getErrorMessagePName()}}</mat-error>
                 </mat-form-field>
             </td>
@@ -66,11 +66,12 @@
         </tr>
         <tr>
             <td>
-                <button mat-raised-button color="primary" [disabled]="businessForm.invalid">Submit</button>
+                <button mat-raised-button color="primary" [disabled]="businessForm.invalid" (click)="submitForm()">Submit</button>
 
             </td>
             <td>
                 <button mat-raised-button color="accent" (click)="clearAllField()">Clear</button>
+                <mat-error *ngIf="passwordsNotMatch">Passwords do not match</mat-error>
             </td>
         </tr>
     </table>

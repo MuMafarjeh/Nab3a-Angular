@@ -1,13 +1,21 @@
+//variables
+$break-small: 320px;
+$break-large: 1060px;
+
+
 .grid
 {
+   @media screen and (min-width: $break-large) {
+      grid-template-columns: auto auto;
+   }
+   @media screen and (max-width: $break-large) {
+      grid-template-columns: auto;
+
+   }
+
    display: grid;
-   grid-template-columns: auto auto;
-   grid-gap: 10px;
+   
+   grid-gap: 22px;
    padding: 10px;
    text-align: center;
-
-   .tile
-   {
-      /* background-color: rgba(255, 0, 0, 0.438) */
-   }
 }

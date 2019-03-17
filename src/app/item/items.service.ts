@@ -22,7 +22,12 @@ export class ItemsService {
   }
 
   public addItem(item: Item)
-  {
+  { 
     return this.firestore.collection("inventory_item").add(item);
+  }
+
+  public updateItem(item: Item)
+  {
+    return this.firestore.doc("inventory_item/" + item.id).set(item);
   }
 }

@@ -1,6 +1,6 @@
+import { User } from './user';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import {User} from './user';
 import {map} from 'rxjs/operators';
 
 @Injectable({

@@ -7,6 +7,7 @@ export interface Item
     price: number;
     currency: string;
     image: string;
-
-    
+    category: string;
+    stock: number;
+    barcode: string;
 }

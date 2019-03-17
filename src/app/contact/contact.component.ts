@@ -1,7 +1,6 @@
 import { UserService } from '../user/user.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { User } from '../user/user';
 
 @Component({
   selector: 'app-contact',
@@ -34,11 +33,7 @@ export class ContactComponent implements OnInit {
     }
 
     this.success = true;
-  
-    var user = {} as User;
-    user.name = this.messageForm.get('name').value;
-    user.email = this.messageForm.get('email').value;
-    this.userService.createUser(user);
+
   }
 
 }
