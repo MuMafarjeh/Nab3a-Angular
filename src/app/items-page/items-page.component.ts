@@ -20,12 +20,9 @@ export class ItemsPageComponent implements OnInit {
 
   deleteItem(item: Item)
   {
-    console.log(this.items)
-    console.log(item)
     let index = this.items.indexOf(item);
     if (index !== -1) {
         this.items.splice(index, 1);
     }  
-    console.log(this.items)
   }
 }

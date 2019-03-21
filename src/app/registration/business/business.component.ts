@@ -1,10 +1,10 @@
-import { UserService } from './../user/user.service';
+import { UserService } from './../../user/user.service';
 import { User } from 'firebase';
-import { AuthService } from './../auth/auth.service';
+import { AuthService } from './../../auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { matchesElement } from '@angular/animations/browser/src/render/shared';
-import { UserBusiness } from '../user/userbusiness';
+import { UserBusiness } from './../../user/userbusiness';
 
 @Component({
   selector: 'business',
@@ -16,14 +16,7 @@ export class BusinessComponent implements OnInit {
   passwordsNotMatch: boolean = false;
 
   constructor(private authService: AuthService, private userService: UserService) { 
-    // LOGIN
-    this.authService.login("protoskullry@gmail.com", 'kaf12345');
-
-    // LOGOUT
-    // this.authService.logout().then(function()
-    // {
-    //   console.log("logged out")
-    // });
+   
   }
 
   ngOnInit() {
@@ -62,7 +55,7 @@ export class BusinessComponent implements OnInit {
   }
   getErrorMessageConPassword() {
     return this.businessForm.controls['confirempassword'].hasError('required') ? 'Password is Required' :
-      (this.businessForm.controls['confirempassword'].value != this.businessForm.controls['password'].value) ? 'Passwords dont Match' : '';;
+      (this.businessForm.controls['confirempassword'].value != this.businessForm.controls['password'].value) ? 'Passwords dont Match' : '';
   }
   getErrorMessageCity() {
     return this.businessForm.controls['city'].hasError('required') ? 'City is Required' : '';

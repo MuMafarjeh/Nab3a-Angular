@@ -21,6 +21,10 @@ export class UserService {
     );
   }
   
+  getUser(userID: string)
+  {
+    return this.firestore.collection<User>("user", ref => ref.where('userID', '==', userID)).get();
+  }
 
   createUser(user: User){
     return this.firestore.collection('user').add(user);

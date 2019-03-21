@@ -5,11 +5,13 @@
     <nav>
       <ul>
         <li><a routerLink="/">Home</a></li>
-        <li><a routerLink="/items">Items</a></li>
+        <li><a routerLink="/items" *ngIf="isBusiness">Products</a></li>
         <li><a routerLink="/about">About</a></li>
         <li><a routerLink="/contact">Contact us</a></li>
-        <li><a routerLink="/regestration"> Registration </a></li>
-        <li><a routerLink="/business-add-product">Business Add Product</a></li>
+        <li><a routerLink="/login" *ngIf="!canLogout"> Login </a></li>
+        <li><a routerLink="/" (click)="logout()" *ngIf="canLogout" > Logout </a></li>
+
+        <!-- <li><a routerLink="/business-add-product">Business Add Product</a></li> -->
       </ul>
     </nav>
   </div>

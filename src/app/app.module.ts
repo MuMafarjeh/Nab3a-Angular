@@ -9,7 +9,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { AngularFireAuthModule } from "@angular/fire/auth"
+import { AngularFireAuthModule, AngularFireAuth } from "@angular/fire/auth"
 
 import { environment } from '../environments/environment';
 
@@ -24,11 +24,14 @@ import { MaterialModule } from './material';
 import { ItemsPageComponent } from './items-page/items-page.component';
 import { ItemComponent } from './item/item.component';
 import { BusinessAddProductComponent } from './business-add-product/business-add-product.component';
-import { BusinessComponent } from './business/business.component';
-import { CustomerComponent } from './customer/customer.component';
-import { RegestrationComponent } from './regestration/regestration.component';
+import { BusinessComponent } from './registration/business/business.component';
+import { CustomerComponent } from './registration/customer/customer.component';
+import { RegistrationComponent } from './registration/registration.component';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { ItemDeleteSnackbarComponent } from './item/item-delete-snackbar/item-delete-snackbar.component';
+import { LoginComponent } from './registration/login/login.component';
+import { LoginEmailComponent } from './registration/login/login-email/login-email.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   entryComponents: [
@@ -45,8 +48,11 @@ import { ItemDeleteSnackbarComponent } from './item/item-delete-snackbar/item-de
     BusinessAddProductComponent,
     BusinessComponent,
     CustomerComponent,
-    RegestrationComponent,
+    RegistrationComponent,
     ItemDeleteSnackbarComponent,
+    LoginComponent,
+    LoginEmailComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     FormsModule,
@@ -59,8 +65,10 @@ import { ItemDeleteSnackbarComponent } from './item/item-delete-snackbar/item-de
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireStorageModule,
+    AngularFireAuthModule
   ],
   providers: [
+    AngularFireAuth,
     UserService,
     { provide: MatBottomSheetRef, useValue: {} },
     { provide: MAT_BOTTOM_SHEET_DATA, useValue: [] }],

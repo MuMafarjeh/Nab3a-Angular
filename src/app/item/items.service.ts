@@ -65,7 +65,6 @@ export class ItemsService {
 
   public deleteItem(item: Item)
   {
-    console.log("inventory_item/" + item.id)
     return this.firestore.doc("inventory_item/" + item.id).delete();
   }
 }
