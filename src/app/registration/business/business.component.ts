@@ -16,7 +16,7 @@ export class BusinessComponent implements OnInit {
   passwordsNotMatch: boolean = false;
 
   constructor(private authService: AuthService, private userService: UserService) { 
-   
+    
   }
 
   ngOnInit() {
@@ -75,18 +75,17 @@ export class BusinessComponent implements OnInit {
 
       this.passwordsNotMatch = false;
 
-    var user = {} as UserBusiness;
+    let user = {} as UserBusiness;
     
     user.name = this.businessForm.controls['Pname'].value;
     user.ownerName = this.businessForm.controls['Oname'].value;
     user.email = this.businessForm.controls['email'].value;
-    user.phoneNumber = this.businessForm.controls['phone'].value;
+    user.phoneNumber = `+97${this.businessForm.controls['phone'].value}`;
     user.city = this.businessForm.controls['city'].value;
     user.locationDescription = this.businessForm.controls['location'].value; 
     user.type = "business";
-    
-    this.userService.createUser(user);
-
+  
     this.authService.register(user.email, this.businessForm.controls['password'].value);
+    // this.authService.register(user, this.businessForm.controls['password'].value);
   }
 }

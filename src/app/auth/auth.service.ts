@@ -1,3 +1,4 @@
+import { HttpService } from './../http/http.service';
 import { UserCustomer } from './../user/usercustomer';
 import { UserBusiness } from './../user/userbusiness';
 import { UserService } from './../user/user.service';
@@ -17,9 +18,10 @@ export class AuthService{
 
   public getLoggedIn = new Subject<boolean>();
   public getUserType = new Subject<string>();
+  public getIsVerified = new Subject<boolean>();
 
   constructor(private auth: AngularFireAuth, private router: Router, 
-    private userService: UserService) 
+    private userService: UserService, private httpService: HttpService) 
   { 
     this.auth.authState.subscribe(user => {
       if (user){
@@ -34,6 +36,14 @@ export class AuthService{
     });
   }
 
+  // public async register(user, password: string) {
+  //   user.password = password;
+  //   let emailLink = await this.httpService.registerUser(user);
+  //   await this.auth.auth.signInWithEmailAndPassword(user.email, password);
+  //   await this.sendEmailVerification();
+  //   this.router.navigate(['/']);
+  // }
+
   public async register(email: string, password: string) {
     var result = await this.auth.auth.createUserWithEmailAndPassword(email, password)
     this.sendEmailVerification();
@@ -41,7 +51,7 @@ export class AuthService{
   }
 
   async login(email: string, password: string) {
-    try {
+    try{
       await this.auth.auth.signInWithEmailAndPassword(email, password).then((result) => 
       {
         this.userService.getUser(result.user.uid).subscribe((result) => {
@@ -71,12 +81,52 @@ export class AuthService{
           this.router.navigate(['/']);
         })
         
-      });
-      /* this.router.navigate(['admin/list']); */
-    } catch (e) {
-      alert("Error!"  +  e.message);
-    }
+        }).catch ((e) =>  {
+          return e;
+        });
+      }catch(e)
+      {
+        return e;
+      }
   }
+
+  // async login(email: string, password: string) {
+  //   try {
+  //     await this.auth.auth.signInWithEmailAndPassword(email, password).then((result) => 
+  //     {
+  //       this.userService.getUser(result.user.uid).subscribe((result2) => {
+  //         const doc = result2;
+  //         const id = result.user.uid;
+  //         switch(doc.data().type)
+  //         {
+  //           case 'business': 
+  //             this.userData = {id, ... doc.data()} as UserBusiness;
+  //             localStorage.setItem('userData', JSON.stringify(this.userData));
+  //             console.log(`Businss ${this.userData.name} logged in! \n`);
+  //             break;
+              
+  //           case 'customer': 
+  //             this.userData = {id, ... doc.data()} as UserCustomer;
+  //             localStorage.setItem('userData', JSON.stringify(this.userData));
+  //             console.log(`Customer ${this.userData.name} logged in!`);
+  //             break;
+
+  //           case 'delivery': 
+  //             this.userData = {id, ... doc.data()};
+  //             console.log(`Delivery-man ${this.userData.name} logged in!`);
+  //             break;
+  //         }
+          
+  //         this.changeStatus();
+  //         this.router.navigate(['/']);
+  //       })
+        
+  //     });
+  //     /* this.router.navigate(['admin/list']); */
+  //   } catch (e) {
+  //     alert("Error!"  +  e.message);
+  //   }
+  // }
 
   // async loginWithPhone(phone: string) {
   //   try {
@@ -122,15 +172,32 @@ export class AuthService{
       return this.userData.type;
   }
 
+  get isVerified(): boolean
+  {
+    this.userLocalStorage  =  JSON.parse(localStorage.getItem('user'));
+    console.log(this.user)
+    if(this.user === null || this.user === undefined)
+      return false;
+    return this.user.emailVerified;
+  }
+
   changeStatus()
   {
     // console.log(`this.isLoggedIn ${this.isLoggedIn}`)
     this.getLoggedIn.next(this.isLoggedIn);
     this.getUserType.next(this.userType);
+    this.getIsVerified.next(this.isVerified)
   }
 
   readUserDataFromLocalStorage()
   {
     this.userData = JSON.parse(localStorage.getItem('userData'));
+    this.user = JSON.parse(localStorage.getItem('user'));
+  }
+
+  async getUserID()
+  {
+    if(await this.isLoggedIn)
+      return await this.user.uid;
   }
 }

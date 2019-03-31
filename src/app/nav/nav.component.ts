@@ -17,6 +17,9 @@ export class NavComponent implements OnInit {
   isBusiness: boolean;
   isBusinessSubscription: Subscription;
 
+  isVerified: boolean;
+  isVerifiedSubscription: Subscription;
+
   constructor(private authService: AuthService) 
   { 
     this.loggedInSubscription = this.authService.getLoggedIn.subscribe((loggedIn) => 
@@ -27,6 +30,11 @@ export class NavComponent implements OnInit {
     this.isBusinessSubscription = this.authService.getUserType.subscribe((userType) =>
     {
       this.isBusiness = userType === 'business';
+    });
+
+    this.isVerifiedSubscription = this.authService.getIsVerified.subscribe((isVerified) =>
+    {
+      this.isVerified = isVerified;
     });
   }
 

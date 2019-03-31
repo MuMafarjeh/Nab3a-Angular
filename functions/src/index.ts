@@ -8,34 +8,66 @@ import * as admin from 'firebase-admin';
 //  response.send("Hello from Firebase!");
 // });
 
-admin.initializeApp();
-const env = functions.config();
 
-import * as algoliasearch from 'algoliasearch';
+// const env = functions.config();
 
-//Init algolia
-const client = algoliasearch(env.algolia.appid, env.algolia.apikey);
-const index = client.initIndex('item_NAME');
+// exports.helloWorld = functions.https.onRequest((req, res) => {
+//     admin.auth().createUser
+// });
 
-exports.indexItem = functions.firestore
-    .document('inventory_item/{itemID}')
-    .onCreate((snapshot, context) => 
-    {
-        const data = snapshot.data();
-        const objectID = snapshot.id;
+const userCollection = '/user/';
 
-        //Add data to algolia index
-        return index.addObject
-        ({
-            objectID,
-            ...data
-        })
-    });
+exports.register = functions.https.onCall(async (data, context) => {
+    const authInfo = {
+        email: data.email,
+        phoneNumber: data.phoneNumber,
+        password: data.password,
+        displayName: data.name,
+        emailVerified: false
+    };
 
-exports.unindexItem = functions.firestore
-    .document('inventory_item/{itemID}')
-    .onDelete((snapshot, context) => 
-    {
-        const objectID = snapshot.id;
-        return index.deleteObject(objectID);
-    });
+    const userRecord = await admin.auth().createUser(authInfo);
+
+    delete data.emailVerified;
+    delete data.password;
+    await admin.firestore().doc(userCollection + '' + userRecord.uid).create(data);
+    console.log(`New registeration: ${data.name}`);
+
+    const emailLink = await admin.auth().generateEmailVerificationLink(data.email);
+    console.log(`email verification link sent to ${data.email}, ${emailLink}`);
+    return emailLink;
+});
+
+// exports.insertUser = functions.https.user().onCreate((user) => {
+//     admin.firestore().collection('/test').where()
+//     })
+// });
+
+// import * as algoliasearch from 'algoliasearch';
+
+// //Init algolia
+// const client = algoliasearch(env.algolia.appid, env.algolia.apikey);
+// const index = client.initIndex('item_NAME');
+
+// exports.indexItem = functions.firestore
+//     .document('inventory_item/{itemID}')
+//     .onCreate((snapshot, context) => 
+//     {
+//         const data = snapshot.data();
+//         const objectID = snapshot.id;
+
+//         //Add data to algolia index
+//         return index.addObject
+//         ({
+//             objectID,
+//             ...data
+//         })
+//     });
+
+// exports.unindexItem = functions.firestore
+//     .document('inventory_item/{itemID}')
+//     .onDelete((snapshot, context) => 
+//     {
+//         const objectID = snapshot.id;
+//         return index.deleteObject(objectID);
+//     });

@@ -26,7 +26,6 @@ const routes: Routes = [
   },
   { path: 'login', component: LoginComponent },
   { path: 'login-email', component: LoginEmailComponent },
-
   { path: 'page-not-found', component: PageNotFoundComponent },
 ];
 

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../data.service';
 import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 import {map} from 'rxjs/operators';
@@ -13,7 +12,7 @@ export class HomeComponent implements OnInit {
 
   users: User[];
 
-  constructor(private data: DataService, private userService: UserService) { }
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
     this.userService.getUsers().subscribe((result: User[]) =>
