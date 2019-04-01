@@ -10,6 +10,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule, AngularFireAuth } from "@angular/fire/auth"
+import { AngularFireFunctionsModule } from '@angular/fire/functions'
 
 import { environment } from '../environments/environment';
 
@@ -73,10 +74,12 @@ import { MyDialogComponent } from './business-order/business-order-component/my-
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireStorageModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    AngularFireFunctionsModule
   ],
   providers: [
     AngularFireAuth,
+    AngularFireFunctionsModule,
     UserService,
     { provide: MatBottomSheetRef, useValue: {} },
     { provide: MAT_BOTTOM_SHEET_DATA, useValue: [] }],

@@ -1,9 +1,6 @@
-<div class="login-container">
+<div class="centered-container">
   <img src="assets/icons/login_icon.svg" id="login_icon">
   
-  <span class="error" *ngIf="error">{{error}}</span>
-
-  <button mat-raised-button color="accent" (click)="loginWithEmail()" >Login with E-mail</button> 
-  <!-- routerLink="/login-email" -->
+  <button mat-raised-button color="accent" routerLink="/login-email">Login with E-mail</button> 
   <a routerLink="/registration" routerLinkActive="active" class="noAccount">Not registered? <strong>Create a new account</strong></a>
 </div>

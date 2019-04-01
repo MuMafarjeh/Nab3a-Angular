@@ -1,3 +1,4 @@
+import { AuthService } from './../auth/auth.service';
 import { ItemsService } from './../item/items.service';
 import { Item } from './../item/item';
 import { StorageService } from './../storage/storage.service';
@@ -38,7 +39,11 @@ export class BusinessAddProductComponent implements OnInit {
   CategoryControl = new FormControl('', [Validators.required]);
   Image= new FormControl('', [Validators.required]);
 
-  constructor(private formBuilder: FormBuilder, private itemService: ItemsService , private storage: StorageService) { }
+  constructor(private formBuilder: FormBuilder, private itemService: ItemsService , private storage: StorageService
+    , private authService: AuthService) 
+    {
+      console.log(authService.getUserID().then((result) => console.log(result)));
+    }
 
 
   getErrorMessage() {

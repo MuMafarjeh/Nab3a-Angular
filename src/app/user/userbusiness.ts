@@ -3,10 +3,9 @@ export interface UserBusiness
   name: string;
   ownerName: string;
   id: string;
-  phoneNumber: number;
+  phoneNumber: string;
   email: string;
   city: string;
   locationDescription: string;
-
   type: string;
 }

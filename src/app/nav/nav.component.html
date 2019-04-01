@@ -1,18 +1,16 @@
 <header>
   <div class="container">
     <a routerLink="/">{{ appTitle }}</a>
-
     <nav>
       <ul>
-        <li><a routerLink="/">Home</a></li>
-        <li><a routerLink="/items" *ngIf="isBusiness">Products</a></li>
+        <li><a routerLink="/items" *ngIf="isBusiness && isVerified">My Store</a></li>
         <li><a routerLink="/business-order" *ngIf="isBusiness">Orders</a></li>
-        <li><a routerLink="/about">About</a></li>
+        <li><a routerLink="/browse-items" *ngIf="!isBusiness">Browse Products</a></li>
+        <!-- <li><a routerLink="/about">About</a></li> -->
         <li><a routerLink="/contact">Contact us</a></li>
         <li><a routerLink="/login" *ngIf="!canLogout"> Login </a></li>
         <li><a routerLink="/" (click)="logout()" *ngIf="canLogout" > Logout </a></li>
-
-        <!-- <li><a routerLink="/business-add-product">Business Add Product</a></li> -->
+        <li *ngIf="username" ><div id="username">{{username}}</div></li>
       </ul>
     </nav>
   </div>
