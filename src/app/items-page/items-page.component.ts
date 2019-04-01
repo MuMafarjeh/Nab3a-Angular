@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Item } from '../item/item';
 import { ItemsService } from '../item/items.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -12,10 +13,14 @@ export class ItemsPageComponent implements OnInit {
 
   items: Item[];
 
-  constructor(private itemService: ItemsService) { }
+  constructor(private itemService: ItemsService, private router:Router) { }
 
   ngOnInit() {
     this.items = this.itemService.getInventory()
+  }
+  addProduct(){
+
+    this.router.navigate(['./business-add-product']);
   }
 
   deleteItem(item: Item)
@@ -23,6 +28,6 @@ export class ItemsPageComponent implements OnInit {
     let index = this.items.indexOf(item);
     if (index !== -1) {
         this.items.splice(index, 1);
-    }  
+    }
   }
 }

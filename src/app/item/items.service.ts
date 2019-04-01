@@ -54,7 +54,7 @@ export class ItemsService {
   }
 
   public addItem(item: Item)
-  { 
+  {
     return this.firestore.doc("inventory_item/" + item.id).set(item);
   }
 

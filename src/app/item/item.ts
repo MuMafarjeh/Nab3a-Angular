@@ -10,4 +10,7 @@ export interface Item
     category: string;
     stock: number;
     barcode: string;
+    inventory_productID: string;
+    finalPrice: number;
+    quantity: number;
 }

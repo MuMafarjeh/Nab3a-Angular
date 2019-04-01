@@ -1,3 +1,4 @@
+import { BusinessOrderComponent } from './business-order/business-order.component';
 import { BusinessGuard } from './auth/business-guard.service';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { LoginEmailComponent } from './registration/login/login-email/login-email.component';
@@ -15,12 +16,12 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactComponent},
-  { 
+  {
     path: 'items', component: ItemsPageComponent,
     canActivate: [BusinessGuard]
   },
   { path: 'registration', component: RegistrationComponent },
-  { 
+  {
     path: 'business-add-product', component: BusinessAddProductComponent,
     canActivate: [BusinessGuard]
   },
@@ -28,6 +29,7 @@ const routes: Routes = [
   { path: 'login-email', component: LoginEmailComponent },
 
   { path: 'page-not-found', component: PageNotFoundComponent },
+  { path: 'business-order', component: BusinessOrderComponent },
 ];
 
 @NgModule({

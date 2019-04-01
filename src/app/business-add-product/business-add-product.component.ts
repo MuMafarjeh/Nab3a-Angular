@@ -63,6 +63,8 @@ export class BusinessAddProductComponent implements OnInit {
             '';
   }
   getErrorMessageImage() {
+
+
     return this.Image.hasError('required') ? 'You must enter a Image' :
         this.Image.hasError('Image') ? 'Not a valid Image' :
             '';
@@ -108,7 +110,7 @@ export class BusinessAddProductComponent implements OnInit {
         let observable = imageTask.storageRef.getDownloadURL();
         observable.subscribe((observer) =>
         {
-          this.data.image = observer; 
+          this.data.image = observer;
           this.itemService.addItem(this.data);
           alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.data));
         });

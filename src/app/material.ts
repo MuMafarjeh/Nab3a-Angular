@@ -12,16 +12,18 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule, MatSliderModule, DateAdapter} from '@angular/material';
+import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
     imports: [
-        MatButtonModule, 
-        MatCheckboxModule, 
-        MatCardModule, 
-        MatInputModule, 
+        MatButtonModule,
+        MatCheckboxModule,
+        MatCardModule,
+        MatInputModule,
         MatIconModule,
         MatGridListModule,
         MatTabsModule,
@@ -35,13 +37,22 @@ import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
         MatDatepickerModule,
         MatRadioModule,
         MatBottomSheetModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatNativeDateModule,
+        MatSliderModule,
+        MatDialogModule,
+
+
+
+
+
+
     ],
     exports: [
-        MatButtonModule, 
-        MatCheckboxModule, 
+        MatButtonModule,
+        MatCheckboxModule,
         MatCardModule,
-        MatInputModule, 
+        MatInputModule,
         MatIconModule,
         MatGridListModule,
         MatTabsModule,
@@ -55,7 +66,14 @@ import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
         MatDatepickerModule,
         MatRadioModule,
         MatBottomSheetModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatNativeDateModule,
+        MatSliderModule,
+        MatDialogModule,
+
+
+
+
     ]
 })
 export class MaterialModule{

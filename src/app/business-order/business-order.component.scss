@@ -1,0 +1,25 @@
+$break-small: 320px;
+$break-large: 1060px;
+mat-form-field {
+  margin-right: 100px;
+}
+.example-full-width{
+
+  margin-left: 10px;
+}
+.grid{
+display: grid;
+grid-gap: 22px;
+  padding: 10px;
+   text-align: left;
+
+
+}
+.title{
+   font-weight: bold;
+    font-family: "sans-serif";
+    font-style: italic;
+    line-height: 12px;
+    color: black;
+    font-size: 30px;
+}

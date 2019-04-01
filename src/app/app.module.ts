@@ -32,10 +32,14 @@ import { ItemDeleteSnackbarComponent } from './item/item-delete-snackbar/item-de
 import { LoginComponent } from './registration/login/login.component';
 import { LoginEmailComponent } from './registration/login/login-email/login-email.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { BusinessOrderComponent } from './business-order/business-order.component';
+import { BusinessOrderComponentComponent } from './business-order/business-order-component/business-order-component.component';
+import { MyDialogComponent } from './business-order/business-order-component/my-dialog/my-dialog.component';
 
 @NgModule({
   entryComponents: [
-    ItemDeleteSnackbarComponent
+    ItemDeleteSnackbarComponent,
+    MyDialogComponent,
   ],
   declarations: [
     AppComponent,
@@ -53,6 +57,10 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     LoginComponent,
     LoginEmailComponent,
     PageNotFoundComponent,
+    BusinessOrderComponent,
+    BusinessOrderComponentComponent,
+    MyDialogComponent,
+
   ],
   imports: [
     FormsModule,

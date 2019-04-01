@@ -2,7 +2,11 @@
 $break-small: 320px;
 $break-large: 1060px;
 
-
+.example-button-row button {
+  margin-left:10px;
+  margin-top: 0px;
+  float: right;
+}
 .grid
 {
    @media screen and (min-width: $break-large) {
@@ -14,7 +18,7 @@ $break-large: 1060px;
    }
 
    display: grid;
-   
+
    grid-gap: 22px;
    padding: 10px;
    text-align: center;

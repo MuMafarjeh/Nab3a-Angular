@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Item } from './item';
 import { MatIconRegistry, MatSnackBar } from '@angular/material';
@@ -5,7 +6,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ItemsService } from './items.service';
 import { ItemDeleteSnackbarComponent } from './item-delete-snackbar/item-delete-snackbar.component';
-import { MatBottomSheet } from '@angular/material' 
+import { MatBottomSheet } from '@angular/material'
 
 @Component({
   selector: 'app-item',
@@ -21,25 +22,26 @@ export class ItemComponent implements OnInit {
   @Input()
   item: Item;
 
-  @Output() 
+  @Output()
   deleteEvent: EventEmitter<any> = new EventEmitter();
 
   isEdit: boolean = false;
 
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, 
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer,
     private bottomSheet: MatBottomSheet, private snackBar: MatSnackBar,
-    private formBuilder: FormBuilder, private itemsService: ItemsService) 
+    private formBuilder: FormBuilder, private itemsService: ItemsService,
+    )
   {
     iconRegistry.addSvgIcon(
-      'edit-icon', 
+      'edit-icon',
       sanitizer.bypassSecurityTrustResourceUrl("assets/icons/edit_icon.svg"));
 
     iconRegistry.addSvgIcon(
-      'save-icon', 
+      'save-icon',
       sanitizer.bypassSecurityTrustResourceUrl("assets/icons/save_icon.svg"));
 
     iconRegistry.addSvgIcon(
-      'delete-icon', 
+      'delete-icon',
       sanitizer.bypassSecurityTrustResourceUrl("assets/icons/delete_icon.svg"));
   }
 
@@ -57,19 +59,21 @@ export class ItemComponent implements OnInit {
   getErrorName()
   {
     return this.form.controls['name'].hasError('required') ? 'Name is required' : '';
-  } 
+  }
 
   getErrorPrice()
   {
-    return this.form.controls['price'].hasError('required') ? 'Price is required' : 
+    return this.form.controls['price'].hasError('required') ? 'Price is required' :
       this.form.controls['price'].errors.pattern ? 'Price can only be (1-9999)' : '';
   }
 
   getErrorStock()
   {
-    return this.form.controls['stock'].hasError('required') ? 'Stock is required' : 
+    return this.form.controls['stock'].hasError('required') ? 'Stock is required' :
       this.form.controls['stock'].errors.pattern ? 'Stock can only be (0-9999)' : '';
   }
+
+
 
   btnOnEdit()
   {
@@ -99,22 +103,22 @@ export class ItemComponent implements OnInit {
 
   btnOnDelete(item: Item)
   {
-    let ref = this.bottomSheet.open(ItemDeleteSnackbarComponent, 
+    let ref = this.bottomSheet.open(ItemDeleteSnackbarComponent,
     {
       data: item
     });
 
     ref.afterDismissed().subscribe(data => {
-      if(data && data.message) 
+      if(data && data.message)
       {
         this.itemsService.deleteItem(this.item)
         .finally(() => {
           this.deleteEvent.emit(this.item);
           this.snackBar.open(this.item.name + " deleted!", "", {duration: 1500})
         });
-      } 
+      }
       else if(data && !data.message) {
-        
+
       }
     })
   }
