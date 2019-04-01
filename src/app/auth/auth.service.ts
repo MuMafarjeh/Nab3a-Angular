@@ -19,6 +19,7 @@ export class AuthService{
   public getLoggedIn = new Subject<boolean>();
   public getUserType = new Subject<string>();
   public getIsVerified = new Subject<boolean>();
+  public getUserData = new Subject<any>();
 
   constructor(private auth: AngularFireAuth, private router: Router, 
     private userService: UserService, private httpService: HttpService) 
@@ -174,8 +175,7 @@ export class AuthService{
 
   get isVerified(): boolean
   {
-    this.userLocalStorage  =  JSON.parse(localStorage.getItem('user'));
-    console.log(this.user)
+    this.readUserDataFromLocalStorage();
     if(this.user === null || this.user === undefined)
       return false;
     return this.user.emailVerified;
@@ -186,7 +186,8 @@ export class AuthService{
     // console.log(`this.isLoggedIn ${this.isLoggedIn}`)
     this.getLoggedIn.next(this.isLoggedIn);
     this.getUserType.next(this.userType);
-    this.getIsVerified.next(this.isVerified)
+    this.getIsVerified.next(this.isVerified);
+    this.getUserData.next(this.userData);
   }
 
   readUserDataFromLocalStorage()

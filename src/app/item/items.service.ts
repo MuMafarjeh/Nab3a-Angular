@@ -1,3 +1,5 @@
+import { BusinessGuard } from './../auth/business-guard.service';
+import { AuthService } from './../auth/auth.service';
 import { AngularFirestore, DocumentReference } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
@@ -8,7 +10,8 @@ import { Item } from './item';
 })
 export class ItemsService {
 
-  constructor(private firestore: AngularFirestore) { }
+  constructor(private firestore: AngularFirestore, private authService: AuthService, 
+    private businessGuard: BusinessGuard) { }
 
   public getInventoryLive()
   {
@@ -21,10 +24,11 @@ export class ItemsService {
     );
   }
 
-  public getInventory(): Item[]
+  public async getInventory(): Promise<Item[]>
   {
+    if(this.businessGuard.canActivate)
     var items = [];
-    this.firestore.collection("inventory_item").ref.get().then(function(querySnapshot)
+    this.firestore.collection("inventory_item").ref.where('businessID', '==', await this.authService.getUserID()).get().then(function(querySnapshot)
     {
       querySnapshot.forEach(function(doc) {
         let item = doc.data() as Item;

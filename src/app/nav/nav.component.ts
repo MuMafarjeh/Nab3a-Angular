@@ -11,11 +11,15 @@ export class NavComponent implements OnInit {
 
   appTitle = 'Nab3a';
 
+  username: string;
+  userDataSubscription: Subscription;
+
   canLogout: boolean;
   loggedInSubscription: Subscription;
 
   isBusiness: boolean;
-  isBusinessSubscription: Subscription;
+  isCustomer: boolean;
+  isUserTypeSubscription: Subscription;
 
   isVerified: boolean;
   isVerifiedSubscription: Subscription;
@@ -27,14 +31,22 @@ export class NavComponent implements OnInit {
       this.canLogout = loggedIn;
     });
 
-    this.isBusinessSubscription = this.authService.getUserType.subscribe((userType) =>
+    this.isUserTypeSubscription = this.authService.getUserType.subscribe((userType) =>
     {
       this.isBusiness = userType === 'business';
+      this.isCustomer = userType === 'customer';
     });
 
     this.isVerifiedSubscription = this.authService.getIsVerified.subscribe((isVerified) =>
     {
       this.isVerified = isVerified;
+    });
+
+    this.userDataSubscription = this.authService.getUserData.subscribe((userData) => {
+      if(userData == null)
+        this.username = null;
+      else
+        this.username = userData.name;
     });
   }
 
@@ -48,6 +60,8 @@ export class NavComponent implements OnInit {
 
   ngOnDestroy() {
     this.loggedInSubscription.unsubscribe();
+    this.isUserTypeSubscription.unsubscribe();
+    this.isVerifiedSubscription.unsubscribe();
+    this.userDataSubscription.unsubscribe();
   }
-
 }

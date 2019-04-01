@@ -14,8 +14,8 @@ export class ItemsPageComponent implements OnInit {
 
   constructor(private itemService: ItemsService) { }
 
-  ngOnInit() {
-    this.items = this.itemService.getInventory()
+  async ngOnInit() {
+    this.items = await this.itemService.getInventory();
   }
 
   deleteItem(item: Item)

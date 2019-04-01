@@ -9,7 +9,7 @@ import * as admin from 'firebase-admin';
 // });
 
 
-// const env = functions.config();
+const env = functions.config();
 
 // exports.helloWorld = functions.https.onRequest((req, res) => {
 //     admin.auth().createUser
@@ -43,31 +43,32 @@ exports.register = functions.https.onCall(async (data, context) => {
 //     })
 // });
 
-// import * as algoliasearch from 'algoliasearch';
+import * as algoliasearch from 'algoliasearch';
 
-// //Init algolia
-// const client = algoliasearch(env.algolia.appid, env.algolia.apikey);
-// const index = client.initIndex('item_NAME');
+//Init algolia
+const client = algoliasearch(env.algolia.appid, env.algolia.apikey);
+const index = client.initIndex('item_NAME');
 
-// exports.indexItem = functions.firestore
-//     .document('inventory_item/{itemID}')
-//     .onCreate((snapshot, context) => 
-//     {
-//         const data = snapshot.data();
-//         const objectID = snapshot.id;
+exports.indexItem = functions.firestore
+    .document('inventory_item/{itemID}')
+    .onCreate((snapshot, context) => 
+    {
+        const data = snapshot.data();
+        console.log(data);
+        const objectID = snapshot.id;
 
-//         //Add data to algolia index
-//         return index.addObject
-//         ({
-//             objectID,
-//             ...data
-//         })
-//     });
+        //Add data to algolia index
+        return index.addObject
+        ({
+            objectID,
+            ...data
+        })
+    });
 
-// exports.unindexItem = functions.firestore
-//     .document('inventory_item/{itemID}')
-//     .onDelete((snapshot, context) => 
-//     {
-//         const objectID = snapshot.id;
-//         return index.deleteObject(objectID);
-//     });
+exports.unindexItem = functions.firestore
+    .document('inventory_item/{itemID}')
+    .onDelete((snapshot, context) => 
+    {
+        const objectID = snapshot.id;
+        return index.deleteObject(objectID);
+    });
