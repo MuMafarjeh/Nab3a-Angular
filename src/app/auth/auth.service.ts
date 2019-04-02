@@ -43,7 +43,7 @@ export class AuthService{
     console.log("after register called, before sign in")
     await this.auth.auth.signInWithEmailAndPassword(user.email, password);
     console.log("before send email verification")
-    await this.sendEmailVerification();
+    // await this.sendEmailVerification();
     console.log("after send email verif")
     this.router.navigate(['/']);
   }
@@ -59,24 +59,24 @@ export class AuthService{
       await this.auth.auth.signInWithEmailAndPassword(email, password).then((result) => 
       {
         this.userService.getUser(result.user.uid).subscribe((result) => {
-          const doc = result.docs.pop();
-          const id = doc.id;
-          switch(doc.get("type"))
+          const doc = result.data();
+          const id = result.id;
+          switch(doc.type)
           {
             case 'business': 
-              this.userData = {id, ... doc.data()} as UserBusiness;
+              this.userData = {id, ... doc} as UserBusiness;
               localStorage.setItem('userData', JSON.stringify(this.userData));
               console.log(`Businss ${this.userData.name} logged in! \n`);
               break;
               
             case 'customer': 
-              this.userData = {id, ... doc.data()} as UserCustomer;
+              this.userData = {id, ... doc} as UserCustomer;
               localStorage.setItem('userData', JSON.stringify(this.userData));
               console.log(`Customer ${this.userData.name} logged in!`);
               break;
 
             case 'delivery': 
-              this.userData = {id, ... doc.data()};
+              this.userData = {id, ... doc};
               console.log(`Delivery-man ${this.userData.name} logged in!`);
               break;
           }

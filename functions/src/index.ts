@@ -19,12 +19,21 @@ const userCollection = '/user/';
 
 exports.register = functions.https.onCall(async (data, context) => {
 
+    console.log("context");
+    console.log(context)
+
+    if(!context)
+    {
+        console.log("unverified token");
+        return;
+    }
+    
     const authInfo = {
         email: data.email,
         phoneNumber: data.phoneNumber,
         password: data.password,
         displayName: data.name,
-        emailVerified: false
+        emailVerified: true
     };
 
     console.log("before createUser")

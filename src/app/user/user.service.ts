@@ -23,8 +23,8 @@ export class UserService {
   
   getUser(userID: string)
   {
-    return this.firestore.collection<User>("user", ref => ref.where('userID', '==', userID)).get();
-    // return this.firestore.doc<User>(`/user/${userID}`).get();
+    // return this.firestore.collection<User>("user", ref => ref.where('userID', '==', userID)).get();
+    return this.firestore.doc<User>(`/user/${userID}`).get();
   }
 
   createUser(user: User){
