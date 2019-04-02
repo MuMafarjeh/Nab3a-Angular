@@ -85,7 +85,7 @@ export class BusinessComponent implements OnInit {
     user.locationDescription = this.businessForm.controls['location'].value; 
     user.type = "business";
   
-    this.authService.register(user.email, this.businessForm.controls['password'].value);
-    // this.authService.register(user, this.businessForm.controls['password'].value);
+    // this.authService.register(user.email, this.businessForm.controls['password'].value);
+    this.authService.register(user, this.businessForm.controls['password'].value);
   }
 }

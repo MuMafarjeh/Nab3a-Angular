@@ -37,19 +37,22 @@ export class AuthService{
     });
   }
 
-  // public async register(user, password: string) {
-  //   user.password = password;
-  //   let emailLink = await this.httpService.registerUser(user);
-  //   await this.auth.auth.signInWithEmailAndPassword(user.email, password);
-  //   await this.sendEmailVerification();
-  //   this.router.navigate(['/']);
-  // }
-
-  public async register(email: string, password: string) {
-    var result = await this.auth.auth.createUserWithEmailAndPassword(email, password)
-    this.sendEmailVerification();
-    return result;
+  public async register(user, password: string) {
+    user.password = password;
+    let emailLink = await this.httpService.registerUser(user);
+    console.log("after register called, before sign in")
+    await this.auth.auth.signInWithEmailAndPassword(user.email, password);
+    console.log("before send email verification")
+    await this.sendEmailVerification();
+    console.log("after send email verif")
+    this.router.navigate(['/']);
   }
+
+  // public async register(email: string, password: string) {
+  //   var result = await this.auth.auth.createUserWithEmailAndPassword(email, password)
+  //   this.sendEmailVerification();
+  //   return result;
+  // }
 
   async login(email: string, password: string) {
     try{

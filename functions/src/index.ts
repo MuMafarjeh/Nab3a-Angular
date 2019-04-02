@@ -8,7 +8,7 @@ import * as admin from 'firebase-admin';
 //  response.send("Hello from Firebase!");
 // });
 
-
+admin.initializeApp();
 const env = functions.config();
 
 // exports.helloWorld = functions.https.onRequest((req, res) => {
@@ -18,6 +18,7 @@ const env = functions.config();
 const userCollection = '/user/';
 
 exports.register = functions.https.onCall(async (data, context) => {
+
     const authInfo = {
         email: data.email,
         phoneNumber: data.phoneNumber,
@@ -26,8 +27,10 @@ exports.register = functions.https.onCall(async (data, context) => {
         emailVerified: false
     };
 
+    console.log("before createUser")
     const userRecord = await admin.auth().createUser(authInfo);
 
+    console.log("before add doc")
     delete data.emailVerified;
     delete data.password;
     await admin.firestore().doc(userCollection + '' + userRecord.uid).create(data);
