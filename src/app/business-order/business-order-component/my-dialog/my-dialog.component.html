@@ -4,16 +4,16 @@
 <h1 matDialogTitle class="title">More details about order</h1>
 
 <mat-dialog-content>
-<div class="divs">
+<div class="divs" *ngFor="let items of item" >
     <!-- {{ product.currency }} -->
-  <div class="name rows" >The currency </div>
-  <div class="row" >nis </div>
-  <div class="name rows">The price </div>
-  <div class="row" >30nis </div>
-  <div class="name rows" >The quantity </div>
+  <div class="name rows" >{{item.currency}} </div>
+  <div class="row" >{{item.finalPrice}} </div>
+  <div class="name rows">{{item.name}}</div>
+  <div class="row" >{{item.quantity}} </div>
+  <!-- <div class="name rows" >The quantity </div>
   <div class="row" >10 </div>
   <div class="name rows">The  item </div>
-  <div class="row" >Galaxy </div>
+  <div class="row" >Galaxy </div> -->
 
 </div>
 
