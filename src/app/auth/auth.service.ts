@@ -59,8 +59,11 @@ export class AuthService{
       await this.auth.auth.signInWithEmailAndPassword(email, password).then((result) => 
       {
         this.userService.getUser(result.user.uid).subscribe((result) => {
-          const doc = result.data();
+          let doc = result.data();
           const id = result.id;
+          if(!doc || !doc.type)
+            doc = {type: ''};
+            
           switch(doc.type)
           {
             case 'business': 
@@ -69,15 +72,16 @@ export class AuthService{
               console.log(`Businss ${this.userData.name} logged in! \n`);
               break;
               
-            case 'customer': 
-              this.userData = {id, ... doc} as UserCustomer;
-              localStorage.setItem('userData', JSON.stringify(this.userData));
-              console.log(`Customer ${this.userData.name} logged in!`);
-              break;
-
             case 'delivery': 
               this.userData = {id, ... doc};
               console.log(`Delivery-man ${this.userData.name} logged in!`);
+              break;
+
+            case 'customer': 
+            default:
+              this.userData = {id, ... doc} as UserCustomer;
+              localStorage.setItem('userData', JSON.stringify(this.userData));
+              console.log(`Customer ${this.userData.name} logged in!`);
               break;
           }
           

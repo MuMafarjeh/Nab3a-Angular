@@ -1,6 +1,6 @@
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgModule } from '@angular/core';
-import {MatButtonModule, MatCheckboxModule} from '@angular/material';
+import {MatButtonModule, MatCheckboxModule, MatAutocompleteModule} from '@angular/material';
 import {MatCardModule} from '@angular/material/card';
 import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
@@ -41,12 +41,7 @@ import {MatDialogModule} from '@angular/material/dialog';
         MatNativeDateModule,
         MatSliderModule,
         MatDialogModule,
-
-
-
-
-
-
+        MatAutocompleteModule
     ],
     exports: [
         MatButtonModule,
@@ -70,10 +65,7 @@ import {MatDialogModule} from '@angular/material/dialog';
         MatNativeDateModule,
         MatSliderModule,
         MatDialogModule,
-
-
-
-
+        MatAutocompleteModule
     ]
 })
 export class MaterialModule{

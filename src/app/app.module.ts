@@ -8,9 +8,10 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore';
 import { AngularFireAuthModule, AngularFireAuth } from "@angular/fire/auth"
 import { AngularFireFunctionsModule } from '@angular/fire/functions'
+
 
 import { environment } from '../environments/environment';
 
@@ -36,6 +37,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { BusinessOrderComponent } from './business-order/business-order.component';
 import { BusinessOrderComponentComponent } from './business-order/business-order-component/business-order-component.component';
 import { MyDialogComponent } from './business-order/business-order-component/my-dialog/my-dialog.component';
+import { NgAisModule } from 'angular-instantsearch';
+
 
 @NgModule({
   entryComponents: [
@@ -75,14 +78,17 @@ import { MyDialogComponent } from './business-order/business-order-component/my-
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireAuthModule,
-    AngularFireFunctionsModule
+    AngularFireFunctionsModule,
+    NgAisModule.forRoot()
   ],
   providers: [
     AngularFireAuth,
     AngularFireFunctionsModule,
     UserService,
     { provide: MatBottomSheetRef, useValue: {} },
-    { provide: MAT_BOTTOM_SHEET_DATA, useValue: [] }],
+    { provide: MAT_BOTTOM_SHEET_DATA, useValue: [] },
+    { provide: FirestoreSettingsToken, useValue: {} }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

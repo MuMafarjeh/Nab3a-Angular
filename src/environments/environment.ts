@@ -12,6 +12,11 @@ export const environment = {
     projectId: "nab3a-com",
     storageBucket: "nab3a-com.appspot.com",
     messagingSenderId: "971682683190"
+  },
+
+  algolia: {
+    appId: '2F1XIQFXH1',
+    apiKey: '5c15a1e7fb5c0172d05af1f23fae6686' //search-only
   }
 };
 

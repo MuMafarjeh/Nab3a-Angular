@@ -1,6 +1,10 @@
+import { SearchService } from './../search/search.service';
 import { AuthService } from './../auth/auth.service';
-import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Subscription, Subject } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { MatAutocomplete } from '@angular/material/autocomplete';
+import { MatMenuTrigger } from '@angular/material';
 
 @Component({
   selector: 'app-nav',
@@ -24,7 +28,9 @@ export class NavComponent implements OnInit {
   isVerified: boolean;
   isVerifiedSubscription: Subscription;
 
-  constructor(private authService: AuthService) 
+  public doneLoading = new Subject<boolean>();
+
+  constructor(private authService: AuthService, private searchService: SearchService) 
   { 
     this.loggedInSubscription = this.authService.getLoggedIn.subscribe((loggedIn) => 
     {
@@ -63,5 +69,33 @@ export class NavComponent implements OnInit {
     this.isUserTypeSubscription.unsubscribe();
     this.isVerifiedSubscription.unsubscribe();
     this.userDataSubscription.unsubscribe();
+  }
+
+  get searchConfig()
+  {
+    return this.searchService.allSearchConfig;
+  }
+
+  showResults = false;
+
+  searchChanged(query)
+  {
+    if(SearchService.cannotSearch(query))  
+    {
+      this.showResults = true;
+    }
+    
+    if(query.length == 0)
+    {
+      this.showResults = false;
+    }
+  }
+
+  searchSubmit(query)
+  {
+    if(SearchService.cannotSearch(query))  
+    {
+      this.showResults = true;
+    }
   }
 }
