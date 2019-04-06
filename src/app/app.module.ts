@@ -32,6 +32,8 @@ import { ItemDeleteSnackbarComponent } from './item/item-delete-snackbar/item-de
 import { LoginComponent } from './registration/login/login.component';
 import { LoginEmailComponent } from './registration/login/login-email/login-email.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { BusinessNotificationsComponent } from './business-notifications/business-notifications.component';
+import { HomePageCustomerComponent } from './home-page-customer/home-page-customer.component';
 
 @NgModule({
   entryComponents: [
@@ -53,6 +55,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     LoginComponent,
     LoginEmailComponent,
     PageNotFoundComponent,
+    BusinessNotificationsComponent,
+    HomePageCustomerComponent,
   ],
   imports: [
     FormsModule,

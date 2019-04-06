@@ -15,6 +15,7 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
     imports: [
@@ -35,7 +36,8 @@ import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
         MatDatepickerModule,
         MatRadioModule,
         MatBottomSheetModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatExpansionModule
     ],
     exports: [
         MatButtonModule, 
@@ -55,7 +57,8 @@ import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
         MatDatepickerModule,
         MatRadioModule,
         MatBottomSheetModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatExpansionModule
     ]
 })
 export class MaterialModule{

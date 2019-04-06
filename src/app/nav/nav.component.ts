@@ -17,29 +17,26 @@ export class NavComponent implements OnInit {
   isBusiness: boolean;
   isBusinessSubscription: Subscription;
 
-  constructor(private authService: AuthService) 
-  { 
-    this.loggedInSubscription = this.authService.getLoggedIn.subscribe((loggedIn) => 
-    {
+  constructor(private authService: AuthService) {
+    this.loggedInSubscription = this.authService.getLoggedIn.subscribe((loggedIn) => {
       this.canLogout = loggedIn;
     });
 
-    this.isBusinessSubscription = this.authService.getUserType.subscribe((userType) =>
-    {
-      this.isBusiness = userType === 'business';
+    this.isBusinessSubscription = this.authService.getUserType.subscribe((userType) => {
+      this.isBusiness = (userType === 'business');
     });
   }
 
   ngOnInit() {
   }
 
-  logout()
-  {
+  logout() {
     this.authService.logout();
   }
 
   ngOnDestroy() {
     this.loggedInSubscription.unsubscribe();
+    this.isBusinessSubscription.unsubscribe();
   }
 
 }

@@ -5,22 +5,28 @@ import { LoginComponent } from './registration/login/login.component';
 import { BusinessAddProductComponent } from './business-add-product/business-add-product.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {HomeComponent} from './home/home.component';
-import {AboutComponent} from './about/about.component';
-import {ContactComponent} from './contact/contact.component';
+import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
+import { ContactComponent } from './contact/contact.component';
 import { ItemsPageComponent } from './items-page/items-page.component';
 import { RegistrationComponent } from './registration/registration.component';
+import { BusinessNotificationsComponent } from './business-notifications/business-notifications.component';
+import { HomePageCustomerComponent } from './home-page-customer/home-page-customer.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'about', component: AboutComponent },
-  { path: 'contact', component: ContactComponent},
-  { 
+  { path: 'contact', component: ContactComponent },
+  {
     path: 'items', component: ItemsPageComponent,
     canActivate: [BusinessGuard]
   },
-  { path: 'registration', component: RegistrationComponent },
   { 
+    path: 'business-notifications', component: BusinessNotificationsComponent, 
+    canActivate: [BusinessGuard]
+  },
+  { path: 'registration', component: RegistrationComponent },
+  {
     path: 'business-add-product', component: BusinessAddProductComponent,
     canActivate: [BusinessGuard]
   },
@@ -28,6 +34,10 @@ const routes: Routes = [
   { path: 'login-email', component: LoginEmailComponent },
 
   { path: 'page-not-found', component: PageNotFoundComponent },
+  {
+    path: 'home-page-customer', component: HomePageCustomerComponent,
+    
+  },
 ];
 
 @NgModule({

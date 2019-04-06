@@ -12,12 +12,12 @@ import { Router } from '@angular/router';
 })
 export class AuthService{
   user: User;
-  userData: any;
+  public userData: any;
   userLocalStorage: string;
 
   public getLoggedIn = new Subject<boolean>();
   public getUserType = new Subject<string>();
-
+  
   constructor(private auth: AngularFireAuth, private router: Router, 
     private userService: UserService) 
   { 
@@ -35,7 +35,7 @@ export class AuthService{
   }
 
   public async register(email: string, password: string) {
-    var result = await this.auth.auth.createUserWithEmailAndPassword(email, password)
+    var result = await this.auth.auth.createUserWithEmailAndPassword(email, password);
     this.sendEmailVerification();
     return result;
   }
@@ -52,7 +52,7 @@ export class AuthService{
             case 'business': 
               this.userData = {id, ... doc.data()} as UserBusiness;
               localStorage.setItem('userData', JSON.stringify(this.userData));
-              console.log(`Businss ${this.userData.name} logged in! \n`);
+              console.log(`Businss ${this.userData.id} logged in! \n`);
               break;
               
             case 'customer': 

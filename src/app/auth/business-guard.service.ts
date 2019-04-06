@@ -21,6 +21,6 @@ export class BusinessGuard implements CanActivate{
     if(userType == 'business')
       return true;
     else
-      this.router.navigate(['page-not-found']);
+      this.router.navigate(['page-not-found']); 
   }
 }

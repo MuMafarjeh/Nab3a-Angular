@@ -1,0 +1,22 @@
+<h1>Notification</h1>
+<mat-accordion class="example-headers-align">
+  <mat-expansion-panel *ngFor="let notif of notifications" [expanded]="step === 0">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ notif.fromName }}
+      </mat-panel-title>
+      <mat-panel-description>
+        {{ notif.textContent }}
+      </mat-panel-description>
+      
+    </mat-expansion-panel-header>
+
+    <mat-form-field>
+      <input matInput placeholder="First name">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput type="number" min="1" placeholder="Age">
+    </mat-form-field>
+
+  </mat-expansion-panel>

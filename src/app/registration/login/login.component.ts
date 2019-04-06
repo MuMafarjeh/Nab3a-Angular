@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
 
   loginWithEmail()
   {
-    this.authService.login("protoskullry@gmail.com", 'kaf12345');
+    this.authService.login("protoskullry@gmail.com", 'rami123456');
   }
 
   ngOnInit() {
