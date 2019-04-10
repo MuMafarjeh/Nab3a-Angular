@@ -1,21 +1,8 @@
-.login-container
-{
-    margin: 0 auto;
-    display: grid;
-    width: 50%;
-    grid-template-columns: auto;
-    grid-gap: 20px;
-    justify-items: center;
-    align-items: center;
 
-    a
-    {
-        text-align: center;
-    }
 
-    img
-    {
-        width: 100px;
-        height: 100px;
+
+@media (max-width: 600px) {
+    #email {
+        background: #ECECEC;
     }
 }

@@ -1,0 +1,28 @@
+<div class="business-oeder" cols="1">
+
+
+      <div class="names">The name</div>
+      <div class="name rows"> {{ order.name | uppercase }}</div>
+      <div class="names">The price</div>
+      <div class="rows"> {{ order.price | currency:'ILS':'symbol':'1.1-1' }}</div>
+      <div class="names">Date of order</div>
+      <div class="rows" *ngIf="order"> {{ order.timeGenerated.toDate() | date: 'dd/MM/yyyy ' }} </div>
+      <div class="names">Time of order</div>
+      <div class="rows" *ngIf="order"> {{ order.timeGenerated.toDate() |date: ' h:mm:ss a' }} </div>
+      <div class="names">Date of recieving</div>
+      <div class="category rows" *ngIf="order">{{ order.timeReceiving.toDate()| date: 'dd/MM/yyyy ' }}
+
+        <button mat-raised-button  class="btn" matTooltip="More information about the order "
+        aria-label="Button that displays a tooltip in various positions"  (click)="openDialog()">Read more details >></button>
+      </div>
+      <div class="names">Time of recieving</div>
+      <div class="rows" *ngIf="order"> {{ order.timeReceiving.toDate() |date: ' h:mm:ss a' }} </div>
+
+
+
+</div>
+
+
+
+
+

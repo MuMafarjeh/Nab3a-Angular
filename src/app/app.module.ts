@@ -8,8 +8,10 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore';
 import { AngularFireAuthModule, AngularFireAuth } from "@angular/fire/auth"
+import { AngularFireFunctionsModule } from '@angular/fire/functions'
+
 
 import { environment } from '../environments/environment';
 
@@ -32,12 +34,16 @@ import { ItemDeleteSnackbarComponent } from './item/item-delete-snackbar/item-de
 import { LoginComponent } from './registration/login/login.component';
 import { LoginEmailComponent } from './registration/login/login-email/login-email.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { BusinessNotificationsComponent } from './business-notifications/business-notifications.component';
-import { HomePageCustomerComponent } from './home-page-customer/home-page-customer.component';
+import { BusinessOrderComponent } from './business-order/business-order.component';
+import { BusinessOrderComponentComponent } from './business-order/business-order-component/business-order-component.component';
+import { MyDialogComponent } from './business-order/business-order-component/my-dialog/my-dialog.component';
+import { NgAisModule } from 'angular-instantsearch';
+
 
 @NgModule({
   entryComponents: [
-    ItemDeleteSnackbarComponent
+    ItemDeleteSnackbarComponent,
+    MyDialogComponent,
   ],
   declarations: [
     AppComponent,
@@ -55,8 +61,10 @@ import { HomePageCustomerComponent } from './home-page-customer/home-page-custom
     LoginComponent,
     LoginEmailComponent,
     PageNotFoundComponent,
-    BusinessNotificationsComponent,
-    HomePageCustomerComponent,
+    BusinessOrderComponent,
+    BusinessOrderComponentComponent,
+    MyDialogComponent,
+
   ],
   imports: [
     FormsModule,
@@ -69,13 +77,18 @@ import { HomePageCustomerComponent } from './home-page-customer/home-page-custom
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireStorageModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    AngularFireFunctionsModule,
+    NgAisModule.forRoot()
   ],
   providers: [
     AngularFireAuth,
+    AngularFireFunctionsModule,
     UserService,
     { provide: MatBottomSheetRef, useValue: {} },
-    { provide: MAT_BOTTOM_SHEET_DATA, useValue: [] }],
+    { provide: MAT_BOTTOM_SHEET_DATA, useValue: [] },
+    { provide: FirestoreSettingsToken, useValue: {} }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

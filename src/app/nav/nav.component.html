@@ -1,37 +1,43 @@
 <header>
-  <div class="container">
+  <div class="nav-container">
     <a routerLink="/">{{ appTitle }}</a>
 
-    <nav>
+    <nav class="buttons">
       <ul>
-        <li>
-          <a routerLink="/">Home</a>
-        </li>
-        <li>
-          <a routerLink="/items" *ngIf="isBusiness">Products</a>
-        </li>
-        <li>
-          <a routerLink="/business-add-product" *ngIf="isBusiness">add Products</a>
-        </li>
+        <li><a routerLink="/items" *ngIf="isBusiness && isVerified">My Store</a></li>
+        <li><a routerLink="/business-order" *ngIf="isBusiness">Orders</a></li>
+        <li><a routerLink="/browse-items" *ngIf="!isBusiness">Browse Products</a></li>
+        <!-- <li><a routerLink="/about">About</a></li> -->
+        <li><a routerLink="/contact">Contact us</a></li>
+        <li><a routerLink="/login" *ngIf="!canLogout"> Login </a></li>
         <li>
           <a routerLink="/business-notifications" *ngIf="isBusiness">Notifications</a>
         </li>
-        <li>
-          <a routerLink="/about">About</a>
-        </li>
-        <li>
-          <a routerLink="/contact">Contact us</a>
-        </li>
-        <li>
-          <a routerLink="/login" *ngIf="!canLogout"> Login </a>
-        </li>
-        <li>
-          <a routerLink="/" (click)="logout()" *ngIf="canLogout"> Logout </a>
-        </li>
-        
-
-        <!-- <li><a routerLink="/business-add-product">Business Add Product</a></li> -->
       </ul>
     </nav>
+
+    <nav class="user">
+      <ul>
+        <li *ngIf="username" ><div id="username">{{username}}</div></li>
+        <li><a routerLink="/" (click)="logout()" *ngIf="canLogout" > Logout </a></li>
+      </ul>
+    </nav>
+
+    <ais-instantsearch class="searchBar" [config]="searchConfig">
+      <ais-search-box placeholder='Search for anything...' [searchAsYouType]="false" 
+        [autofocus]="true" (click)="searchSubmit()"></ais-search-box>
+        <!-- (change)="searchChanged($event)"  -->
+
+      <!-- <ais-configure [searchParameters]="searchParams"></ais-configure> -->
+      
+      <ais-hits *ngIf="showResults" class="dropdown-content">
+        <ng-template let-hits="hits" class="dropdown-content">
+          <div *ngFor="let hit of hits" class="dropdown-content">
+            <div *ngIf="hits" class="search-result"> {{hit.name}} </div>
+            
+          </div>
+        </ng-template>
+      </ais-hits>
+    </ais-instantsearch>
   </div>
 </header>

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -10,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class AppComponent {
   title = 'Nab3a';
-  
+
 }
 
 

@@ -1,5 +1,5 @@
 import { AuthService } from './../../auth/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostBinding } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -13,26 +13,10 @@ export class LoginComponent implements OnInit {
 
   constructor(private authService: AuthService, private router: Router) 
   { 
-    // if(authService.isLoggedIn)
-    // {
-    //   this.authService.logout().then(function()
-    //   {
-    //     console.log("logged out")
-    //   });
-    //   this.router.navigateByUrl('/');
-    // }
-  }
-
-  loginWithEmail()
-  {
-    this.authService.login("protoskullry@gmail.com", 'rami123456');
-  }
+    
+  } 
 
   ngOnInit() {
-    // LOGIN
-    
-
-    // LOGOUT
     
   }
 

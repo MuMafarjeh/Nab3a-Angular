@@ -1,3 +1,4 @@
+import { BusinessOrderComponent } from './business-order/business-order.component';
 import { BusinessGuard } from './auth/business-guard.service';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { LoginEmailComponent } from './registration/login/login-email/login-email.component';
@@ -16,15 +17,21 @@ import { HomePageCustomerComponent } from './home-page-customer/home-page-custom
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'about', component: AboutComponent },
+//<<<<<<< HEAD
   { path: 'contact', component: ContactComponent },
+//=======
+  { path: 'contact', component: ContactComponent},
+//>>>>>>> b1adc5933ec3bab06bcac581e7f9aee59a5c4793
   {
     path: 'items', component: ItemsPageComponent,
     canActivate: [BusinessGuard]
   },
+ 
   { 
     path: 'business-notifications', component: BusinessNotificationsComponent, 
     canActivate: [BusinessGuard]
   },
+
   { path: 'registration', component: RegistrationComponent },
   {
     path: 'business-add-product', component: BusinessAddProductComponent,
@@ -32,12 +39,15 @@ const routes: Routes = [
   },
   { path: 'login', component: LoginComponent },
   { path: 'login-email', component: LoginEmailComponent },
-
   { path: 'page-not-found', component: PageNotFoundComponent },
+ //HEAD
   {
     path: 'home-page-customer', component: HomePageCustomerComponent,
     
   },
+
+  { path: 'business-order', component: BusinessOrderComponent },
+ //b1adc5933ec3bab06bcac581e7f9aee59a5c4793
 ];
 
 @NgModule({

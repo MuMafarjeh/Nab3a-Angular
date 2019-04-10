@@ -1,6 +1,6 @@
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgModule } from '@angular/core';
-import {MatButtonModule, MatCheckboxModule} from '@angular/material';
+import {MatButtonModule, MatCheckboxModule, MatAutocompleteModule} from '@angular/material';
 import {MatCardModule} from '@angular/material/card';
 import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
@@ -12,17 +12,18 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
-import {MatExpansionModule} from '@angular/material/expansion';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule, MatSliderModule, DateAdapter} from '@angular/material';
+import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
     imports: [
-        MatButtonModule, 
-        MatCheckboxModule, 
-        MatCardModule, 
-        MatInputModule, 
+        MatButtonModule,
+        MatCheckboxModule,
+        MatCardModule,
+        MatInputModule,
         MatIconModule,
         MatGridListModule,
         MatTabsModule,
@@ -37,13 +38,16 @@ import {MatExpansionModule} from '@angular/material/expansion';
         MatRadioModule,
         MatBottomSheetModule,
         MatSnackBarModule,
-        MatExpansionModule
+        MatNativeDateModule,
+        MatSliderModule,
+        MatDialogModule,
+        MatAutocompleteModule
     ],
     exports: [
-        MatButtonModule, 
-        MatCheckboxModule, 
+        MatButtonModule,
+        MatCheckboxModule,
         MatCardModule,
-        MatInputModule, 
+        MatInputModule,
         MatIconModule,
         MatGridListModule,
         MatTabsModule,
@@ -58,7 +62,10 @@ import {MatExpansionModule} from '@angular/material/expansion';
         MatRadioModule,
         MatBottomSheetModule,
         MatSnackBarModule,
-        MatExpansionModule
+        MatNativeDateModule,
+        MatSliderModule,
+        MatDialogModule,
+        MatAutocompleteModule
     ]
 })
 export class MaterialModule{

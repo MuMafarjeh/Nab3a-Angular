@@ -1,0 +1,26 @@
+<p class="title">
+  Orders page
+
+</p>
+
+<mat-form-field class="example-full-width">
+  <input matInput [matDatepicker]="picker" placeholder="Choose Start Period">
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker touchUi #picker></mat-datepicker>
+</mat-form-field>
+
+
+<mat-form-field class="example-full-width">
+  <input matInput [matDatepicker]="pickerTo" placeholder="Choose End Period">
+  <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+  <mat-datepicker touchUi #pickerTo></mat-datepicker>
+</mat-form-field>
+
+<div class="grid" cols="1">
+    <div class="tile" *ngFor="let order of orders">
+        <app-business-order-component [order] ="order"> </app-business-order-component>
+      </div>
+
+      <!-- (deleteEvent)="deleteItem($event)" -->
+</div>
+

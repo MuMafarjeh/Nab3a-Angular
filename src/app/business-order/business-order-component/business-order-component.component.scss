@@ -1,0 +1,55 @@
+.business-oeder{
+  // position: absolute;
+
+
+  background: rgb(63, 105, 221);;
+  height: initial;
+  border-radius: 10px;
+
+}
+.btn{
+
+    display: inline;
+    //background: pink;
+
+    width:145px;
+    border-radius: 11px;
+    background-color: #76c38f;
+    font-size: 13px;
+    line-height: 16px;
+    color: rgb(255,255,255);
+    font-family: "Georgia";
+    border: none;
+    height: 35px;
+    margin-left: 330px;
+    float: right;
+    margin-top: 50px;
+
+
+}
+// .business-oeder :hover{
+
+
+//   background: rgb(81, 186, 228);
+// //  color: rgb(52, 149, 187);
+
+// }
+.names{
+ padding-left: 10px;
+ font-style: oblique;
+
+}
+.rows{
+  padding: 10px 10px 10px 10px;
+  border-bottom: 0.5px dotted   white;
+  border-radius: 10px;
+  font-weight: bold;
+//  font-family: "sans-serif";
+  font-style: italic;
+  line-height: 12px;
+  color: black;
+  font-size: 20px;
+
+}
+
+

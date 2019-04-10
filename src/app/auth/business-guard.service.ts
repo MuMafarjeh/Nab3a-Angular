@@ -11,16 +11,23 @@ export class BusinessGuard implements CanActivate{
 
   }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean
+  loginPage = 'login';
+
+  async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean>
   {
+    const isVerified = this.authService.isVerified;
+    console.log(isVerified)
+    if(!isVerified)
+      this.router.navigate([this.loginPage]);
+
     const userType = this.authService.userType;
 
     if(userType === null)
-      this.router.navigate(['page-not-found']);
+      this.router.navigate([this.loginPage]);
 
     if(userType == 'business')
       return true;
     else
-      this.router.navigate(['page-not-found']); 
+      this.router.navigate([this.loginPage]);
   }
 }
