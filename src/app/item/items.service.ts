@@ -10,7 +10,7 @@ import { Item } from './item';
 })
 export class ItemsService {
 
-  constructor(private firestore: AngularFirestore, private authService: AuthService, 
+  constructor(private firestore: AngularFirestore, private authService: AuthService,
     private businessGuard: BusinessGuard) { }
 
   public getInventoryLive() {
@@ -23,13 +23,11 @@ export class ItemsService {
     );
   }
 
-  public async getInventory(): Promise<Item[]>
-  {
-    if(this.businessGuard.canActivate)
-    var items = [];
-    this.firestore.collection("inventory_item").ref.where('businessID', '==', await this.authService.getUserID()).get().then(function(querySnapshot)
-    {
-      querySnapshot.forEach(function(doc) {
+  public async getInventory(): Promise<Item[]> {
+    if (this.businessGuard.canActivate)
+      var items = [];
+    this.firestore.collection("inventory_item").ref.where('businessID', '==', await this.authService.getUserID()).get().then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
         let item = doc.data() as Item;
         item.id = doc.id;
         items.push(item);
@@ -53,8 +51,7 @@ export class ItemsService {
     return value.id;
   }
 
-  public addItem(item: Item)
-  {
+  public addItem(item: Item) {
     return this.firestore.doc("inventory_item/" + item.id).set(item);
   }
 
@@ -65,4 +62,17 @@ export class ItemsService {
   public deleteItem(item: Item) {
     return this.firestore.doc("inventory_item/" + item.id).delete();
   }
+  public async getProductsByCategory(categoryName) {
+    var items = [];
+    await this.firestore.collection("inventory_item").ref.where("category", "==", categoryName).get().then(
+      function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          let item = doc.data() as Item;
+          item.id = doc.id;
+          items.push(item);
+        });
+      });
+    return items;
+  }
+
 }

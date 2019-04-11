@@ -10,17 +10,14 @@ export class CategoryService {
 
   constructor(private firestore: AngularFirestore,private auth: AuthService) { }
 
-  public getMyCategory(): category[] {
+  public async getMyCategory(): Promise<category[]>{
     var category = [];
-    this.firestore.collection("category").get().toPromise().then(
+    await this.firestore.collection("category").get().toPromise().then(
       function (querySnapshot) {
-        console.log(querySnapshot);
         querySnapshot.forEach(function (doc) {
           let cate = doc.data() as category;
           cate.id = doc.id;
-
           category.push(cate);
-          console.log(doc.data());
       });
     });
 

@@ -17,7 +17,8 @@ import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule, MatSliderModule, DateAdapter} from '@angular/material';
 import {MatDialogModule} from '@angular/material/dialog';
-
+import {MatListModule} from '@angular/material/list';
+import {MatDividerModule} from '@angular/material/divider';
 @NgModule({
     imports: [
         MatButtonModule,
@@ -42,7 +43,9 @@ import {MatDialogModule} from '@angular/material/dialog';
         MatSliderModule,
         MatDialogModule,
         MatAutocompleteModule,
-        MatExpansionModule
+        MatExpansionModule,
+        MatListModule,
+        MatDividerModule
     ],
     exports: [
         MatButtonModule,
@@ -67,7 +70,9 @@ import {MatDialogModule} from '@angular/material/dialog';
         MatSliderModule,
         MatDialogModule,
         MatAutocompleteModule,
-        MatExpansionModule
+        MatExpansionModule,
+        MatListModule,
+        MatDividerModule
     ]
 })
 export class MaterialModule{
