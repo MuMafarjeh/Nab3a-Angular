@@ -1,0 +1,14 @@
+.search-result {
+    text-align: center;
+    color: white;
+    background-color:#7700FF; 
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    display: block;
+  }
+  .search-result:hover {
+    background-color: #ddd;
+    cursor: pointer;
+    color: black;
+  }

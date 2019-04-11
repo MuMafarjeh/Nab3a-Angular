@@ -38,7 +38,11 @@ import { BusinessOrderComponent } from './business-order/business-order.componen
 import { BusinessOrderComponentComponent } from './business-order/business-order-component/business-order-component.component';
 import { MyDialogComponent } from './business-order/business-order-component/my-dialog/my-dialog.component';
 import { NgAisModule } from 'angular-instantsearch';
-
+import { BusinessNotificationsComponent } from './business-notifications/business-notifications.component'
+import { HomePageCustomerComponent } from './home-page-customer/home-page-customer.component';
+import { CustomerBrowseItemsComponent } from './customer-browse-items/customer-browse-items.component';
+import { CustomerNotificationPageComponent } from './customer-notification-page/customer-notification-page.component';
+import { CustomerCartPageComponent } from './customer-cart-page/customer-cart-page.component';
 
 @NgModule({
   entryComponents: [
@@ -64,7 +68,11 @@ import { NgAisModule } from 'angular-instantsearch';
     BusinessOrderComponent,
     BusinessOrderComponentComponent,
     MyDialogComponent,
-
+    BusinessNotificationsComponent,
+    HomePageCustomerComponent,
+    CustomerBrowseItemsComponent,
+    CustomerNotificationPageComponent,
+    CustomerCartPageComponent
   ],
   imports: [
     FormsModule,

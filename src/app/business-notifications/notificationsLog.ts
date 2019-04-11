@@ -5,5 +5,4 @@ export interface notificationsLog {
     textContent: string;
     fromName: string;
     tonName: string;
-
 }
