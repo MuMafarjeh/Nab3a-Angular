@@ -1,55 +1,43 @@
 header {
-
+  position:absolute;
+  width: 100%;
+  z-index: 100 !important;
   background: #7700FF;
-
-  // .dropdown .dropbtn {
-  //   font-size: 16px;  
-  //   border: none;
-  //   outline: none;
-  //   color: white;
-  //   padding: 14px 16px;
-  //   background-color: inherit;
-  //   font-family: inherit;
-  //   margin: 0;
-  // }
   
-  // .dropdown-content {
-  //   display: none;
-  //   position: absolute;
-  //   background-color: #f9f9f9;
-  //   min-width: 160px;
-  //   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  //   z-index: 1;
+  .overflowVisible
+  {
+    overflow: visible;
+  }
 
-   
-  // }
+  .grid
+  {
+    min-height: 0; 
+    max-height: inherit;
+    overflow: visible;
+  }
+
+  .dropdown{
+    max-height: 0px;
+  }
   
-  // .dropdown:hover .dropdown-content {
-  //   display: block;
-  // }
-
-  .search-result {
+  .dropdown-content {
+  
     float: none;
     color: black;
-    padding: 12px 16px;
-    text-decoration: none;
     display: block;
     text-align: left;
+
   }
 
-  .search-result:hover {
-    background-color: #ddd;
-  }
-
-  .dropdown-content
-  {
-    overflow: hidden;
-  }
+  // .dropdown-content:hover{   
+  //   background-color: #ddd;
+  // }
 
   #username
   {
     font-style: italic;
     margin-right: 0.5em;
+    color: white;
   }
 
   .logo {

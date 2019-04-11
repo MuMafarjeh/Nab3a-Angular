@@ -117,6 +117,12 @@ $height-1col-hover: 300px;
     background-color: $color-hover;
     box-shadow: 20px 20px 40px 0px rgba(0,0,0,0.5);
 
+    @media screen and (min-width: $break-large) {
+        height: $height-2col-hover;
+    }
+    @media screen and (max-width: $break-large) {
+        height: $height-1col-hover;
+    }
 }
 
 .mat-form-field-wrapper

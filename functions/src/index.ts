@@ -125,7 +125,7 @@ const usersCollectionRef = admin.firestore().collection("user");
 
 function inventoryItemObject(data: any): any
 {
-    
+    return data; 
 }
 
 /////////////////////
@@ -137,6 +137,8 @@ exports.ALL_INDEX_addInventoryItem = functions.firestore
     {
         const data = inventoryItemObject(snapshot.data());
         const objectID = snapshot.id;
+    
+        
 
         //Add data to algolia index
         return all_index.addObject

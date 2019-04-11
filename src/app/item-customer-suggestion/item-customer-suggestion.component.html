@@ -1,0 +1,23 @@
+<div class="item-card" (click)="onClick()">
+
+    <!-- <div class="actions" align="right">
+      <button mat-mini-fab>
+        <mat-icon svgIcon="edit-icon"></mat-icon>
+      </button>  
+
+    </div> -->
+  
+    <div class="text-content" >
+      <div class="data" *ngIf="!isEdit">
+        <div class="name rows">{{ item.name }}</div>
+        <div class="category rows">{{ item.category | uppercase }}</div>
+        <div class="rows">{{ item.price | currency:'ILS':'symbol':'1.1-1' }}</div>
+      </div>
+  
+    </div>
+  
+    <div *ngIf="item.image"  class="image">
+      <img [src]="item.image" >
+    </div>
+  
+  </div>

@@ -1,37 +1,42 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Output, EventEmitter } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
 
-  constructor() { }
+  constructor() { 
+    this.getIsVerified = new Subject<boolean>();
+  }
 
   private INVENTORY_ITEMS_INDEX = 'INVENTORY_ITEMS_INDEX'
   private STORES_INDEX = 'STORES_INDEX'
   private ALL_INDEX = 'ALL_INDEX'
 
+  public getIsVerified;
+  public static queryEmitter = new Subject<string>();
+
   public get allSearchConfig(): any
   {
     return {
       ...environment.algolia,
-      // indexNames: [this.INVENTORY_ITEMS_INDEX, this.STORES_INDEX],
       indexName: this.ALL_INDEX,
       searchFunction(helper) {
-        console.log(helper)
         const query = helper.state.query;
-        if(SearchService.cannotSearch(query))
+        if(!SearchService.canSearch(query))
+        {
           return;
-
-        console.log(query);
+        }
         helper.search();
       }
     }
   }
 
-  public static cannotSearch(query: string): boolean
+  public static canSearch(query: string): boolean
   {
-    return !query || query == "" || query.length <= 2;
+    const can = (query && typeof query == 'string' && query !== "" && query.length > 2);
+    return can;
   }
 }

@@ -71,4 +71,13 @@ export class ItemsService {
   {
     return this.firestore.doc("inventory_item/" + item.id).delete();
   }
+
+  public async getInventoryItem(itemID: String): Promise<Item>
+  {
+    const doc = await this.firestore.doc("inventory_item/" + itemID).get().toPromise()
+    const item = doc.data() as Item;
+    item.id = doc.id;
+
+    return item;
+  }
 }

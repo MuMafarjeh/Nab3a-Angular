@@ -38,7 +38,10 @@ import { BusinessOrderComponent } from './business-order/business-order.componen
 import { BusinessOrderComponentComponent } from './business-order/business-order-component/business-order-component.component';
 import { MyDialogComponent } from './business-order/business-order-component/my-dialog/my-dialog.component';
 import { NgAisModule } from 'angular-instantsearch';
-
+import { ItemCustomerSuggestionComponent } from './item-customer-suggestion/item-customer-suggestion.component';
+import {NgxPageClickModule} from 'ngx-page-click';
+import { ItemCustomerPageComponent } from './item-customer-page/item-customer-page.component'
+import { AuthService } from './auth/auth.service';
 
 @NgModule({
   entryComponents: [
@@ -64,6 +67,8 @@ import { NgAisModule } from 'angular-instantsearch';
     BusinessOrderComponent,
     BusinessOrderComponentComponent,
     MyDialogComponent,
+    ItemCustomerSuggestionComponent,
+    ItemCustomerPageComponent,
 
   ],
   imports: [
@@ -79,11 +84,13 @@ import { NgAisModule } from 'angular-instantsearch';
     AngularFireStorageModule,
     AngularFireAuthModule,
     AngularFireFunctionsModule,
-    NgAisModule.forRoot()
+    NgAisModule.forRoot(),
+    NgxPageClickModule
   ],
   providers: [
     AngularFireAuth,
     AngularFireFunctionsModule,
+    AuthService,
     UserService,
     { provide: MatBottomSheetRef, useValue: {} },
     { provide: MAT_BOTTOM_SHEET_DATA, useValue: [] },

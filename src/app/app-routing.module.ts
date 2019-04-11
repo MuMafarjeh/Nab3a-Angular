@@ -11,6 +11,7 @@ import {AboutComponent} from './about/about.component';
 import {ContactComponent} from './contact/contact.component';
 import { ItemsPageComponent } from './items-page/items-page.component';
 import { RegistrationComponent } from './registration/registration.component';
+import { ItemCustomerPageComponent } from './item-customer-page/item-customer-page.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -29,6 +30,8 @@ const routes: Routes = [
   { path: 'login-email', component: LoginEmailComponent },
   { path: 'page-not-found', component: PageNotFoundComponent },
   { path: 'business-order', component: BusinessOrderComponent },
+
+  { path: 'item/:id', component: ItemCustomerPageComponent }
 ];
 
 @NgModule({

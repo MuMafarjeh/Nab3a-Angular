@@ -1,15 +1,15 @@
 import { SearchService } from './../search/search.service';
 import { AuthService } from './../auth/auth.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Renderer2, ElementRef, HostListener, ChangeDetectionStrategy } from '@angular/core';
 import { Subscription, Subject } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { MatAutocomplete } from '@angular/material/autocomplete';
-import { MatMenuTrigger } from '@angular/material';
 
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.scss']
+  styleUrls: ['./nav.component.scss'],
+  host: {
+    '(document:keydown.escape)': 'onEsc($event)',
+  },
 })
 export class NavComponent implements OnInit {
 
@@ -29,7 +29,7 @@ export class NavComponent implements OnInit {
   isVerifiedSubscription: Subscription;
 
   public doneLoading = new Subject<boolean>();
-
+ 
   constructor(private authService: AuthService, private searchService: SearchService) 
   { 
     this.loggedInSubscription = this.authService.getLoggedIn.subscribe((loggedIn) => 
@@ -54,6 +54,8 @@ export class NavComponent implements OnInit {
       else
         this.username = userData.name;
     });
+
+    this.outsideClickHandler = this.outsideClickHandler.bind(this);
   }
 
   ngOnInit() {
@@ -71,6 +73,7 @@ export class NavComponent implements OnInit {
     this.userDataSubscription.unsubscribe();
   }
 
+
   get searchConfig()
   {
     return this.searchService.allSearchConfig;
@@ -78,24 +81,31 @@ export class NavComponent implements OnInit {
 
   showResults = false;
 
-  searchChanged(query)
-  {
-    if(SearchService.cannotSearch(query))  
-    {
-      this.showResults = true;
-    }
-    
-    if(query.length == 0)
-    {
-      this.showResults = false;
-    }
-  }
+  query: string;
+
 
   searchSubmit(query)
   {
-    if(SearchService.cannotSearch(query))  
-    {
-      this.showResults = true;
-    }
+    this.showResults = true;
   }
+
+  onEsc(event)
+  {  
+    this.showResults = false;
+    
+  }
+
+  clickOutsideDisabled = false;
+  clickOutsideOn = ['click'];
+
+  outsideClickHandler()
+  {
+    this.showResults = false;
+  }
+
+  closeResults()
+  {
+    this.showResults = false;
+  }
+
 }

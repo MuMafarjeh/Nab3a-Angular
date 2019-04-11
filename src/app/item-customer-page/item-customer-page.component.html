@@ -1,0 +1,23 @@
+<div class="item-card" *ngIf="item" >
+
+  <div class="actions" align="right">
+  
+    <button (click)="btnOrder()" mat-mini-fab color="accent" class="delete-btn">
+      <mat-icon svgIcon="add-to-cart-icon"></mat-icon>
+    </button>  
+  </div>
+
+  <div class="text-content" >
+   
+      <div class="name rows">{{ item.name | uppercase }}</div>
+      <div class="category rows">{{ item.category }}</div>
+      <div class="rows">{{ item.price | currency:'ILS':'symbol':'1.1-1' }}</div>
+      <div class="rows">{{ item.stock }} pcs.</div>
+
+  </div>
+
+  <div *ngIf="item.image"  class="image">
+    <img [src]="item.image" >
+  </div>
+
+</div>

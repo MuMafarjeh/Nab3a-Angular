@@ -1,5 +1,5 @@
 <header>
-  <div class="nav-container">
+  <div class="nav-container grid">
     <a routerLink="/">{{ appTitle }}</a>
 
     <nav class="buttons">
@@ -20,21 +20,26 @@
       </ul>
     </nav>
 
-    <ais-instantsearch class="searchBar" [config]="searchConfig">
-      <ais-search-box placeholder='Search for anything...' [searchAsYouType]="false" 
-        [autofocus]="true" (click)="searchSubmit()"></ais-search-box>
-        <!-- (change)="searchChanged($event)"  -->
-
-      <!-- <ais-configure [searchParameters]="searchParams"></ais-configure> -->
+    <ngx-page-click
+      [disabled]="clickOutsideDisabled"
+      [outsideClickHandler]="outsideClickHandler"
+      [listenTo]="clickOutsideOn"
+    >
+      <ais-instantsearch class="searchBar overflowVisible" [config]="searchConfig">
+        <ais-search-box placeholder='Search for anything...' [searchAsYouType]="false"
+          [autofocus]="true" (click)="searchSubmit($event)"></ais-search-box>
+        
+        <ais-hits *ngIf="showResults"  class="overflowVisible">
+          <ng-template let-hits="hits" class="dropdown" class="overflowVisible" >
+            <div *ngFor="let hit of hits" >
+              <app-item-customer-suggestion class="dropdown-content" [item]="hit" (closeResults)="closeResults()"> {{hit.name}} </app-item-customer-suggestion>
       
-      <ais-hits *ngIf="showResults" class="dropdown-content">
-        <ng-template let-hits="hits" class="dropdown-content">
-          <div *ngFor="let hit of hits" class="dropdown-content">
-            <div *ngIf="hits" class="search-result"> {{hit.name}} </div>
-            
-          </div>
-        </ng-template>
-      </ais-hits>
-    </ais-instantsearch>
+            </div>
+          </ng-template>
+        </ais-hits>
+      </ais-instantsearch>
+    </ngx-page-click>
+
   </div>
+
 </header>
