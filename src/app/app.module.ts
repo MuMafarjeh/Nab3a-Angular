@@ -42,6 +42,11 @@ import { ItemCustomerSuggestionComponent } from './item-customer-suggestion/item
 import {NgxPageClickModule} from 'ngx-page-click';
 import { ItemCustomerPageComponent } from './item-customer-page/item-customer-page.component'
 import { AuthService } from './auth/auth.service';
+import { BusinessNotificationsComponent } from './business-notifications/business-notifications.component'
+import { HomePageCustomerComponent } from './home-page-customer/home-page-customer.component';
+import { CustomerBrowseItemsComponent } from './customer-browse-items/customer-browse-items.component';
+import { CustomerNotificationPageComponent } from './customer-notification-page/customer-notification-page.component';
+import { CustomerCartPageComponent } from './customer-cart-page/customer-cart-page.component';
 
 @NgModule({
   entryComponents: [
@@ -70,6 +75,11 @@ import { AuthService } from './auth/auth.service';
     ItemCustomerSuggestionComponent,
     ItemCustomerPageComponent,
 
+    BusinessNotificationsComponent,
+    HomePageCustomerComponent,
+    CustomerBrowseItemsComponent,
+    CustomerNotificationPageComponent,
+    CustomerCartPageComponent
   ],
   imports: [
     FormsModule,

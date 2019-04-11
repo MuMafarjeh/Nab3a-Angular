@@ -1,7 +1,7 @@
 import { User } from './user';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import {map} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -10,34 +10,44 @@ export class UserService {
 
   constructor(private firestore: AngularFirestore) { }
 
-  getUsers()
-  {
+  getUsers() {
     return this.firestore.collection("user").snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const id = a.payload.doc.id;
-        const data = {id, ... a.payload.doc.data() } as User;
+        const data = { id, ...a.payload.doc.data() } as User;
         return data;
       }))
     );
   }
-  
-  getUser(userID: string)
-  {
+
+  getUser(userID: string) {
     // return this.firestore.collection<User>("user", ref => ref.where('userID', '==', userID)).get();
     return this.firestore.doc<User>(`/user/${userID}`).get();
   }
 
-  createUser(user: User){
+  createUser(user: User) {
     return this.firestore.collection('user').add(user);
   }
 
-  updateUser(user: User)
-  {
+  updateUser(user: User) {
     return this.firestore.doc('user/' + user.id).update(user);
   }
 
-  deleteUser(user: User)
-  {
+  deleteUser(user: User) {
     this.firestore.doc('user/' + user.id).delete();
+  }
+  async getUsersByCategory(categoryName) {
+    var users = [];
+    await this.firestore.collection("user").ref.where("categoryName", "==", categoryName).get().then(
+      function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          let user = doc.data() as User;
+          user.id = doc.id;
+          users.push(user);
+        });
+      });
+
+
+    return users;
   }
 }

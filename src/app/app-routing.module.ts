@@ -6,12 +6,18 @@ import { LoginComponent } from './registration/login/login.component';
 import { BusinessAddProductComponent } from './business-add-product/business-add-product.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {HomeComponent} from './home/home.component';
-import {AboutComponent} from './about/about.component';
-import {ContactComponent} from './contact/contact.component';
+import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
+import { ContactComponent } from './contact/contact.component';
 import { ItemsPageComponent } from './items-page/items-page.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { ItemCustomerPageComponent } from './item-customer-page/item-customer-page.component';
+import { BusinessNotificationsComponent } from './business-notifications/business-notifications.component';
+import { HomePageCustomerComponent } from './home-page-customer/home-page-customer.component';
+import { CustomerBrowseItemsComponent } from './customer-browse-items/customer-browse-items.component';
+import { CustomerNotificationPageComponent } from './customer-notification-page/customer-notification-page.component';
+import { CustomerCartPageComponent } from './customer-cart-page/customer-cart-page.component';
+
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -21,6 +27,23 @@ const routes: Routes = [
     path: 'items', component: ItemsPageComponent,
     canActivate: [BusinessGuard]
   },
+  { 
+    path: 'customer-cart-page', component: CustomerCartPageComponent, 
+    
+  },
+  { 
+    path: 'customer-notification-page', component: CustomerNotificationPageComponent, 
+    
+  },
+  { 
+    path: 'customer-browse-items', component: CustomerBrowseItemsComponent, 
+    
+  },
+  { 
+    path: 'business-notifications', component: BusinessNotificationsComponent, 
+    canActivate: [BusinessGuard]
+  },
+
   { path: 'registration', component: RegistrationComponent },
   {
     path: 'business-add-product', component: BusinessAddProductComponent,
@@ -29,6 +52,9 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'login-email', component: LoginEmailComponent },
   { path: 'page-not-found', component: PageNotFoundComponent },
+  {
+    path: 'home-page-customer', component: HomePageCustomerComponent,
+  },
   { path: 'business-order', component: BusinessOrderComponent },
 
   { path: 'item/:id', component: ItemCustomerPageComponent }

@@ -1,0 +1,27 @@
+<h1>Browse</h1>
+
+<div class="grid-contener">
+
+  <div>
+    <h3>Businesses/Stores</h3>
+    <mat-card class="search-result" *ngFor="let cate of categoryBusiness" (click)="onClick(cate)"> {{ cate.name }} </mat-card>
+  </div>
+
+  <div>
+    <h3>Products</h3>
+    <mat-card class="search-result" *ngFor="let cate of categoryProducts" (click)="brawseByBusiness(cate)"> {{ cate.name }} </mat-card>
+  </div>
+
+</div>
+<hr>
+
+<mat-list>
+  <div *ngIf="currentCategory == 'business'">
+    <mat-list-item class="search-result" *ngFor="let user of users">{{ user.name }} ---> {{ user.ownerName }} ---> {{ user.phoneNumber }}</mat-list-item>
+    <mat-divider></mat-divider>
+  </div>
+  <div *ngIf="currentCategory == 'product'">
+    <mat-list-item class="search-result" *ngFor="let item of items">{{ item.name }} ---> {{ item.businessName }} ---> {{ item.price }}</mat-list-item>
+    <mat-divider></mat-divider>
+  </div>
+</mat-list>

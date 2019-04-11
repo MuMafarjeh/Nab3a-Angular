@@ -144,7 +144,7 @@ export class AuthService{
             case 'business': 
               this.userData = {id, ... doc} as UserBusiness;
               localStorage.setItem('userData', JSON.stringify(this.userData));
-              console.log(`Businss ${this.userData.name} logged in! \n`);
+              console.log(`Businss ${this.userData.id} logged in! \n`);
               break;
               
             case 'delivery': 
