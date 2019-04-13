@@ -74,12 +74,11 @@ import { CustomerCartPageComponent } from './customer-cart-page/customer-cart-pa
     MyDialogComponent,
     ItemCustomerSuggestionComponent,
     ItemCustomerPageComponent,
-
     BusinessNotificationsComponent,
     HomePageCustomerComponent,
     CustomerBrowseItemsComponent,
     CustomerNotificationPageComponent,
-    CustomerCartPageComponent
+    CustomerCartPageComponent,
   ],
   imports: [
     FormsModule,

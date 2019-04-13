@@ -66,12 +66,12 @@ header {
         float: left;
 
         a {
-          padding: 1.5em;
+          margin: 1.5em;
           text-transform: uppercase;
           font-size: .8em;
 
           &:hover {
-            background: #8E2BFF;
+            color: black;
           }
         }
       }

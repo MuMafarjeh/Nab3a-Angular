@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { HttpService } from './../http/http.service';
 import { UserCustomer } from './../user/usercustomer';
 import { UserBusiness } from './../user/userbusiness';
@@ -6,213 +7,195 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth'
 import { User } from  'firebase';
 import { Subject } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, UrlTree, ActivatedRoute, UrlSegment } from '@angular/router';
+import { LoadingControllerService } from '../loading-controller.service';
+import { UserDelivery } from '../user/userdelivery';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService{
-  user: User;
-  userData: any;
-  userAnon: User;
-  userLocalStorage: string;
+  private _user: User;
+  private _userData: UserCustomer | UserBusiness | UserDelivery;
 
-  public getLoggedIn = new Subject<boolean>();
-  public getUserType = new Subject<string>();
-  public getIsVerified = new Subject<boolean>();
-  public getUserData = new Subject<any>();
-
-  public getCanLoadData = new Subject<boolean>();
-  anonCredentials: string;
+  private previousURL: string;  
 
   constructor(private auth: AngularFireAuth, private router: Router, 
-    private userService: UserService, private httpService: HttpService) 
+    private userService: UserService, private httpService: HttpService,
+    private loading: LoadingControllerService, private location: Location) 
   { 
-    this.anonymousLogin().then(() => {
 
-      console.log('inside anonymous login')
+    loading.doneLoadingUserAuth.next(false);
 
-      this.auth.authState.subscribe(async user => {
+    this.previousURL = this.location.path(true);
 
-        console.log('inside authstate')
-        console.log(user);
+    this.auth.authState.subscribe(async (user) => 
+    {
+      if(user) //logged in
+      {
+        this._user = user;
 
-        if(user)
+        if(this._user.isAnonymous) //if anonymous
         {
-          const stringifiedUser = JSON.stringify(user);
-          if(!user.isAnonymous)
-          {
-            this.user = user;
-            localStorage.setItem('user', stringifiedUser);
-          }
-          else
-          {
-            this.userAnon = user;
-            localStorage.setItem('userAnon', stringifiedUser);
-            this.userData = await this.getUserDataAnon();
-          }
-
-          
-
-          this.changeStatus();
+          this._userData = await this.getUserDataAnon(this._user.uid);
         }
-      });
-    });
-    
-    console.log("auth service change status")
-    this.changeStatus();
+        else //if actual user
+        {
+          this._userData = await this.getUserData(this._user.uid);
+        }
 
-    console.log("auth service user:")
-    this.auth.user.toPromise().then((user) => {
-      console.log(user);
+        if(this.previousURL)
+        {
+          this.router.navigate([this.previousURL]);
+          this.previousURL = null;
+        }
+        else
+        {
+          this.router.navigate(["/"]);
+        }
+        this.loading.doneLoadingUserAuth.next(true);
+      }
+      else //not logged in
+      {
+        const anon = await this.anonymousLogin();
+        console.log(anon);
+      }
+    }, (error) =>
+    {
+      console.error(error);
     })
+  }
 
-    // this.auth.authState.subscribe(async user => {
+  private async anonymousLogin()
+  {
+    const credentials = await this.auth.auth.signInAnonymouslyAndRetrieveData();
+    return credentials;
+  }
 
-    //   if (user){
-       
-    //     this.user = user;
+  private async getUserData(uid: string): Promise<UserCustomer | UserBusiness | UserDelivery>
+  {
+    try
+    {
+      const userDoc = await this.userService.getUser(uid).toPromise();
+      let doc = userDoc.data();
+      const id = userDoc.id;
+      if(!doc || !doc.type)
+        doc = {type: ''};
         
-    //     if(this.user.isAnonymous)
-    //       localStorage.setItem('userAnon', JSON.stringify(this.user));
-    //     else
-    //       localStorage.setItem('user', JSON.stringify(this.user));
-    //     this.readUserDataFromLocalStorage();
-    //   } else {
-    //     await this.anonymousLogin();
-    //     this.readUserDataFromLocalStorage();
-    //     await this.getUserDataAnon();
-    //   }
+      switch(doc.type)
+      {
+        case 'business': 
+          return {id, ... doc} as UserBusiness;
+          break;
+          
+        case 'delivery': 
+          return {id, ... doc} as UserDelivery;
+          break;
 
-    //   this.changeStatus();
-    // });
+        case 'customer': 
+        default:
+          return {id, ... doc} as UserCustomer;
+          break;
+      }
+    }
+    catch(error)
+    {
+      console.error(error);
+    }
   }
 
-  async anonymousLogin() {
-    this.readUserDataFromLocalStorage();
-
-    console.log("inside my fucking ass")
-
-    if(!this.userAnon)
+  private async getUserDataAnon(uid: string): Promise<UserCustomer>
+  {
+    try
     {
-      const anonCredentials = await this.auth.auth.signInAnonymously();
-      console.log(anonCredentials);
-      this.anonCredentials = await anonCredentials.user.getIdToken();
-      localStorage.setItem('anonCred', JSON.stringify(this.anonCredentials));
-      
+      const result = await this.userService.getUser(uid).toPromise();
+      let doc = result.data();
+      const id = result.id;
+      if(!doc || !doc.type)
+        doc = {type: ''};
+
+      return {id, ... doc} as UserCustomer;
     }
-    else if(!this.user)
+    catch(error)
     {
-      console.log(this.anonCredentials);
-      await this.auth.auth.signInAnonymously();
+      console.error(error);
     }
+  }
+
+  public get isLoggedIn(): boolean {
+    return this._user !== null && !this._user.isAnonymous;
+  }
+
+  public get userType(): string
+  {
+    if(this._userData === null || this._userData === undefined)
+      return null;
+    else if(this._userData.type === null || this._userData.type === undefined || this._userData.type === 'undefined')
+      return null;
     else
-    {
-      localStorage.setItem('user', JSON.stringify(this.user));
-      this.readUserDataFromLocalStorage();
-    }
-
-    
+      return this._userData.type;
   }
 
-  public async register(user, password: string) {
+  public get isVerified(): boolean
+  {
+    if(this._user === null || this._user === undefined)
+      return false;
+    return this._user.emailVerified;
+  }
+
+  public get userData(): UserCustomer | UserBusiness
+  {
+    if(this._userData === null || this._userData === undefined)
+      return null;
+    else
+      return this._userData;
+  }
+
+  public get userID(): string
+  {
+    if(this.isLoggedIn)
+      return this._user.uid;
+    else
+      return '';
+  }
+
+  //////////////////////////////////////
+
+  public async register(user, password: string) 
+  {
     user.password = password;
     let emailLink = await this.httpService.registerUser(user);
     await this.auth.auth.signInWithEmailAndPassword(user.email, password);
-    // await this.sendEmailVerification();
-    this.router.navigate(['/']);
+    await this.sendEmailVerification();
+    // this.router.navigate(['/']);
   }
 
-  // public async register(email: string, password: string) {
-  //   var result = await this.auth.auth.createUserWithEmailAndPassword(email, password)
-  //   this.sendEmailVerification();
-  //   return result;
-  // }
+  public async login(email: string, password: string) 
+  {
+    this.loading.doneLoadingUserAuth.next(false);
 
-  async login(email: string, password: string) {
-    try{
-      await this.auth.auth.signInWithEmailAndPassword(email, password).then((result) => 
-      {
-        this.userService.getUser(result.user.uid).subscribe((result) => {
-          let doc = result.data();
-          const id = result.id;
-          if(!doc || !doc.type)
-            doc = {type: ''};
-            
-          switch(doc.type)
-          {
-            case 'business': 
-              this.userData = {id, ... doc} as UserBusiness;
-              localStorage.setItem('userData', JSON.stringify(this.userData));
-              console.log(`Businss ${this.userData.id} logged in! \n`);
-              break;
-              
-            case 'delivery': 
-              this.userData = {id, ... doc};
-              console.log(`Delivery-man ${this.userData.name} logged in!`);
-              break;
-
-            case 'customer': 
-            default:
-              this.userData = {id, ... doc} as UserCustomer;
-              localStorage.setItem('userData', JSON.stringify(this.userData));
-              console.log(`Customer ${this.userData.name} logged in!`);
-              break;
-          }
-          
-          this.changeStatus();
-          
-          this.router.navigate(['/']);
-        })
-        
-        }).catch ((e) =>  {
-          return e;
-        });
-      }catch(e)
-      {
-        return e;
-      }
+    try
+    {
+      await this.auth.auth.signInWithEmailAndPassword(email, password);
+      this.router.navigate(['/']);
+    }
+    catch(e)
+    {
+      console.error(e);
+    }
   }
 
-  // async login(email: string, password: string) {
-  //   try {
-  //     await this.auth.auth.signInWithEmailAndPassword(email, password).then((result) => 
-  //     {
-  //       this.userService.getUser(result.user.uid).subscribe((result2) => {
-  //         const doc = result2;
-  //         const id = result.user.uid;
-  //         switch(doc.data().type)
-  //         {
-  //           case 'business': 
-  //             this.userData = {id, ... doc.data()} as UserBusiness;
-  //             localStorage.setItem('userData', JSON.stringify(this.userData));
-  //             console.log(`Businss ${this.userData.name} logged in! \n`);
-  //             break;
-              
-  //           case 'customer': 
-  //             this.userData = {id, ... doc.data()} as UserCustomer;
-  //             localStorage.setItem('userData', JSON.stringify(this.userData));
-  //             console.log(`Customer ${this.userData.name} logged in!`);
-  //             break;
+  public async sendEmailVerification() {
+    await this.auth.auth.currentUser.sendEmailVerification()
+    alert("Verification email sent");
+    /* this.router.navigate(['admin/verify-email']); */
+  }
 
-  //           case 'delivery': 
-  //             this.userData = {id, ... doc.data()};
-  //             console.log(`Delivery-man ${this.userData.name} logged in!`);
-  //             break;
-  //         }
-          
-  //         this.changeStatus();
-  //         this.router.navigate(['/']);
-  //       })
-        
-  //     });
-  //     /* this.router.navigate(['admin/list']); */
-  //   } catch (e) {
-  //     alert("Error!"  +  e.message);
-  //   }
-  // }
+  public async sendPasswordResetEmail(passwordResetEmail: string) {
+    return await this.auth.auth.sendPasswordResetEmail(passwordResetEmail);
+  }
 
-  // async loginWithPhone(phone: string) {
+  // public async loginWithPhone(phone: string) {
   //   try {
   //     await  this.auth.auth.signInWithPhoneNumber(phone)
   //     /* this.router.navigate(['admin/list']); */
@@ -221,114 +204,15 @@ export class AuthService{
   //   }
   // }
 
-  async sendEmailVerification() {
-    await this.auth.auth.currentUser.sendEmailVerification()
-    alert("Verification email sent");
-    /* this.router.navigate(['admin/verify-email']); */
-  }
-
-  async sendPasswordResetEmail(passwordResetEmail: string) {
-    return await this.auth.auth.sendPasswordResetEmail(passwordResetEmail);
-  }
-
-  async logout(){
-    await this.auth.auth.signOut();
-    localStorage.removeItem('user');
-    localStorage.removeItem('userData');
-
-    // localStorage.removeItem('userData');
-    // await this.getUserDataAnon();
-
-    // this.changeStatus();
-
-    this.user = null;
-    this.userData = null;
-
-    this.changeStatus();
-
-    this.router.navigate([this.router.url]);
-  } 
-
-  get isLoggedIn(): boolean {
-    this.userLocalStorage  =  JSON.parse(localStorage.getItem('user'));
-
-
-    return  this.userLocalStorage  !==  null;
-  }
-
-  async getUserDataAnon()
-  {
-    await this.userService.getUser(this.userAnon.uid).subscribe((result) => {
-      let doc = result.data();
-      const id = result.id;
-      if(!doc || !doc.type)
-        doc = {type: ''};
-
-      this.userData = {id, ... doc} as UserCustomer;
-      localStorage.setItem('userData', JSON.stringify(this.userData));
-      console.log(`Customer ${this.userData.name} logged in!`);
-    }, (err) =>
-    {
-      localStorage.setItem('userData', "");
-    });
-  }
-
-  get userType(): any
-  {
-    // this.readUserDataFromLocalStorage();
-    if(this.userData === null || this.userData === undefined || this.userData === 'undefined')
-      return null;
-    else if(this.userData.type === null || this.userData.type === undefined || this.userData.type === 'undefined')
-      return null;
-    else
-      return this.userData.type;
-  }
-
-  get isVerified(): boolean
-  {
-    // this.readUserDataFromLocalStorage();
-    if(this.user === null || this.user === undefined)
-      return false;
-    return this.user.emailVerified;
-  }
-
-  changeStatus()
-  {
-    // console.log(`this.isLoggedIn ${this.isLoggedIn}`)
-    this.readUserDataFromLocalStorage();
-
-    this.getLoggedIn.next(this.isLoggedIn);
-    this.getUserType.next(this.userType);
-    this.getIsVerified.next(this.isVerified);
-    this.getUserData.next(this.userData);
-    this.getCanLoadData.next(this.canLoadData);
-  }
-
-  get canLoadData() {
-    // this.readUserDataFromLocalStorage();
-    return this.userAnon != null || this.user != null;
-  }
-
-  readUserDataFromLocalStorage()
-  {
-    const userData = localStorage.getItem('userData');
-    this.userData = userData? JSON.parse(userData): null;
-
-    const userAnon = localStorage.getItem('userAnon');
-    this.userAnon = userAnon? JSON.parse(userAnon): null;
+  public async logout(){
+    this.previousURL = this.router.url;
+    this.loading.doneLoadingUserAuth.next(false);
     
-    const user = localStorage.getItem('user');
-    this.user = user? JSON.parse(user): null;
-
-    const anonCred = localStorage.getItem('anonCred');
-    this.anonCredentials = anonCred? JSON.parse(anonCred): null;
-  }
-
-  async getUserID()
-  {
-    if(await this.isLoggedIn)
-      return await this.user.uid;
-    else
-      return await this.userAnon.uid;
-  }
+    this.router.navigate(['/']).then(async () => 
+    {
+      this._user = null;
+      this._userData = null;
+      await this.auth.auth.signOut();
+    })
+  } 
 }

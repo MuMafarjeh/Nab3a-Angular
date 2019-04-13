@@ -1,4 +1,4 @@
-export interface UserCustomer 
+export interface UserDelivery
 {
   name: string;
   id: string;

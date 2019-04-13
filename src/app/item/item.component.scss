@@ -11,6 +11,8 @@ $height-2col-hover: 250px;
 $height-1col-main: 280px;
 $height-1col-hover: 300px;
 
+$item-font-color: white;
+
 .item-card
 {
     transition: background-color 0.4s, height 0.2s, box-shadow 0.3s;
@@ -22,6 +24,8 @@ $height-1col-hover: 300px;
     text-align: start;
     word-wrap: normal;
     background-color: $color-main;
+
+    color: $item-font-color;
 
     @media screen and (min-width: $break-large) {
         height: $height-2col-main;
@@ -117,6 +121,12 @@ $height-1col-hover: 300px;
     background-color: $color-hover;
     box-shadow: 20px 20px 40px 0px rgba(0,0,0,0.5);
 
+    @media screen and (min-width: $break-large) {
+        height: $height-2col-hover;
+    }
+    @media screen and (max-width: $break-large) {
+        height: $height-1col-hover;
+    }
 }
 
 .mat-form-field-wrapper

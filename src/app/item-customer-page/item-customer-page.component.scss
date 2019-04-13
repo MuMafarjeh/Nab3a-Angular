@@ -1,41 +1,23 @@
 @import '~@angular/material/theming';
 
-$break-small: 320px;
-$break-large: 1060px;
 
 $color-main: rgb(63, 105, 221);
 $color-hover: rgb(81, 140, 228);
 $color-edit: rgb(255, 219, 91);
-$height-2col-main: 230px;
-$height-2col-hover: 250px;
-$height-1col-main: 280px;
-$height-1col-hover: 300px;
+
+$item-font-color: white;
 
 .item-card
 {
-    transition: background-color 0.4s, height 0.2s, box-shadow 0.3s;
-
-    padding-left: 14px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    text-align: start;
-    word-wrap: normal;
     background-color: $color-main;
-
-    @media screen and (min-width: $break-large) {
-        height: $height-2col-main;
-    }
-    @media screen and (max-width: $break-large) {
-        height: $height-1col-main;
-    }
-    // height: $height-2col-main;
-
-    border: 2px;
     // border-radius: 4px; 
     align-content: stretch;
 
     box-shadow: 5px 5px 20px 0px rgba(31, 31, 31, 0.5);
+
+    display: flex;
+
+    color: $item-font-color;
    
     .name
     {
@@ -47,13 +29,6 @@ $height-1col-hover: 300px;
         font-family: 'Calibri';
         font-style: italic;
         margin-bottom: 8px;
-    }
-   
-    .edit
-    {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
     }
 
     mat-form-field
@@ -81,7 +56,7 @@ $height-1col-hover: 300px;
 
     .actions
     {
-        padding: 14px 14px 14px 0;
+        padding: 14px;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
@@ -98,32 +73,22 @@ $height-1col-hover: 300px;
         flex-grow: 1;
 
         background-color: rgba(0, 0, 0, 0.267);
+        
          
-        height: 100%;
-        width: 35%;/*  */
-        max-width:100%;
-        max-height:100%;
-        vertical-align: middle;
+        height: 12em;
+        width: 12em;/*  */
+        max-width: 12em;
+        max-height: 12em;
+        vertical-align: top;
         img{
             object-fit: cover;
             width: 100%; /* Here you can use wherever you want to specify the width and also the height of the <img>*/
             height: 100%;
+            vertical-align: bottom;
         }
     }
 }
 
-.item-card:hover
-{
-    background-color: $color-hover;
-    box-shadow: 20px 20px 40px 0px rgba(0,0,0,0.5);
-
-    @media screen and (min-width: $break-large) {
-        height: $height-2col-hover;
-    }
-    @media screen and (max-width: $break-large) {
-        height: $height-1col-hover;
-    }
-}
 
 .mat-form-field-wrapper
 {

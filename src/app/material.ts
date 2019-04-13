@@ -19,6 +19,8 @@ import {MatNativeDateModule, MatSliderModule, DateAdapter} from '@angular/materi
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatListModule} from '@angular/material/list';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
 @NgModule({
     imports: [
         MatButtonModule,
@@ -45,7 +47,8 @@ import {MatDividerModule} from '@angular/material/divider';
         MatAutocompleteModule,
         MatExpansionModule,
         MatListModule,
-        MatDividerModule
+        MatDividerModule,
+        MatProgressSpinnerModule
     ],
     exports: [
         MatButtonModule,
@@ -72,7 +75,8 @@ import {MatDividerModule} from '@angular/material/divider';
         MatAutocompleteModule,
         MatExpansionModule,
         MatListModule,
-        MatDividerModule
+        MatDividerModule,
+        MatProgressSpinnerModule
     ]
 })
 export class MaterialModule{

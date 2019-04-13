@@ -26,7 +26,7 @@ export class ItemsService {
   public async getInventory(): Promise<Item[]> {
     if (this.businessGuard.canActivate)
       var items = [];
-    this.firestore.collection("inventory_item").ref.where('businessID', '==', await this.authService.getUserID()).get().then(function (querySnapshot) {
+    this.firestore.collection("inventory_item").ref.where('businessID', '==', this.authService.userID).get().then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
         let item = doc.data() as Item;
         item.id = doc.id;
