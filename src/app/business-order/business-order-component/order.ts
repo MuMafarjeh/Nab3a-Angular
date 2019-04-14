@@ -4,6 +4,7 @@ import { Time } from '@angular/common';
 export interface Order
 {
     name: string;
+    customerName: string;
     price: number;
     timeGenerated: Date;
     timeReceiving: Date;

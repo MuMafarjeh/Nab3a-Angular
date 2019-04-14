@@ -10,30 +10,11 @@ import {map} from 'rxjs/operators';
 })
 export class HomeComponent implements OnInit {
 
-  users: User[];
 
-  constructor(private userService: UserService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.userService.getUsers().subscribe((result: User[]) =>
-    {
-      this.users = result;
-    }, error =>
-    {
-      console.log(error);
-    });
-  }
-
-  create(user: User){
-    this.userService.createUser(user);
-  }
-
-  update(user: User) {
-    this.userService.updateUser(user);
-  }
-
-  delete(user: User) {
-    this.userService.deleteUser(user);
+   
   }
 
 }

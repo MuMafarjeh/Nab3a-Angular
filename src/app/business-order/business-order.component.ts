@@ -30,7 +30,7 @@ export class BusinessOrderComponent implements OnInit {
     this.orders = this.orderService.getOrder();
     this.copyOrders = this.orders;
   }
-  filter() {
+  filter() { 
     this.ordersFilter = [];
     this.copyOrders.forEach(element => {
       var fromDate = element.TGDate;

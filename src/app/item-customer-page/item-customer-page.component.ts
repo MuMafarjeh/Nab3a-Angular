@@ -22,21 +22,11 @@ export class ItemCustomerPageComponent implements OnInit {
       'add-to-cart-icon',
       sanitizer.bypassSecurityTrustResourceUrl("assets/icons/add_to_cart_icon.svg"));
 
-    if(this.authService.canLoadData)
-    {
-      console.log("in item page can load");
-      this.getItemData();
-    }
-
-    this.authService.getCanLoadData.subscribe(async (canAccess) => {
-      if(canAccess)
-      {
-        this.getItemData();
-      }
-    })
   }
 
-  ngOnInit() {
+  ngOnInit() 
+  {
+    this.getItemData();
   }
 
   btnOrder()

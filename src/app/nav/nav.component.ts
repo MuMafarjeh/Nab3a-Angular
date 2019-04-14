@@ -16,62 +16,35 @@ export class NavComponent implements OnInit {
   appTitle = 'Nab3a';
 
   username: string;
-  userDataSubscription: Subscription;
 
   canLogout: boolean;
-  loggedInSubscription: Subscription;
 
   isBusiness: boolean;
   isCustomer: boolean;
-  isUserTypeSubscription: Subscription;
 
   isVerified: boolean;
-  isVerifiedSubscription: Subscription;
 
-  public doneLoading = new Subject<boolean>();
- 
   constructor(private authService: AuthService, private searchService: SearchService) 
   { 
-    this.loggedInSubscription = this.authService.getLoggedIn.subscribe((loggedIn) => 
-    {
-      this.canLogout = loggedIn;
-    });
-
-    this.isUserTypeSubscription = this.authService.getUserType.subscribe((userType) =>
-    {
-      this.isBusiness = userType === 'business';
-      this.isCustomer = userType === 'customer';
-    });
-
-    this.isVerifiedSubscription = this.authService.getIsVerified.subscribe((isVerified) =>
-    {
-      this.isVerified = isVerified;
-    });
-
-    this.userDataSubscription = this.authService.getUserData.subscribe((userData) => {
-      if(userData == null)
-        this.username = null;
-      else
-        this.username = userData.name;
-    });
-
     this.outsideClickHandler = this.outsideClickHandler.bind(this);
   }
 
-  ngOnInit() {
+  ngOnInit() 
+  {
+    this.canLogout = this.authService.isLoggedIn;
+
+    let userType = this.authService.userType;
+    this.isBusiness = userType === 'business';
+    this.isCustomer = userType === 'customer';
+
+    this.isVerified = this.authService.isVerified;
+
+    this.username = this.authService.userData.name;
   }
 
   logout() {
     this.authService.logout();
   }
-
-  ngOnDestroy() {
-    this.loggedInSubscription.unsubscribe();
-    this.isUserTypeSubscription.unsubscribe();
-    this.isVerifiedSubscription.unsubscribe();
-    this.userDataSubscription.unsubscribe();
-  }
-
 
   get searchConfig()
   {

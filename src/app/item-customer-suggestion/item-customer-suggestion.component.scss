@@ -5,8 +5,12 @@ $color-hover: rgb(81, 140, 228);
 $color-edit: rgb(255, 219, 91);
 $height: 80px;
 
+$item-font-color: white;
+
 .item-card
 {
+
+    color: $item-font-color;
 
     transition: background-color 0.4s, height 0.2s, box-shadow 0.3s;
 
