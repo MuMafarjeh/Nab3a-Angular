@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject, Input } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Item } from 'src/app/item/item';
+import { OrderServiceService } from '../order-service.service';
 
 @Component({
   selector: 'app-my-dialog',
@@ -10,12 +11,15 @@ import { Item } from 'src/app/item/item';
 export class MyDialogComponent implements OnInit {
 
   constructor( public MatDialogRef: MatDialogRef<MyDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
+    @Inject(MAT_DIALOG_DATA) public data: any, private orderService: OrderServiceService) {
+      this.items=data;
+    }
 
     @Input()
-    item:Item;
+    items:Item[];
 
   ngOnInit() {
+
   }
 
 }

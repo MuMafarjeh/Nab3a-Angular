@@ -1,11 +1,10 @@
 import { Item } from './../../item/item';
 import { Order } from './order';
-import { Component, OnInit, Input, Inject } from '@angular/core';
+
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MyDialogComponent } from './my-dialog/my-dialog.component';
-
-
-
+import { OrderServiceService } from './order-service.service';
+import { Input, Component, OnInit } from '@angular/core';
 
 
 @Component({
@@ -14,27 +13,29 @@ import { MyDialogComponent } from './my-dialog/my-dialog.component';
   styleUrls: ['./business-order-component.component.scss']
 })
 export class BusinessOrderComponentComponent implements OnInit {
-  currency :number;
-  price:number;
-  quantity:number;
-  items:string;
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog,private orderService: OrderServiceService) { }
 
   @Input()
  order:Order;
+item:Item[];
+
 // product:Item;
+
   ngOnInit() {
+
   }
   _width: 1000;
   openDialog(): void {
+    this.item = this.orderService.getProducts(this.order);
     const dialogRef = this.dialog.open(MyDialogComponent, {
+     data:  this.item ,
 
 get width() {
         return this._width;
       },
 
-
-      data: {currency: this.currency, price: this.price, quantity:this.quantity,items:this.items }
+   //  data:{}
+    //  data: {currency: this.currency, finalPrice: this.finalPrice, name:this.name,quantity:this.quantity }
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');

@@ -28,7 +28,9 @@ export class OrderServiceService {
     }
 
     public getProducts(orders: Order): Item[]
+
     {
+
       var products = [];
       this.firestore.doc(`/order/${orders.id}`).collection('orderedProducts').ref.get().then(function(querySnapshot){
        querySnapshot.forEach(function(doc){
