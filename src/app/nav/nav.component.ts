@@ -13,7 +13,7 @@ import { Subscription, Subject } from 'rxjs';
 })
 export class NavComponent implements OnInit {
 
-  appTitle = 'Nab3a';
+  appTitle = 'نبعة';
 
   username: string;
 

@@ -32,11 +32,18 @@ a {
 }
 
 .nav-container {
-  width: 92%;
+  width: 96%;
   margin: 0 auto;
   padding: 1.3em;
   display: grid;
-  grid-template-columns: 30%  auto;
+  
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: auto;
+  grid-template-areas:
+    "nav-buttons nav-buttons nav-buttons title"
+    "search search user title"
+    ;
+
   grid-gap: 1.3em;
 
   a {
@@ -80,9 +87,29 @@ section {
   width: 100%;
   min-height: 100%;
 
+  
+  mat-spinner, img
+  { 
+    position: fixed;
+    z-index: 999;
+
+    overflow: show;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+  
   mat-spinner
   {
-    margin:0 auto;
-    top: 50%
-  }  
+    height: 2em;
+    width: 2em;
+  }
+
+  img
+  {
+    height: 22%;
+    margin-top: 5%;
+  }
 }

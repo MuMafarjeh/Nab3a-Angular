@@ -1,7 +1,5 @@
 <header>
   <div class="nav-container grid">
-    <a routerLink="/">{{ appTitle }}</a>
-
     <nav class="buttons">
       <ul>
         <li><a routerLink="/items" *ngIf="isBusiness && isVerified">My Store</a></li>
@@ -19,12 +17,10 @@
       </ul>
     </nav>
 
-    <nav class="user">
-      <ul>
-        <li *ngIf="username" ><div id="username">{{username}}</div></li>
-        <li><a routerLink="/" (click)="logout()" *ngIf="canLogout" > Logout </a></li>
-      </ul>
-    </nav>
+    <a routerLink="/" class="title">
+      <!-- {{ appTitle }} -->
+      <img src="assets/logo.png">
+    </a>
 
     <ngx-page-click
       [disabled]="clickOutsideDisabled"
@@ -46,5 +42,13 @@
       </ais-instantsearch>
     </ngx-page-click>
 
+    <nav class="user">
+      <ul>
+        <li *ngIf="username" ><div id="username">{{username}}</div></li>
+        <li><a routerLink="/" (click)="logout()" *ngIf="canLogout" > Logout </a></li>
+      </ul>
+    </nav>
+
   </div>
+
 </header>
