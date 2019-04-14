@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { AuthService } from './auth/auth.service';
 import { LoadingControllerService } from './loading-controller.service';
 import { Component } from '@angular/core';
@@ -11,17 +12,19 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'Nab3a';
+  title = 'نبعة';
   doneLoading: boolean = false;
 
-  constructor(private loading: LoadingControllerService, private authService: AuthService, private router: Router)
+  constructor(private loading: LoadingControllerService, private authService: AuthService, 
+    private router: Router, private titleService: Title)
   {
+    this.titleService.setTitle( this.title );
     this.loading.doneLoadingUserAuth.subscribe((doneLoading) =>
     {
-      console.log(doneLoading);
       this.doneLoading = doneLoading;
     })
   }
+
 }
 
 

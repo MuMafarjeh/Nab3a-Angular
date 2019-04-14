@@ -1,6 +1,6 @@
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { MatBottomSheetRef } from '@angular/material';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -97,6 +97,7 @@ import { CustomerCartPageComponent } from './customer-cart-page/customer-cart-pa
     NgxPageClickModule
   ],
   providers: [
+    Title,
     AngularFireAuth,
     AngularFireFunctionsModule,
     AuthService,
