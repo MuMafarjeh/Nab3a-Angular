@@ -1,8 +1,9 @@
-import { DateAdapter } from '@angular/material';
+
+
 export interface Order
 {
 
-    name: string;
+  customerName: string;
     price: number;
     timeGenerated: Date;
     timeReceiving: Date;

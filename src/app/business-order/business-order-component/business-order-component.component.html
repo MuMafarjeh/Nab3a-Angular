@@ -2,24 +2,26 @@
 
 
       <div class="names">The name</div>
-      <div class="name rows"> {{ order.name | uppercase }}</div>
+      <div class="name rows"> {{ order.customerName | uppercase }}</div>
       <div class="names">The price</div>
       <div class="rows"> {{ order.price | currency:'ILS':'symbol':'1.1-1' }}</div>
       <div class="names">Date of order</div>
-      <div class="rows" *ngIf="order"> {{ order.timeGenerated.toDate() | date: 'dd/MM/yyyy ' }} </div>
+      <!-- <mat-cell *matCellDef="let order">{{order.date.toDate() | date}}</mat-cell> -->
+     <div class="rows" *ngIf="order"> {{ order.timeGenerated.toDate()| date: 'dd/MM/yyyy' }} </div>
       <div class="names">Time of order</div>
-      <div class="rows" *ngIf="order"> {{ order.timeGenerated.toDate() |date: ' h:mm:ss a' }} </div>
+      <!-- <p> {{ order.timeGenerated.toDate() |date: 'h:mm:ss a' }} </p> -->
+      <div class="rows" *ngIf="order"> {{ order.timeGenerated.toDate() |date: 'h:mm:ss a' }} </div>
       <div class="names">Date of recieving</div>
-      <div class="category rows" *ngIf="order">{{ order.timeReceiving.toDate()| date: 'dd/MM/yyyy ' }}
+      <div class="category rows" *ngIf="order">{{ order.timeReceiving.toDate()  | date: 'dd/MM/yyyy' }}
 
-        <button mat-raised-button  class="btn" matTooltip="More information about the order "
+        <button mat-raised-button  class="btn"  matTooltip="More information about the order "
         aria-label="Button that displays a tooltip in various positions"  (click)="openDialog()">Read more details >></button>
       </div>
       <div class="names">Time of recieving</div>
-      <div class="rows" *ngIf="order"> {{ order.timeReceiving.toDate() |date: ' h:mm:ss a' }} </div>
+      <div class="rows" *ngIf="order"> {{ order.timeReceiving.toDate()  |date: 'h:mm:ss a' }} </div>
 
 
-
+      <!-- -->
 </div>
 
 

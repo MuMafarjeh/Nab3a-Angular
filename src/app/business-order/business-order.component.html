@@ -4,17 +4,24 @@
 </p>
 
 <mat-form-field class="example-full-width">
-  <input matInput [matDatepicker]="picker" placeholder="Choose Start Period">
+  <input matInput [matDatepicker]="picker" placeholder="Choose Start Period" [(ngModel)]="serializedDate" >
   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-  <mat-datepicker touchUi #picker></mat-datepicker>
+  <mat-datepicker touchUi #picker ></mat-datepicker>
 </mat-form-field>
+<div>
 
+    {{serializedDate}}
+</div>
 
 <mat-form-field class="example-full-width">
-  <input matInput [matDatepicker]="pickerTo" placeholder="Choose End Period">
+  <input matInput [matDatepicker]="pickerTo" placeholder="Choose End Period" >
   <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
-  <mat-datepicker touchUi #pickerTo></mat-datepicker>
+  <mat-datepicker touchUi #pickerTo ></mat-datepicker>
 </mat-form-field>
+<!-- <div>
+
+  {{date1}}
+</div> -->
 
 <div class="grid" cols="1">
     <div class="tile" *ngFor="let order of orders">
