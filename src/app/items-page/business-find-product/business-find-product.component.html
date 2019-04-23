@@ -1,0 +1,42 @@
+<div class="content">
+  <h1 matDialogTitle class="title">Search for product to add</h1>
+
+  <mat-dialog-content>
+    <ngx-page-click class="search-container"
+      [disabled]="clickOutsideDisabled"
+      [outsideClickHandler]="closeResults"
+      [listenTo]="clickOutsideOn"
+    >
+      <ais-instantsearch class="searchBar overflowVisible" [config]="searchConfig">
+        <ais-search-box placeholder='Search for name or category...' [searchAsYouType]="false"
+          [autofocus]="true" (click)="searchSubmit($event)"></ais-search-box>
+        
+        <ais-hits *ngIf="showResults"  class="overflowVisible">
+          <ng-template let-hits="hits" class="dropdown" class="overflowVisible" >
+            <div *ngFor="let hit of hits" >
+
+              <app-item-business-suggestion class="dropdown-content"  
+                [item]="hit" (onClickItem)="onClickItem($event)"> 
+                     <!-- [ngClass]="itemSearchSuggestion" -->
+
+                  {{hit.name}} 
+              </app-item-business-suggestion>
+      
+            </div>
+          </ng-template>
+        </ais-hits>
+      </ais-instantsearch>
+    </ngx-page-click>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+
+      <div class="clicked-item" *ngIf="clickedItem" >
+        <app-item [isNew]="true" [item]="clickedItem"></app-item>
+      </div>
+      
+      <button mat-raised-button color="primary"  matDialogClose class="btn" > Cancel </button>
+                              <!-- [ngClass]="itemInsert" -->
+  </mat-dialog-actions>
+</div>

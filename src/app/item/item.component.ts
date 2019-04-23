@@ -22,6 +22,9 @@ export class ItemComponent implements OnInit {
   @Input()
   item: Item;
 
+  @Input()
+  isNew: boolean = false;
+
   @Output()
   deleteEvent: EventEmitter<any> = new EventEmitter();
 

@@ -1,6 +1,6 @@
 <div class="item-card">
 
-  <div class="actions" align="right">
+  <div *ngIf="!isNew"  class="actions" align="right">
     <button (click)="btnOnEdit()" *ngIf="!isEdit" mat-mini-fab>
       <mat-icon class="edit-btn" svgIcon="edit-icon"></mat-icon>
     </button>  
@@ -10,6 +10,12 @@
 
     <button (click)="btnOnDelete()" *ngIf="isEdit"  mat-mini-fab color="warn" class="delete-btn">
       <mat-icon svgIcon="delete-icon"></mat-icon>
+    </button>  
+  </div>
+
+  <div *ngIf="isNew"  class="actions" align="right">
+    <button (click)="btnOnSave()" *ngIf="isEdit"  mat-mini-fab color="accent" [disabled]="form.invalid">
+      <mat-icon class="save-btn" svgIcon="save-icon"></mat-icon>
     </button>  
   </div>
 

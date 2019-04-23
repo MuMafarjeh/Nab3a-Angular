@@ -1,0 +1,21 @@
+$color-main: rgb(63, 105, 221);
+$color-hover: rgb(81, 140, 228);
+
+.content
+{
+    .search-container
+    {
+        width: 86%;
+    }
+}
+
+mat-dialog-actions
+{
+    display: flex;
+    flex-direction: column; 
+
+    .clicked-item
+    {
+        margin: 1em;
+    }
+}

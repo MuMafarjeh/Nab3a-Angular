@@ -34,6 +34,22 @@ export class SearchService {
     }
   }
 
+  public get inventoryItemSearchConfig(): any
+  {
+    return {
+      ...environment.algolia,
+      indexName: this.INVENTORY_ITEMS_INDEX,
+      searchFunction(helper) {
+        const query = helper.state.query;
+        if(!SearchService.canSearch(query))
+        {
+          return;
+        }
+        helper.search();
+      }
+    }
+  }
+
   public static canSearch(query: string): boolean
   {
     const can = (query && typeof query == 'string' && query !== "" && query.length > 2);
