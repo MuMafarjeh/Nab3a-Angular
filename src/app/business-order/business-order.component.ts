@@ -17,6 +17,7 @@ export class BusinessOrderComponent implements OnInit {
   });
 
   date = new FormControl(new Date());
+
   serializedDate = new FormControl((new Date()).toISOString());
 
   constructor(private orderService: OrderServiceService) { }
@@ -30,7 +31,7 @@ export class BusinessOrderComponent implements OnInit {
     this.orders = this.orderService.getOrder();
     this.copyOrders = this.orders;
   }
-  filter() { 
+  filter() {
     this.ordersFilter = [];
     this.copyOrders.forEach(element => {
       var fromDate = element.TGDate;

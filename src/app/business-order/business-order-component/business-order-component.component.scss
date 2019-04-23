@@ -5,6 +5,10 @@
   background: rgb(63, 105, 221);;
   height: initial;
   border-radius: 10px;
+  //width: 500px;
+  // display: flex;
+  // flex-wrap: wrap;
+ // flex-direction: column;
 
 }
 .btn{
@@ -12,7 +16,7 @@
     display: inline;
     //background: pink;
 
-    width:145px;
+    width: 145px;
     border-radius: 11px;
     background-color: #76c38f;
     font-size: 13px;
@@ -37,6 +41,7 @@
 .names{
  padding-left: 10px;
  font-style: oblique;
+ color: white;
 
 }
 .rows{
@@ -47,7 +52,7 @@
 //  font-family: "sans-serif";
   font-style: italic;
   line-height: 12px;
-  color: black;
+  color: white;
   font-size: 20px;
 
 }

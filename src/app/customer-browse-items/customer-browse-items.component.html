@@ -18,7 +18,7 @@
 <mat-list>
   <div *ngIf="currentCategory == 'business'">
     <p> Numer Of Result is {{ users.length }} </p>
-    <mat-list-item class="search-result" *ngFor="let user of users">{{ user.name }} ---> {{ user.ownerName }} ---> {{ user.phoneNumber }} 
+    <mat-list-item class="search-result" *ngFor="let user of users">{{ user.name }} ---> {{ user.ownerName }} ---> {{ user.phoneNumber }}
         <button mat-stroked-button style="background-color: white;color: black;margin-left: 200px">Following</button>
     </mat-list-item>
     <mat-divider></mat-divider>
@@ -29,10 +29,10 @@
           <button mat-mini-fab style="margin-left: 200px">
               <mat-icon aria-label="Example icon-button with a heart icon">local_grocery_store</mat-icon>
             </button>
-        
+
       </mat-list-item>
-      
-    <mat-divider></mat-divider> 
-    
+
+    <mat-divider></mat-divider>
+
   </div>
 </mat-list>
