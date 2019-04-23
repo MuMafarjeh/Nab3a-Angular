@@ -30,6 +30,7 @@ export class CustomerBrowseItemsComponent implements OnInit {
 
   ngOnInit() {
     this.getMyCategory();
+    
   }
 
   async getMyCategory() {

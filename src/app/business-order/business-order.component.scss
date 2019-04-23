@@ -8,14 +8,28 @@ mat-form-field {
   margin-left: 10px;
 }
 .grid{
+//display: flex;
 display: grid;
-grid-gap: 22px;
+ grid-gap: 22px;
+ grid-template-columns: auto auto;
   padding: 10px;
    text-align: left;
 
 
 }
+
+.filter{
+  background: #76c38f ;
+}
+.result{
+ // background: rgb(63, 105, 221);
+  font-weight: bold;
+  font-style: italic;
+  font-size: 20px;
+
+}
 .title{
+  //flex: 50%;
    font-weight: bold;
     font-family: "sans-serif";
     font-style: italic;

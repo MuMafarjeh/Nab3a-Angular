@@ -18,9 +18,12 @@ export class OrderServiceService {
       this.firestore.collection("order").ref.get().then(function(querySnapshot) {
 
         querySnapshot.forEach(function(doc) {
-          let order = doc.data() as Order;
+          
+          var order = doc.data() as Order;
           order.id = doc.id;
-         orders.push(order);
+          order.TGDate = doc.data().timeGenerated.toDate();
+          order.TRDate = doc.data().timeReceiving.toDate();
+          orders.push(order);
 
         });
       });

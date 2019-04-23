@@ -2,32 +2,30 @@
   Orders page
 
 </p>
+<form [formGroup]="formDate">
 
-<mat-form-field class="example-full-width">
-  <input matInput [matDatepicker]="picker" placeholder="Choose Start Period" [(ngModel)]="serializedDate" >
-  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-  <mat-datepicker touchUi #picker ></mat-datepicker>
-</mat-form-field>
-<div>
+  <mat-form-field class="example-full-width">
+    <input matInput [matDatepicker]="picker" formControlName="fromDate" placeholder="Choose Start Period">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker touchUi #picker></mat-datepicker>
+  </mat-form-field>
 
-    {{serializedDate}}
+
+  <mat-form-field class="example-full-width">
+    <input matInput [matDatepicker]="pickerTo" formControlName="toDate" placeholder="Choose End Period">
+    <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+    <mat-datepicker touchUi #pickerTo></mat-datepicker>
+  </mat-form-field>
+
+  <!-- <button type="submit" (click)="filter()"> Check </button> -->
+  <button mat-raised-button  type="submit" (click)="filter()" class="filter">Check</button>
+</form>
+
+<p class="result"> Number Of Result = {{ orders.length }} </p>
+<div class="grid" >
+  <div class="tile" *ngFor="let order of orders">
+    <app-business-order-component [order]="order"> </app-business-order-component>
+  </div>
+
+  <!-- (deleteEvent)="deleteItem($event)" -->
 </div>
-
-<mat-form-field class="example-full-width">
-  <input matInput [matDatepicker]="pickerTo" placeholder="Choose End Period" >
-  <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
-  <mat-datepicker touchUi #pickerTo ></mat-datepicker>
-</mat-form-field>
-<!-- <div>
-
-  {{date1}}
-</div> -->
-
-<div class="grid" cols="1">
-    <div class="tile" *ngFor="let order of orders">
-        <app-business-order-component [order] ="order"> </app-business-order-component>
-      </div>
-
-      <!-- (deleteEvent)="deleteItem($event)" -->
-</div>
-

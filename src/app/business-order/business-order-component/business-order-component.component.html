@@ -1,8 +1,8 @@
-<div class="business-oeder" cols="1">
+<div class="business-oeder" cols="2">
 
 
       <div class="names">The name</div>
-      <div class="name rows"> {{ order.customerName | uppercase }}</div>
+      <div class="name rows"> {{ order.customerName  }}</div>
       <div class="names">The price</div>
       <div class="rows"> {{ order.price | currency:'ILS':'symbol':'1.1-1' }}</div>
       <div class="names">Date of order</div>

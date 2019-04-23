@@ -1,8 +1,8 @@
 import { Order } from './business-order-component/order';
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { OrderServiceService } from './business-order-component/order-service.service';
-import { Item } from '../item/item';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-business-order',
@@ -11,25 +11,37 @@ import { Item } from '../item/item';
 })
 export class BusinessOrderComponent implements OnInit {
 
-    date = new FormControl(new Date());
-    serializedDate = new FormControl((new Date()).toDateString());
+  formDate: FormGroup = new FormGroup({
+    fromDate: new FormControl(''),
+    toDate: new FormControl(''),
+  });
 
-    endperiod = new FormControl(new Date());
-    serializedDate1 = new FormControl((new Date()).toISOString());
+  date = new FormControl(new Date());
+
+  serializedDate = new FormControl((new Date()).toISOString());
 
   constructor(private orderService: OrderServiceService) { }
- orders :Order[];
-//  item:Item[];
+  orders: Order[];
+
+  copyOrders: Order[];
+
+  ordersFilter: Order[] = [];
+
   ngOnInit() {
     this.orders = this.orderService.getOrder();
-   // this.orders = this.orderService.getOrderbyDAte(date,endperiod);
-    // this.item = this.orderService.getProducts(Order.id);
-
-   // this.serializordersedDate;
-
+    this.copyOrders = this.orders;
   }
-  // public onDate(event): void {
-  //   this.roomsFilter.date = event;
-  //   this.getData(this.roomsFilter.date);
-  // }
+  filter() {
+    this.ordersFilter = [];
+    this.copyOrders.forEach(element => {
+      var fromDate = element.TGDate;
+      var toDate = element.TRDate;
+      if ((fromDate.getTime() >= this.formDate.controls['fromDate'].value.getTime()) && (fromDate.getTime() <= this.formDate.controls['toDate'].value.getTime())) {
+        this.ordersFilter.push(element);
+      }
+    });
+
+    this.orders = this.ordersFilter;
+  }
+
 }
