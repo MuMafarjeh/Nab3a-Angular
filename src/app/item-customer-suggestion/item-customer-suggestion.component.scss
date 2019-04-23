@@ -7,91 +7,90 @@ $height: 80px;
 
 $item-font-color: white;
 
-// .item-card
-// {
+.item-card
+{
 
-//     color: $item-font-color;
+    color: $item-font-color;
 
-//     transition: background-color 0.4s, height 0.2s, box-shadow 0.3s;
+    transition: background-color 0.4s, height 0.2s, box-shadow 0.3s;
 
-//     :hover
-//     {
-//         cursor: pointer;
-//     }
+    :hover
+    {
+        cursor: pointer;
+    }
 
-//     display: flex;
-//     flex-direction: row;
-//     justify-content: space-between;
-//     text-align: start;
-//     word-wrap: normal;
-//     background-color: $color-main;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: start;
+    word-wrap: normal;
+    background-color: $color-main;
 
-//     height: $height;
+    height: $height;
 
-//     border: 2px;
-//     // border-radius: 4px;
-//     align-content: stretch;
+    border: 2px;
+    // border-radius: 4px;
+    align-content: stretch;
 
-//     box-shadow: 5px 5px 20px 0px rgba(31, 31, 31, 0.5);
+    box-shadow: 5px 5px 20px 0px rgba(31, 31, 31, 0.5);
 
-    // .name
-    // {
-    //     font-weight: 520;
-    // }
+    .name
+    {
+        font-weight: 520;
+    }
 
-    // .category
-    // {
-    //     font-family: 'Calibri';
-    //     font-style: italic;
-    // }
+    .category
+    {
+        font-family: 'Calibri';
+        font-style: italic;
+    }
 
-    // .edit
-    // {
-    //     display: flex;
-    //     flex-direction: column;
-    //     justify-content: space-between;
-    // }
+    .edit
+    {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
 
     .text-content
     {
-      display: flex;
-      flex-wrap: nowrap;
+
+
         padding: 14px;
-        // flex-grow: 1;
+        flex-grow: 1;
         color: white;
     }
 
-    // .actions
-    // {
-    //     padding: 14px 14px 14px 0;
-    //     display: flex;
-    //     flex-direction: column;
-    //     justify-content: flex-start;
-    // }
+    .actions
+    {
+        padding: 14px 14px 14px 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
 
     .image
     {
-        // flex-grow: 1;
-        // order: -1;
-        display: flex;
-        flex-wrap: nowrap;
+        flex-grow: 1;
+        order: -1;
+
         background-color: rgba(0, 0, 0, 0.267);
 
         height: 100%;
         width: $height;
         max-width: $height;
         max-height:100%;
-       // vertical-align: middle;
-        // img{
-        //     object-fit: cover;
-        //     width: 100%; /* Here you can use wherever you want to specify the width and also the height of the <img>*/
-        //     height: 100%;
-        // }
+       vertical-align: middle;
+        img{
+            object-fit: cover;
+            width: 100%; /* Here you can use wherever you want to specify the width and also the height of the <img>*/
+            height: 100%;
+        }
     }
-//}
+}
 
-// .item-card:hover
-// {
-//     background-color: $color-hover;
-//     box-shadow: 20px 20px 40px 0px rgba(0,0,0,0.5);
-// }
+.item-card:hover
+{
+    background-color: $color-hover;
+    box-shadow: 20px 20px 40px 0px rgba(0,0,0,0.5);
+}
