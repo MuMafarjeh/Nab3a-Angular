@@ -17,6 +17,7 @@ import { HomePageCustomerComponent } from './home-page-customer/home-page-custom
 import { CustomerBrowseItemsComponent } from './customer-browse-items/customer-browse-items.component';
 import { CustomerNotificationPageComponent } from './customer-notification-page/customer-notification-page.component';
 import { CustomerCartPageComponent } from './customer-cart-page/customer-cart-page.component';
+import { Globals } from './globals';
 
 
 const routes: Routes = [
@@ -24,7 +25,7 @@ const routes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactComponent},
   {
-    path: 'items', component: ItemsPageComponent,
+    path: `${Globals.MyStoreRoute}`, component: ItemsPageComponent,
     canActivate: [BusinessGuard]
   },
   { 
@@ -57,11 +58,18 @@ const routes: Routes = [
   },
   { path: 'business-order', component: BusinessOrderComponent },
 
-  { path: 'item/:id', component: ItemCustomerPageComponent }
+  { 
+    path: 'item/:id', component: ItemCustomerPageComponent,
+    runGuardsAndResolvers: 'paramsChange'
+  }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, 
+    {
+      onSameUrlNavigation: 'reload'
+    })
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

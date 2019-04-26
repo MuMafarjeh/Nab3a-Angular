@@ -1,3 +1,5 @@
+import { UtilityService } from './../services/utility.service';
+import { AuthService } from './../auth/auth.service';
 import { Router } from '@angular/router';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Item } from './item';
@@ -28,11 +30,16 @@ export class ItemComponent implements OnInit {
   @Output()
   deleteEvent: EventEmitter<any> = new EventEmitter();
 
+  @Output()
+  hasAdded: EventEmitter<Item> = new EventEmitter(); 
+
+  @Input()
   isEdit: boolean = false;
 
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer,
     private bottomSheet: MatBottomSheet, private snackBar: MatSnackBar,
     private formBuilder: FormBuilder, private itemsService: ItemsService,
+    private authService: AuthService
     )
   {
     iconRegistry.addSvgIcon(
@@ -49,20 +56,37 @@ export class ItemComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(this.isNew)
+    {
+      if(this.item.price == null)
+        this.item.price = 1;
+      if(this.item.stock == null)
+        this.item.stock = 1;
+
+      this.form = this.formBuilder.group({
+        // name: [this.item.name? this.item.name : "Name", Validators.required],
+        price: [this.item.price? this.item.price : "1", [Validators.required, Validators.pattern('[1-9][0-9]{0,3}')]],
+        stock: [this.item.stock? this.item.stock : "2", [Validators.required, Validators.pattern('[0-9]{1,4}')]]
+      });
+    }
   }
 
   ngAfterViewInit() {
-     this.form = this.formBuilder.group({
-      name: [this.item.name? this.item.name : "Name", Validators.required],
-      price: [this.item.price? this.item.price : "1", [Validators.required, Validators.pattern('[1-9][0-9]{0,3}')]],
-      stock: [this.item.stock? this.item.stock : "2", [Validators.required, Validators.pattern('[0-9]{1,4}')]]
-    });
+    if(!this.isNew)
+    {
+      this.form = this.formBuilder.group({
+        // name: [this.item.name? this.item.name : "Name", Validators.required],
+        price: [this.item.price? this.item.price : "1", [Validators.required, Validators.pattern('[1-9][0-9]{0,3}')]],
+        stock: [this.item.stock? this.item.stock : "2", [Validators.required, Validators.pattern('[0-9]{1,4}')]]
+      });
+    }
+
   }
 
-  getErrorName()
-  {
-    return this.form.controls['name'].hasError('required') ? 'Name is required' : '';
-  }
+  // getErrorName()
+  // {
+  //   return this.form.controls['name'].hasError('required') ? 'Name is required' : '';
+  // }
 
   getErrorPrice()
   {
@@ -83,25 +107,35 @@ export class ItemComponent implements OnInit {
     this.isEdit = true;
   }
 
-  btnOnSave()
-  {
-    this.onEnter();
-  }
-
-  onEnter()
+  async btnOnSave()
   {
     if(this.form.invalid)
     {
       return;
     }
 
-    this.isEdit = false;
-
-    this.item.name = this.form.controls['name'].value;
     this.item.price = this.form.controls['price'].value;
     this.item.stock = this.form.controls['stock'].value;
 
-    this.itemsService.updateItem(this.item);
+    if(!this.isNew)
+    {
+      this.isEdit = false;
+
+      await this.itemsService.updateItem(this.item);
+    }
+    else
+    {
+      this.item = UtilityService.removeExtraAttributesAlgolia(this.item);
+
+      this.item = await this.itemsService.addInventoryItem(this.item);
+
+      this.hasAdded.emit(this.item);
+    }
+  }
+
+  onEnter()
+  {
+    this.btnOnSave()
   }
 
   btnOnDelete(item: Item)

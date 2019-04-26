@@ -6,6 +6,7 @@ $break-large: 1060px;
 $color-main: rgb(63, 105, 221);
 $color-hover: rgb(81, 140, 228);
 $color-edit: rgb(255, 219, 91);
+$color-field-title: rgb(255, 255, 255);
 $height-2col-main: 230px;
 $height-2col-hover: 250px;
 $height-1col-main: 280px;
@@ -44,6 +45,15 @@ $item-font-color: white;
     .name
     {
         font-weight: 520;
+    }
+
+    .data
+    {
+        margin-top: 2em;
+        margin-left: 1em;
+        display: grid;
+        gap: 2em;
+        grid-template-columns: 3em auto;
     }
 
     .category
@@ -95,6 +105,17 @@ $item-font-color: white;
             margin-top: 14px;
             align-self: flex-end;
         }
+    }
+
+    .field-title
+    {
+        font-weight: 520;
+        color: $color-field-title;
+    }
+
+    .rows
+    {
+        margin-left: 0.9em;
     }
 
     .image

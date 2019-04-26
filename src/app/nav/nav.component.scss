@@ -66,10 +66,12 @@ header {
     }
   }
 
-  ngx-page-click
+  .search-container
   {
     margin-left: 1.2em;
-    width: 90%;
+    width: 94%;
+    max-height: 22px;
+    max-width: 94%;
 
     grid-area: search;
   }

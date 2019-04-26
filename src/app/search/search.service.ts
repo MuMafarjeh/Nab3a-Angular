@@ -14,6 +14,7 @@ export class SearchService {
   private INVENTORY_ITEMS_INDEX = 'INVENTORY_ITEMS_INDEX'
   private STORES_INDEX = 'STORES_INDEX'
   private ALL_INDEX = 'ALL_INDEX'
+  private ITEMS_INDEX = 'ITEMS_INDEX'
 
   public getIsVerified;
   public static queryEmitter = new Subject<string>();
@@ -34,11 +35,11 @@ export class SearchService {
     }
   }
 
-  public get inventoryItemSearchConfig(): any
+  public get globalItemSearchConfig(): any
   {
     return {
       ...environment.algolia,
-      indexName: this.INVENTORY_ITEMS_INDEX,
+      indexName: this.ITEMS_INDEX,
       searchFunction(helper) {
         const query = helper.state.query;
         if(!SearchService.canSearch(query))

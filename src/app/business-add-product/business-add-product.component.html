@@ -24,7 +24,7 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field>
+    <!-- <mat-form-field>
       <input type="number" matInput placeholder="Enter The Price" min=1 oninput="validity.valid||(value='-');"
       formControlName="Price" required>
       <mat-error *ngIf="Price.invalid">{{getErrorMessage()}}</mat-error>
@@ -33,7 +33,7 @@
       <input type="number" matInput placeholder="Enter The Stock" min=0 oninput="validity.valid||(value='');"
       formControlName="Stock" required>
       <mat-error *ngIf="Stock.invalid">{{getErrorMessage()}}</mat-error>
-    </mat-form-field>
+    </mat-form-field> -->
 
     <div class="example-container1">
       <span class="span" *ngIf="message">{{message}}</span>

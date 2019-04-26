@@ -44,8 +44,9 @@ export class ItemsPageComponent implements OnInit {
       height: '94%'
     });
 
-    dialog.afterClosed().subscribe(result => {
-      console.log(result);
+    dialog.afterClosed().subscribe(item => {
+      if(item)
+        this.items.push(item)
     });
   }
 }

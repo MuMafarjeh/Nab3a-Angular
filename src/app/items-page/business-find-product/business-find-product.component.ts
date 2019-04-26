@@ -35,7 +35,7 @@ export class BusinessFindProductComponent implements OnInit {
 
   get searchConfig()
   {
-    return this.searchService.inventoryItemSearchConfig;
+    return this.searchService.globalItemSearchConfig;
   }
 
   showResults: boolean = false;
@@ -52,7 +52,7 @@ export class BusinessFindProductComponent implements OnInit {
   onClickItem(item)
   {
     this.clickedItem = item;
-    console.log(`clicked item: ${this.clickedItem}`);
+    // console.log(`clicked item: ${this.clickedItem}`);
     this.showResults = false;
     // this.MatDialogRef.close();
   }
@@ -61,4 +61,15 @@ export class BusinessFindProductComponent implements OnInit {
   {
     this.showResults = true;
   }
+
+  addedNewItem(item: Item)
+  {
+    this.MatDialogRef.close(item);
+  }
+
+  addProductClicked()
+  {
+    this.MatDialogRef.close(null);
+  }
+
 }
