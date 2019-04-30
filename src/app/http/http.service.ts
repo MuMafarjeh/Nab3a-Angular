@@ -16,7 +16,7 @@ export class HttpService {
 
   async registerUser(userInfo: any): Promise<string>
   {
-    console.log("before register called")
+    // console.log("before register called")
     userInfo.emailVerified = false;
     return await this.registerUserCallable(userInfo).toPromise();
   }

@@ -7,8 +7,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth'
 import { User } from  'firebase';
 import { Subject } from 'rxjs';
-import { Router, UrlTree, ActivatedRoute, UrlSegment } from '@angular/router';
-import { LoadingControllerService } from '../loading-controller.service';
+import { Router } from '@angular/router';
 import { UserDelivery } from '../user/userdelivery';
 
 @Injectable({
@@ -19,13 +18,16 @@ export class AuthService{
   private _userData: UserCustomer | UserBusiness | UserDelivery;
 
   private previousURL: string;  
+  private static instance: AuthService;
+
+  public doneLoadingUserAuth = new Subject<boolean>();
 
   constructor(private auth: AngularFireAuth, private router: Router, 
-    private userService: UserService, private httpService: HttpService,
-    private loading: LoadingControllerService, private location: Location) 
+    private userService: UserService, private httpService: HttpService, private location: Location) 
   { 
+    AuthService.instance = this;
 
-    loading.doneLoadingUserAuth.next(false);
+    this.doneLoadingUserAuth.next(false);
 
     this.previousURL = this.location.path(true);
 
@@ -53,12 +55,11 @@ export class AuthService{
         {
           this.router.navigate(["/"]);
         }
-        this.loading.doneLoadingUserAuth.next(true);
+        this.doneLoadingUserAuth.next(true);
       }
       else //not logged in
       {
-        const anon = await this.anonymousLogin();
-        console.log(anon);
+        // console.log(anon);
       }
     }, (error) =>
     {
@@ -153,10 +154,15 @@ export class AuthService{
 
   public get userID(): string
   {
-    if(this.isLoggedIn)
+    // if(this.isLoggedIn)
       return this._user.uid;
-    else
-      return '';
+    // else
+    //   return '';
+  }
+
+  public static getUserID()
+  {
+    return AuthService.instance.userID;
   }
 
   //////////////////////////////////////
@@ -164,7 +170,6 @@ export class AuthService{
   public async register(user, password: string) 
   {
     user.password = password;
-    let emailLink = await this.httpService.registerUser(user);
     await this.auth.auth.signInWithEmailAndPassword(user.email, password);
     await this.sendEmailVerification();
     // this.router.navigate(['/']);
@@ -172,7 +177,7 @@ export class AuthService{
 
   public async login(email: string, password: string) 
   {
-    this.loading.doneLoadingUserAuth.next(false);
+    this.doneLoadingUserAuth.next(false);
 
     try
     {
@@ -206,7 +211,7 @@ export class AuthService{
 
   public async logout(){
     this.previousURL = this.router.url;
-    this.loading.doneLoadingUserAuth.next(false);
+    this.doneLoadingUserAuth.next(false);
     
     this.router.navigate(['/']).then(async () => 
     {

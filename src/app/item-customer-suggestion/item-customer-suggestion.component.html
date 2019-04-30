@@ -14,6 +14,12 @@
         <div class="rows">{{ item.price | currency:'ILS':'symbol':'1.1-1' }}</div>
       </div>
 
+      <div class="data right-side" *ngIf="!isEdit && displayMoreInfo">
+        <div class="name rows">{{ item.businessName }}</div>
+        <div class="category rows">{{ item.city | uppercase }}</div>
+        <div class="category rows">{{ item.locationDescription | uppercase }}</div>
+      </div>
+
     </div>
 
     <div *ngIf="item.image"  class="image">

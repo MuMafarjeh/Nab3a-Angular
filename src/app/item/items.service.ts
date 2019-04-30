@@ -72,6 +72,7 @@ export class ItemsService {
 
     return item;
   }
+
   public async getProductsByCategory(categoryName) {
     var items = [];
     await this.firestore.collection("inventory_item").ref.where("category", "==", categoryName).get().then(
@@ -96,4 +97,16 @@ export class ItemsService {
     return addedItem;
   }
 
+  public async getInventoryItemsOfBusiness(businessID: string) {
+    var items = [];
+    await this.firestore.collection("inventory_item").ref.where("businessID", "==", businessID).get().then(
+      function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          let item = doc.data() as Item;
+          item.id = doc.id;
+          items.push(item);
+        });
+      });
+    return items;
+  }
 }

@@ -1,6 +1,6 @@
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgModule } from '@angular/core';
-import {MatButtonModule, MatCheckboxModule, MatAutocompleteModule, MatExpansionModule} from '@angular/material';
+import {MatButtonModule, MatCheckboxModule, MatAutocompleteModule, MatExpansionModule, MatSidenavModule} from '@angular/material';
 import {MatCardModule} from '@angular/material/card';
 import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
@@ -48,7 +48,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
         MatExpansionModule,
         MatListModule,
         MatDividerModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        MatSidenavModule
     ],
     exports: [
         MatButtonModule,
@@ -76,7 +77,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
         MatExpansionModule,
         MatListModule,
         MatDividerModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        MatSidenavModule
     ]
 })
 export class MaterialModule{

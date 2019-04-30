@@ -10,7 +10,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 export class OrderServiceService {
 
   constructor(private firestore: AngularFirestore) { }
-
+  
+    // TODO - Muayed: get orders with type == 'order' only, because the type can be 'cart' too
     public getOrder(): Order[]
     {
       var orders = [];

@@ -8,4 +8,5 @@ export interface UserBusiness
   city: string;
   locationDescription: string;
   type: string;
+  image: string;
 }

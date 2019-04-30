@@ -1,14 +1,33 @@
+import { AuthService } from './auth/auth.service';
+import { CartService } from './services/cart.service';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoadingControllerService {
 
-  public doneLoadingUserAuth = new Subject<boolean>();
+  public doneLoading = new Subject<boolean>();
 
-  constructor() { 
-    this.doneLoadingUserAuth.next(false);
+  private cartSubscription: Subscription;
+  private userAuthSubscription: Subscription;
+
+  constructor(private authService: AuthService, private cartService: CartService) { 
+    this.cartService.doneLoadingCart.next(false);
+
+    this.userAuthSubscription = this.authService.doneLoadingUserAuth.subscribe(async (done) => 
+    {
+      if(done)
+      { 
+        await this.cartService.getCartsForUser(this.authService.userID);
+        this.doneLoading.next(true);
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.cartSubscription.unsubscribe();
+    this.userAuthSubscription.unsubscribe();
   }
 }

@@ -1,3 +1,4 @@
+import { UserBusiness } from './../user/userbusiness';
 import { AuthService } from './../auth/auth.service';
 import { ItemsService } from './../item/items.service';
 import { Item } from './../item/item';
@@ -44,7 +45,7 @@ export class BusinessAddProductComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private itemService: ItemsService , private storage: StorageService
     , private authService: AuthService, private router: Router) 
     {
-      console.log(authService.userID);
+      // console.log(authService.userID);
     }
 
 
@@ -108,6 +109,11 @@ export class BusinessAddProductComponent implements OnInit {
     this.data.name = this.addProductForm.get('Name').value;
     this.data.barcode = this.addProductForm.get('Barcode').value;
     this.data.category = this.addProductForm.get("CategoryControl").value;
+
+    const userData = (this.authService.userData as UserBusiness);
+
+    this.data.city = userData.city;
+    this.data.locationDescription = userData.locationDescription;
     // this.data.price = this.addProductForm.get('Price').value;
     // this.data.stock = this.addProductForm.get('Stock').value;
     this.data.type = 'product';

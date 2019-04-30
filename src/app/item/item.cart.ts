@@ -1,4 +1,4 @@
-export interface Item
+export interface ItemCart
 {
     objectID: string;
     id: string;
@@ -7,6 +7,9 @@ export interface Item
 
     businessName: string;
     businessID: string;
+
+    customerName: string;
+    customerID: string;
 
     price: number;
     currency: string;
