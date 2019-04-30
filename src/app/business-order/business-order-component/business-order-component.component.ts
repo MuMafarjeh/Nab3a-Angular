@@ -38,7 +38,7 @@ get width() {
     //  data: {currency: this.currency, finalPrice: this.finalPrice, name:this.name,quantity:this.quantity }
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      // console.log('The dialog was closed');
 
     });
   }

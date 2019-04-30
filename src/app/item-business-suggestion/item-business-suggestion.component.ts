@@ -6,20 +6,17 @@ import { ItemsService } from '../item/items.service';
 import { Item } from '../item/item';
 
 @Component({
-  selector: 'app-item-customer-suggestion',
-  templateUrl: './item-customer-suggestion.component.html',
-  styleUrls: ['./item-customer-suggestion.component.scss']
+  selector: 'app-item-business-suggestion',
+  templateUrl: './item-business-suggestion.component.html',
+  styleUrls: ['./item-business-suggestion.component.scss']
 })
-export class ItemCustomerSuggestionComponent implements OnInit {
+export class ItemBusinessSuggestionComponent implements OnInit {
 
   @Input()
   item: Item;
 
   @Output()
-  closeResults = new EventEmitter();
-
-  @Input()
-  displayMoreInfo: boolean = true;
+  onClickItem = new EventEmitter<Item>();
 
   isEdit: boolean = false;
 
@@ -27,14 +24,17 @@ export class ItemCustomerSuggestionComponent implements OnInit {
      private itemsService: ItemsService, private router: Router
     )
   {
-  }
-  
-  ngOnInit() {
+
   }
 
-  async onClick()
-  {
-    await this.router.navigate([`item/${this.item.id}`]);
-    this.closeResults.emit();
+  ngOnInit() {
+
   }
+
+  onClick()
+  {
+    // console.log(`clicked item suggestion: ${this.item.name}`)
+    this.onClickItem.emit(this.item);
+  }
+
 }

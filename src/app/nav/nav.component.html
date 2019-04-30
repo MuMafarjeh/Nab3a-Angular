@@ -30,12 +30,16 @@
       <ais-instantsearch class="searchBar overflowVisible" [config]="searchConfig">
         <ais-search-box placeholder='Search for anything...' [searchAsYouType]="false"
           [autofocus]="true" (click)="searchSubmit($event)"></ais-search-box>
-        
+
         <ais-hits *ngIf="showResults"  class="overflowVisible">
           <ng-template let-hits="hits" class="dropdown" class="overflowVisible" >
             <div *ngFor="let hit of hits" >
-              <app-item-customer-suggestion class="dropdown-content" [item]="hit" (closeResults)="closeResults()"> {{hit.name}} </app-item-customer-suggestion>
-      
+              <div *ngIf="hit.type != 'business'" >
+                <app-item-customer-suggestion class="dropdown-content" [item]="prepareItem(hit)" (closeResults)="closeResults()"></app-item-customer-suggestion>
+              </div>
+              <div *ngIf="hit.type == 'business'" >
+                <app-item-customer-suggestion class="dropdown-content" [item]="prepareItem(hit)" (closeResults)="closeResults()"></app-item-customer-suggestion>
+              </div>
             </div>
           </ng-template>
         </ais-hits>

@@ -35,16 +35,15 @@ a {
   width: 96%;
   margin: 0 auto;
   padding: 1.3em;
-  display: grid;
-  
+
+  display: grid; 
+  grid-gap: 1.3em;
   grid-template-rows: 1fr 1fr;
   grid-template-columns: auto;
   grid-template-areas:
     "nav-buttons nav-buttons nav-buttons title"
-    "search search user title"
-    ;
-
-  grid-gap: 1.3em;
+    "search search user title";
+  
 
   a {
     color: white;

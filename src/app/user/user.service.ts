@@ -1,7 +1,10 @@
+import { UserDelivery } from './userdelivery';
+import { UserCustomer } from './usercustomer';
 import { User } from './user';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
+import { UserBusiness } from './userbusiness';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +26,23 @@ export class UserService {
   getUser(userID: string) {
     // return this.firestore.collection<User>("user", ref => ref.where('userID', '==', userID)).get();
     return this.firestore.doc<User>(`/user/${userID}`).get();
+  }
+
+  async getUser2(userID: string): Promise<UserBusiness | UserCustomer | UserDelivery | User> 
+  {
+    const userDoc = await this.firestore.doc<User>(`/user/${userID}`).get().toPromise();
+
+    const data = userDoc.data();
+    data.id = userDoc.id;
+
+    if(data.type == 'business')
+      return data as UserBusiness;
+    else if(data.type == 'customer')
+      return data as UserCustomer;
+    else if(data.type == 'delivery')
+      return data as UserDelivery;
+    else 
+      return data as User;
   }
 
   createUser(user: User) {

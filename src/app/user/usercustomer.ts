@@ -5,4 +5,5 @@ export interface UserCustomer
   phoneNumber: number;
   email: string;
   type: string;
+  image: string;
 }

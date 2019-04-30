@@ -57,6 +57,16 @@ $item-font-color: white;
         padding: 14px;
         flex-grow: 1;
         color: white;
+
+        display: flex;
+        justify-content: space-between;
+
+        .right-side
+        {
+            text-align: end;
+        }
+
+        margin-top: -8px;
     }
 
     .actions
