@@ -40,7 +40,7 @@ export class BusinessAddProductComponent implements OnInit {
   Image= new FormControl('', [Validators.required]);
 
   constructor(private formBuilder: FormBuilder, private itemService: ItemsService , private storage: StorageService
-    , private authService: AuthService) 
+    , private authService: AuthService)
     {
       console.log(authService.userID);
     }
@@ -67,13 +67,13 @@ export class BusinessAddProductComponent implements OnInit {
         this.Stock.hasError('Stock') ? 'Not a valid Stock' :
             '';
   }
-  getErrorMessageImage() {
+  // getErrorMessageImage() {
 
 
-    return this.Image.hasError('required') ? 'You must enter a Image' :
-        this.Image.hasError('Image') ? 'Not a valid Image' :
-            '';
-  }
+  //   return this.Image.hasError('required') ? 'You must enter a Image' :
+  //       this.Image.hasError('Image') ? 'Not a valid Image' :
+  //           '';
+  // }
   ngOnInit() {
 
   this.categories = this.itemService.getCategory();
