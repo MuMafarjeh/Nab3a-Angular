@@ -6,7 +6,5 @@
 <app-nav *ngIf="doneLoading" ></app-nav>
 
 <section *ngIf="doneLoading" >
-  <router-outlet (activate)="setRoutedComponent($event)"></router-outlet>
+  <router-outlet></router-outlet>
 </section>
-
-

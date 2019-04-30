@@ -17,22 +17,21 @@
 
 <mat-list>
   <div *ngIf="currentCategory == 'business'">
-    <p> Numer Of Result is {{ users.length }} </p>
+    <div class="Result">
+      <p> Results : {{ users.length }} </p>
+    </div>
     <mat-list-item class="search-result" *ngFor="let user of users">{{ user.name }} ---> {{ user.ownerName }} ---> {{ user.phoneNumber }}
-        <button mat-stroked-button style="background-color: white;color: black;margin-left: 200px">Following</button>
+      <button mat-stroked-button style="background-color: white;color: black;margin-left: 200px">Following</button>
     </mat-list-item>
     <mat-divider></mat-divider>
   </div>
   <div *ngIf="currentCategory == 'product'">
-      <p> Numer Of Items is {{ items.length }} </p>
-      <mat-list-item class="search-result" *ngFor="let item of items">{{ item.name }} ---> {{ item.businessName }} ---> {{ item.price }}
-          <button mat-mini-fab style="margin-left: 200px">
-              <mat-icon aria-label="Example icon-button with a heart icon">local_grocery_store</mat-icon>
-            </button>
-
-      </mat-list-item>
-
-    <mat-divider></mat-divider>
-
+    <div class="Result">
+      <p> Results : {{ items.length }} </p>
+    </div>
+    <div *ngFor="let item of items">
+      <app-item-customer-suggestion [item]="item"></app-item-customer-suggestion>
+      <hr>
+    </div>
   </div>
 </mat-list>

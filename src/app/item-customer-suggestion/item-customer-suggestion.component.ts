@@ -31,9 +31,6 @@ export class ItemCustomerSuggestionComponent implements OnInit {
 
   async onClick()
   {
-    // if(!this.item.id && this.item.objectID)
-    //   this.item.id = this.item.objectID;
-
     await this.router.navigate([`item/${this.item.id}`]);
     this.closeResults.emit();
   }

@@ -46,6 +46,10 @@ header {
     color: white;
   }
 
+  .logo {
+    font-weight: bold;
+  }
+
   nav.buttons
   {
     justify-self: left;
@@ -66,12 +70,10 @@ header {
     }
   }
 
-  .search-container
+  ngx-page-click
   {
     margin-left: 1.2em;
-    width: 94%;
-    max-height: 22px;
-    max-width: 94%;
+    width: 90%;
 
     grid-area: search;
   }

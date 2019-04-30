@@ -27,6 +27,7 @@ export class BusinessNotificationsComponent implements OnInit {
 
   getMyNotifications() {
     this.notifications = this.notifService.getMyNotifications();
+    
   }
 
 }

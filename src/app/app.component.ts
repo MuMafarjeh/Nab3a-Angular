@@ -4,7 +4,6 @@ import { LoadingControllerService } from './loading-controller.service';
 import { Component } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
-import { Refreshable } from './services/refreshable';
 
 
 @Component({
@@ -24,13 +23,6 @@ export class AppComponent {
     {
       this.doneLoading = doneLoading;
     })
-  }
-
-  //Get ahold of the current component
-  private routedComponent: Refreshable;
-
-  public setRoutedComponent(componentRef: Refreshable){
-    this.routedComponent = componentRef;
   }
 
 }

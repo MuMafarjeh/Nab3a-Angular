@@ -39,7 +39,6 @@ import { BusinessOrderComponentComponent } from './business-order/business-order
 import { MyDialogComponent } from './business-order/business-order-component/my-dialog/my-dialog.component';
 import { NgAisModule } from 'angular-instantsearch';
 import { ItemCustomerSuggestionComponent } from './item-customer-suggestion/item-customer-suggestion.component';
-import { ItemBusinessSuggestionComponent } from './item-business-suggestion/item-business-suggestion.component';
 import {NgxPageClickModule} from 'ngx-page-click';
 import { ItemCustomerPageComponent } from './item-customer-page/item-customer-page.component'
 import { AuthService } from './auth/auth.service';
@@ -48,13 +47,11 @@ import { HomePageCustomerComponent } from './home-page-customer/home-page-custom
 import { CustomerBrowseItemsComponent } from './customer-browse-items/customer-browse-items.component';
 import { CustomerNotificationPageComponent } from './customer-notification-page/customer-notification-page.component';
 import { CustomerCartPageComponent } from './customer-cart-page/customer-cart-page.component';
-import { BusinessFindProductComponent } from './items-page/business-find-product/business-find-product.component';
 
 @NgModule({
   entryComponents: [
     ItemDeleteSnackbarComponent,
     MyDialogComponent,
-    BusinessFindProductComponent
   ],
   declarations: [
     AppComponent,
@@ -82,8 +79,6 @@ import { BusinessFindProductComponent } from './items-page/business-find-product
     CustomerBrowseItemsComponent,
     CustomerNotificationPageComponent,
     CustomerCartPageComponent,
-    BusinessFindProductComponent,
-    ItemBusinessSuggestionComponent
   ],
   imports: [
     FormsModule,

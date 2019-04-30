@@ -24,5 +24,18 @@ export class NotificationsService {
 
     return notifications;
   }
+  //notification For Customer /*
+  /*
+  public getMyNotificationCustomer()
+  {
+    var notifications = [];
+    this.firestore.collection("notificationLog").ref.where("toID","==",'').get().then(
+      function (querySnapshot){
+        querySnapshot.forEach(function (doc){
+
+        })
+      }
+    )
+  }*/
 
 }
