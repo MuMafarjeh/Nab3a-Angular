@@ -129,7 +129,7 @@ function inventoryItemObject(data: any): any
 }
 
 /////////////////////
-///Inventory item iin ALL_INDEX
+///Inventory item in ALL_INDEX
 /////////////////////
 exports.ALL_INDEX_addInventoryItem = functions.firestore
     .document('inventory_item/{itemID}')
@@ -137,8 +137,6 @@ exports.ALL_INDEX_addInventoryItem = functions.firestore
     {
         const data = inventoryItemObject(snapshot.data());
         const objectID = snapshot.id;
-    
-        
 
         //Add data to algolia index
         return all_index.addObject
@@ -155,6 +153,25 @@ exports.ALL_INDEX_removeInventoryItem = functions.firestore
         const objectID = snapshot.id;
         return all_index.deleteObject(objectID);
     });
+
+exports.ALL_INDEX_updateInventoryItem = functions.firestore
+    .document('inventory_item/{itemID}')
+    .onUpdate((change, context) => 
+    {
+        if(change.after)
+        {
+            const objectID = change.after.id;
+            const data = change.after.data();
+
+            return all_index.saveObject
+            ({
+                objectID,
+                ...data
+            })
+        }
+        else
+            return null;
+    })  
 
 exports.ALL_INDEX_admin_duplicateInventoryItems = functions.https.onRequest(async (req, resp) => {
     if(!req.query || !req.query.pincode || req.query.pincode !== adminPinCode)
@@ -219,6 +236,25 @@ exports.ALL_INDEX_removeBusiness = functions.firestore
         return all_index.deleteObject(objectID);
     });
 
+exports.ALL_INDEX_updateBusiness = functions.firestore
+    .document('user/{userID}')
+    .onUpdate((change, context) => 
+    {
+        if(change.after)
+        {
+            const objectID = change.after.id;
+            const data = change.after.data();
+
+            return all_index.saveObject
+            ({
+                objectID,
+                ...data
+            })
+        }
+        else
+            return null;
+    });
+
 exports.ALL_INDEX_admin_duplicateBusiness = functions.https.onRequest(async (req, resp) => {
     if(!req.query || !req.query.pincode || req.query.pincode !== adminPinCode)
     {
@@ -258,6 +294,48 @@ exports.ALL_INDEX_admin_duplicateBusiness = functions.https.onRequest(async (req
 /////////////////////
 ///Global Items
 /////////////////////
+exports.ITEM_INDEX_addItem = functions.firestore
+    .document('item/{itemID}')
+    .onCreate((snapshot, context) => 
+    {
+        const data = snapshot.data();
+        const objectID = snapshot.id;
+
+        //Add data to algolia index
+        return items_index.addObject
+        ({
+            objectID,
+            ...data
+        })
+    });
+
+exports.ITEM_INDEX_removeItem = functions.firestore
+    .document('item/{itemID}')
+    .onDelete((snapshot, context) => 
+    {
+        const objectID = snapshot.id;
+        return items_index.deleteObject(objectID);
+    });
+
+exports.ITEM_INDEX_updateItem = functions.firestore
+    .document('item/{itemID}')
+    .onUpdate((change, context) => 
+    {
+        if(change.after)
+        {
+            const objectID = change.after.id;
+            const data = change.after.data();
+
+            return all_index.saveObject
+            ({
+                objectID,
+                ...data
+            })
+        }
+        else
+            return null;
+    });
+
 exports.ITEM_INDEX_admin_duplicateItems = functions.https.onRequest(async (req, resp) => {
     if(!req.query || !req.query.pincode || req.query.pincode !== adminPinCode)
     {

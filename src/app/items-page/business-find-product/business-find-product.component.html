@@ -1,0 +1,50 @@
+<div class="content">
+  <mat-dialog-content class="search-container">
+    <h1 matDialogTitle class="title">Search for product to add</h1>
+
+    <ngx-page-click
+      [disabled]="clickOutsideDisabled"
+      [outsideClickHandler]="closeResults"
+      [listenTo]="clickOutsideOn"
+    >
+      <ais-instantsearch class="searchBar overflowVisible" [config]="searchConfig">
+        <ais-search-box placeholder='Search for name or category...' [searchAsYouType]="false"
+          [autofocus]="true" (click)="searchSubmit($event)"></ais-search-box>
+        
+        <ais-hits *ngIf="showResults"  class="overflowVisible">
+          <ng-template let-hits="hits" class="dropdown" class="overflowVisible" >
+            <div *ngFor="let hit of hits" >
+
+              <app-item-business-suggestion class="dropdown-content"  
+                [item]="hit" (onClickItem)="onClickItem($event)"> 
+                     <!-- [ngClass]="itemSearchSuggestion" -->
+              </app-item-business-suggestion>
+      
+            </div>
+          </ng-template>
+        </ais-hits>
+      </ais-instantsearch>
+    </ngx-page-click>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+
+      <div class="clicked-item" *ngIf="clickedItem" >
+        <app-item [isNew]="true" [isEdit]="true" [item]="clickedItem" (hasAdded)="addedNewItem($event)"></app-item>
+      </div>
+      
+      <div class="horizontal-container">
+
+        <button mat-raised-button color="primary"  matDialogClose class="btn" > Cancel </button>
+                                <!-- [ngClass]="itemInsert" -->
+
+        <span> Can't find an item? 
+          <strong>
+            <a routerLink="/business-add-product" (click)="addProductClicked()" > Fill in a request here. </a>
+          </strong>
+        </span>
+
+      </div>
+  </mat-dialog-actions>
+</div>
