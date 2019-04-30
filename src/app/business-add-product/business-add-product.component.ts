@@ -41,7 +41,7 @@ export class BusinessAddProductComponent implements OnInit {
   Image= new FormControl('', [Validators.required]);
 
   constructor(private formBuilder: FormBuilder, private itemService: ItemsService , private storage: StorageService
-    , private authService: AuthService)
+    , private authService: AuthService) 
     {
       // console.log(authService.userID);
     }
