@@ -1,5 +1,7 @@
+import { AuthService } from './../../auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { UserCustomer } from 'src/app/user/usercustomer';
 
 @Component({
   selector: 'customer',
@@ -19,7 +21,7 @@ export class CustomerComponent implements OnInit {
     password: new FormControl('', [Validators.required,]),
     confiremPassword: new FormControl('', [Validators.required,]),
   })
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
   }
@@ -45,6 +47,29 @@ export class CustomerComponent implements OnInit {
     this.customerForm.reset();
   }
 
+  onSubmit()
+  {
+    if(this.customerForm.controls['confirempassword'].value 
+    != this.customerForm.controls['password'].value)
+    {
+      // this.passwordsNotMatch = true;
+      return;
+    }
+
+    // this.passwordsNotMatch = false;
+
+    let user = {} as UserCustomer;
+    
+    user.name = this.customerForm.controls['name'].value;
+    user.email = this.customerForm.controls['email'].value;
+    user.phoneNumber = `+97${this.customerForm.controls['phone'].value}`;
+    // user.city = this.customerForm.controls['city'].value;
+    user.locationDescription = this.customerForm.controls['location'].value; 
+    user.type = "customer";
+
+    // this.authService.register(user.email, this.customerForm.controls['password'].value);
+    this.authService.register(user, this.customerForm.controls['password'].value);
+  }
 
 
 }

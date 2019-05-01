@@ -1,7 +1,7 @@
 @import '~@angular/material/theming';
 
-$color-main: rgb(63, 105, 221);
-$color-hover: rgb(81, 140, 228);
+$color-main: rgb(171, 45, 196);
+$color-hover: rgb(206, 98, 228);
 $color-edit: rgb(255, 219, 91);
 $height: 80px;
 
@@ -29,11 +29,11 @@ $item-font-color: white;
     height: $height;
 
     border: 2px;
-    // border-radius: 4px;
+    // border-radius: 4px; 
     align-content: stretch;
 
     box-shadow: 5px 5px 20px 0px rgba(31, 31, 31, 0.5);
-
+   
     .name
     {
         font-weight: 520;
@@ -44,7 +44,7 @@ $item-font-color: white;
         font-family: 'Calibri';
         font-style: italic;
     }
-
+   
     .edit
     {
         display: flex;
@@ -57,16 +57,6 @@ $item-font-color: white;
         padding: 14px;
         flex-grow: 1;
         color: white;
-
-        display: flex;
-        justify-content: space-between;
-
-        .right-side
-        {
-            text-align: end;
-        }
-
-        margin-top: -8px;
     }
 
     .actions
@@ -83,12 +73,12 @@ $item-font-color: white;
         order: -1;
 
         background-color: rgba(0, 0, 0, 0.267);
-
+         
         height: 100%;
         width: $height;
         max-width: $height;
         max-height:100%;
-       vertical-align: middle;
+        vertical-align: middle;
         img{
             object-fit: cover;
             width: 100%; /* Here you can use wherever you want to specify the width and also the height of the <img>*/
@@ -102,3 +92,5 @@ $item-font-color: white;
     background-color: $color-hover;
     box-shadow: 20px 20px 40px 0px rgba(0,0,0,0.5);
 }
+
+

@@ -2,7 +2,7 @@
   <div class="nav-container grid">
     <nav class="buttons">
       <ul>
-        <li><a routerLink="/items" *ngIf="isBusiness && isVerified">My Store</a></li>
+        <li><a routerLink="/mystore" *ngIf="isBusiness && isVerified">My Store</a></li>
         <li><a routerLink="/business-order" *ngIf="isBusiness">Orders</a></li>
         <li><a routerLink="/home-page-customer" *ngIf="!isBusiness">Home Page</a></li>
         <li><a routerLink="/customer-browse-items" *ngIf="!isBusiness">Browse Products</a></li>
@@ -22,7 +22,7 @@
       <img src="assets/logo.png">
     </a>
 
-    <ngx-page-click
+    <ngx-page-click class="search-container"
       [disabled]="clickOutsideDisabled"
       [outsideClickHandler]="outsideClickHandler"
       [listenTo]="clickOutsideOn"
@@ -30,7 +30,7 @@
       <ais-instantsearch class="searchBar overflowVisible" [config]="searchConfig">
         <ais-search-box placeholder='Search for anything...' [searchAsYouType]="false"
           [autofocus]="true" (click)="searchSubmit($event)"></ais-search-box>
-
+        
         <ais-hits *ngIf="showResults"  class="overflowVisible">
           <ng-template let-hits="hits" class="dropdown" class="overflowVisible" >
             <div *ngFor="let hit of hits" >

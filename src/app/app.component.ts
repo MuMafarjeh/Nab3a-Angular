@@ -17,7 +17,7 @@ export class AppComponent {
   doneLoading: boolean = false;
   doneLoadingSubscription: Subscription;
 
-  constructor(private loading: LoadingControllerService, private authService: AuthService,
+  constructor(private loading: LoadingControllerService, private authService: AuthService, 
     private router: Router, private titleService: Title, private cartService: CartService)
   {
     console.log("start");
@@ -26,9 +26,6 @@ export class AppComponent {
       this.doneLoading = done;
     });
   }
-
-  //Get ahold of the current component
-
 
   ngOnDestroy() {
     this.doneLoadingSubscription.unsubscribe();

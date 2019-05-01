@@ -16,10 +16,9 @@ import { Subscription } from 'rxjs';
   templateUrl: './item-customer-page.component.html',
   styleUrls: ['./item-customer-page.component.scss']
 })
-export class ItemCustomerPageComponent implements OnInit {
+export class ItemCustomerPageComponent implements OnInit{
 
   item: Item;
-  navigationSubscription: Subscription;
   justLoaded: boolean = true;
   itemNotFound: boolean = false;
   otherItems: Item[];
@@ -30,11 +29,13 @@ export class ItemCustomerPageComponent implements OnInit {
   quantity: number = 1;
   quantityForm: FormGroup;
 
+  navigationSubscription: Subscription;
+
   constructor(private itemsService: ItemsService, private router: Router,
     iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private authService: AuthService,
     private userService: UserService, private formBuilder: FormBuilder,
-    private cartService: CartService)
-  {
+    private cartService: CartService) 
+  { 
     iconRegistry.addSvgIcon(
       'add-to-cart-icon',
       sanitizer.bypassSecurityTrustResourceUrl("assets/icons/add_to_cart_icon.svg"));
@@ -51,7 +52,7 @@ export class ItemCustomerPageComponent implements OnInit {
               // console.log("newBusiness", this.newBusiness);
               this.getItemsOfBusiness();
               if(this.newBusiness)
-              {
+              {  
                 this.getBusinessInfo();
               }
             }
@@ -70,7 +71,7 @@ export class ItemCustomerPageComponent implements OnInit {
       this.justLoaded = true;
   }
 
-  async ngOnInit()
+  async ngOnInit() 
   {
     this.itemID = this.router.url.split('/').pop();
     await this.getItemData(this.itemID);
@@ -84,7 +85,7 @@ export class ItemCustomerPageComponent implements OnInit {
 
   btnAddToCart()
   {
-    this.cartService.addInventoryItemToCart(this.item, this.quantityForm.get('quantity').value,
+    this.cartService.addInventoryItemToCart(this.item, this.quantityForm.get('quantity').value, 
       this.authService.userID);
   }
 
@@ -98,33 +99,33 @@ export class ItemCustomerPageComponent implements OnInit {
 
   async getItemData(itemID: string)
   {
-    await this.itemsService.getInventoryItem(itemID).then((item) =>
+    await this.itemsService.getInventoryItem(itemID).then((item) => 
     {
       if(!this.item)
         this.newBusiness = true;
       else if(this.item.businessID != item.businessID)
         this.newBusiness = true;
       else
-        this.newBusiness = false;
+        this.newBusiness = false;  
 
       this.item = item;
       this.itemNotFound = false;
       this.justLoaded = false;
-
-    }, (err) =>
+      
+    }, () =>
     {
       // console.log(err);
       this.itemNotFound = true;
       this.justLoaded = false;
       this.item = null;
-      this.newBusiness = false;
+      this.newBusiness = false;  
     });
   }
 
   async getItemsOfBusiness()
   {
     // console.log(this.item.businessID);
-
+    
     let items: Item[] = await this.itemsService.getInventoryItemsOfBusiness(this.item.businessID);
     let index = items.findIndex((item) => item.id == this.item.id); //exclude current item
     items.splice(index, 1);

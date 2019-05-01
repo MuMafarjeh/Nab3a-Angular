@@ -2,8 +2,10 @@ export interface UserCustomer
 {
   name: string;
   id: string;
-  phoneNumber: number;
+  phoneNumber: string;
   email: string;
   type: string;
   image: string;
+  city: string;
+  locationDescription: string;
 }
