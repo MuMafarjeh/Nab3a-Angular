@@ -3,7 +3,7 @@
 
 </p>
 <form [formGroup]="formDate">
-  
+
   <mat-form-field class="example-full-width">
     <input matInput [matDatepicker]="picker" formControlName="fromDate" placeholder="Choose Start Period">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -16,11 +16,11 @@
     <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
     <mat-datepicker touchUi #pickerTo></mat-datepicker>
   </mat-form-field>
-
-  <button type="submit" (click)="filter()"> Check </button>
+ <!-- <button type="submit" (click)="filter()"> Check </button> -->
+ <button mat-raised-button  type="submit" (click)="filter()" class="filter">Check</button>
 </form>
 
-<p> Number Of Result = {{ orders.length }} </p>
+<p class="result"> Number Of Result = {{ orders.length }} </p>
 <div class="grid" cols="1">
   <div class="tile" *ngFor="let order of orders">
     <app-business-order-component [order]="order"> </app-business-order-component>

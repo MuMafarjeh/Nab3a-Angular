@@ -2,12 +2,13 @@
   <div class="nav-container grid">
     <nav class="buttons">
       <ul>
-        <li><a routerLink="/items" *ngIf="isBusiness && isVerified">My Store</a></li>
+        <li><a routerLink="/mystore" *ngIf="isBusiness && isVerified">My Store</a></li>
         <li><a routerLink="/business-order" *ngIf="isBusiness">Orders</a></li>
         <li><a routerLink="/home-page-customer" *ngIf="!isBusiness">Home Page</a></li>
         <li><a routerLink="/customer-browse-items" *ngIf="!isBusiness">Browse Products</a></li>
         <li><a routerLink="/customer-notification-page" *ngIf="!isBusiness">Notification Page</a></li>
         <li><a routerLink="/customer-cart-page" *ngIf="!isBusiness">Cart Page</a></li>
+        <li><a routerLink="/following-customer-page" *ngIf="!isBusiness">Following Page</a></li>
         <!-- <li><a routerLink="/about">About</a></li> -->
         <li><a routerLink="/contact">Contact us</a></li>
         <li><a routerLink="/login" *ngIf="!canLogout"> Login </a></li>
@@ -22,7 +23,7 @@
       <img src="assets/logo.png">
     </a>
 
-    <ngx-page-click
+    <ngx-page-click class="search-container"
       [disabled]="clickOutsideDisabled"
       [outsideClickHandler]="outsideClickHandler"
       [listenTo]="clickOutsideOn"

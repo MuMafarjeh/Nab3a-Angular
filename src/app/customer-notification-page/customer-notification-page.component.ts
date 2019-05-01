@@ -1,10 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../auth/auth.service';
-import { AngularFirestore, DocumentReference } from '@angular/fire/firestore';
-import { map } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
-import { NotificationsService } from '../services/notifications.service';
-import { notificationsLog } from '../business-notifications/notificationsLog';
 
 @Component({
   selector: 'app-customer-notification-page',
@@ -13,19 +7,9 @@ import { notificationsLog } from '../business-notifications/notificationsLog';
 })
 export class CustomerNotificationPageComponent implements OnInit {
 
-  notifications: notificationsLog[];
-
-  constructor(private notifService: NotificationsService) {
-  }
+  constructor() { }
 
   ngOnInit() {
-    this.getMyNotifications();
   }
-
-  getMyNotifications() {
-    this.notifications = this.notifService.getMyNotifications();
-    
-  }
-
 
 }

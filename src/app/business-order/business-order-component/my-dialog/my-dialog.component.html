@@ -3,15 +3,20 @@
 </p> -->
 <h1 matDialogTitle class="title">More details about order</h1>
 
-<mat-dialog-content *ngFor="let item of items">
+<mat-dialog-content *ngFor="let item of items" class="dialod">
+  <div class="divs">
+      <div *ngIf="item.image"  class="image" >
+          <img [src]="item.image" >
+        </div>
+<div class="text-content"  >
+  <div class="name rows"  >The Name:  {{item.name}}</div>
+  <div class="name rows"   >The Currency: {{item.currency}} </div>
+  <div class="rows "  >The FinalPrice:  {{item.finalPrice}} </div>
 
-  <div class="name rows"   >{{item.currency}} </div>
-  <div class="row"  >{{item.finalPrice}} </div>
-  <div class="name rows"  >{{item.name}}</div>
-  <div class="row"  >{{item.quantity}} </div>
-  <div *ngIf="item.image"  class="image">
-    <img [src]="item.image" >
-  </div>
+  <div class="rows"  > The Quantity:  {{item.quantity}} </div>
+</div>
+
+</div>
 
 </mat-dialog-content>
 

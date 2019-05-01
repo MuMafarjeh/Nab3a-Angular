@@ -1,6 +1,5 @@
 @import '~@angular/material/theming';
 
-
 $color-main: rgb(63, 105, 221);
 $color-hover: rgb(81, 140, 228);
 
@@ -124,8 +123,10 @@ $item-font-color-2: rgb(217, 219, 255);
 
     .text-content
     {
-        padding: 14px;
-        flex-grow: 1;
+        padding-left: 14px;
+        padding-right: 14px;
+        padding-top: 14px;
+        width: 100%;
 
         display: flex;
         justify-content: space-between;
@@ -177,6 +178,18 @@ $item-font-color-2: rgb(217, 219, 255);
             width: 26%;
         }
     }
+
+    &:hover
+    {
+        background-color: $color-hover;
+        box-shadow: 20px 20px 40px 0px rgba(0,0,0,0.5);
+
+        .actions
+        {
+            background-color: $color-hover-actions;
+        }
+
+    }
 }
 
 mat-divider
@@ -194,18 +207,6 @@ mat-divider
 .more-items-header
 {
     margin-top: 0.5em;
-}
-
-.item-card:hover
-{
-    background-color: $color-hover;
-    box-shadow: 20px 20px 40px 0px rgba(0,0,0,0.5);
-
-    .actions
-    {
-        background-color: $color-hover-actions;
-    }
-
 }
 
 .mat-form-field-wrapper

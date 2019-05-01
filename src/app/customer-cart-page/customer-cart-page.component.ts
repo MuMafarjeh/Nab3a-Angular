@@ -19,7 +19,7 @@ export class CustomerCartPageComponent implements OnInit {
 
   public cartsAvailable(): boolean
   {
-    return this.carts && this.carts.length > 1;
+    return this.carts && this.carts.length > 0;
   }
 
 }

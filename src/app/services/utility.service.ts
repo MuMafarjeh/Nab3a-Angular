@@ -12,7 +12,7 @@ export class UtilityService {
   public static removeExtraAttributesAlgolia(object: any)
   {
     delete object['_highlightResult'];
-    delete object['objectID'];
+    delete object['objectID'];  
 
     return object;
   }
@@ -21,5 +21,5 @@ export class UtilityService {
   {
     return new Date();
   }
-
+  
 }

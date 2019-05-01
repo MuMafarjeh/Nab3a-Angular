@@ -23,30 +23,33 @@ export class CartService {
   {
     this.doneLoadingCart.next(false);
 
-    const itemDocs = await this.firestore.collection('cart').ref
-      .where('customerID', '==', userID).orderBy('businessID').get();
-
-    let i: number = 0;
-    if(!itemDocs.empty)
-    {
-      console.log("in cart")
-      itemDocs.docs.map(a => {
-        const id = a.id;
-        const item = { id, ...a.data() } as ItemCart;
-        this._carts.push([] as ItemCart[]);
-
-        if(this._carts[i].find((oldItem) => oldItem.businessID != item.businessID))
+    this.firestore.collection('cart').ref
+      .where('customerID', '==', userID).orderBy('businessID').onSnapshot((result) => 
+      {
+        let itemDocs = result.docChanges();
+        let i: number = 0;
+        if(itemDocs.length > 0)
         {
-          i++;
-          this._carts.push([] as ItemCart[]);
-        }
+          itemDocs.forEach(a => {
+            const id = a.doc.id;
+            const item = { id, ...a.doc.data() } as ItemCart;
 
-        this._carts[i].push(item);
+            if(this._carts[i][0] && this._carts[i][0].businessID != item.businessID)
+            {
+              i++;
+              this._carts.push([] as ItemCart[]);
+            }
+
+            this._carts[i].push(item);
+          });
+        }
+      }, 
+      (e) => {
+        console.log("cart error", e);
       });
-    }
 
     this.doneLoadingCart.next(true);
-    console.log(this._carts.length);
+    console.log(this._carts);
   }
 
   async addInventoryItemToCart(item: Item, quantity: number, userID: string)

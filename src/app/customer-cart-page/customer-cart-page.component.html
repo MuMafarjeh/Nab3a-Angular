@@ -1,7 +1,15 @@
-<h2>My Cart&nbsp;<img src="assets/icons/cart_icon.svg"></h2>
+<h2>My Carts&nbsp;<img src="assets/icons/cart_icon.svg"></h2>
 
-<div *ngIf="cartsAvailable()" >
-  
+<div class="carts-container" *ngIf="cartsAvailable()" >
+  <div class="business-content"> 
+
+  </div>
+  <div class="cart" *ngFor="let cart of carts">
+    <div class="cart-inner">
+      <app-item-customer-cart class="item" *ngFor="let item of cart" [item]="item">
+      </app-item-customer-cart>
+    </div>
+  </div>
 </div>
 
 <div *ngIf="!cartsAvailable()" >

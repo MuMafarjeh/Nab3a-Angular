@@ -52,7 +52,7 @@ export class ItemsService {
   }
 
   public addItem(item: Item) {
-    return this.firestore.doc("inventory_item/" + item.id).set(item);
+    return this.firestore.doc("item/" + item.id).set(item);
   }
 
   public updateItem(item: Item) {
@@ -65,8 +65,9 @@ export class ItemsService {
 
   public async getInventoryItem(itemID: String): Promise<Item>
   {
-    const doc = await this.firestore.doc("inventory_item/" + itemID).get().toPromise()
+    const doc = await this.firestore.doc(`inventory_item/${itemID}`).get().toPromise();
     const item = doc.data() as Item;
+
     item.id = doc.id;
 
     return item;

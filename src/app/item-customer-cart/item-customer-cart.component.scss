@@ -1,0 +1,131 @@
+$color-main: rgb(63, 105, 221);
+$color-hover: rgb(81, 140, 228);
+
+$color-main-actions: rgb(163, 85, 226);
+$color-hover-actions: rgb(151, 116, 197);
+
+$color-business: rgb(119, 0, 255);
+$color-business-hover: rgb(144, 47, 255);
+
+$color-edit: rgb(255, 219, 91);
+
+$item-font-color: white;
+$item-font-color-2: rgb(217, 219, 255);
+
+.item-card
+{
+    background-color: $color-main;
+    // border-radius: 4px; 
+    align-content: stretch;
+    box-shadow: 5px 5px 20px 0px rgba(31, 31, 31, 0.5);
+    transition: background-color 0.4s, height 0.2s, box-shadow 0.3s;
+    color: $item-font-color;
+    flex-grow: 3;
+    
+    display: grid; 
+    grid-template-rows: auto;
+    grid-template-columns: 2fr 1fr;
+    grid-template-areas:
+        "item-content item-content"
+        "actions actions";
+
+    .name
+    {
+        font-weight: 520;
+    }
+
+    .category
+    {
+        font-family: 'Calibri';
+        font-style: italic;
+        margin-bottom: 8px;
+    }
+
+    .item-content
+    {
+        grid-area: item-content;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .text-content
+    {
+        padding-left: 14px;
+        padding-right: 14px;
+        padding-top: 14px;
+        width: 100%;
+
+        display: flex;
+        justify-content: space-between;
+
+        .right-side
+        {
+            text-align: end;
+            flex-grow: 1;
+        }
+
+        .data
+        {
+            flex-shrink: 1;
+        }
+    }
+
+    .image
+    {
+        background-color: rgba(0, 0, 0, 0.267);
+            
+        height: 100%;
+        width: 12em;/*  */
+        max-width: 12em;
+        max-height: 100%;
+        vertical-align: top;
+        img{
+            object-fit: cover;
+            width: 100%; /* Here you can use wherever you want to specify the width and also the height of the <img>*/
+            height: 100%;
+            vertical-align: bottom;
+        }
+    }
+
+    .actions
+    {
+        background-color: $color-main-actions;
+        grid-area: actions;
+
+        transition: background-color 0.4s;
+
+        padding: 14px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        align-content: flex-start;
+
+        p
+        {
+            text-align: start;
+        }
+
+        mat-form-field
+        {
+            width: 26%;
+        }
+    }
+
+    &:hover
+    {
+        background-color: $color-hover;
+        box-shadow: 20px 20px 40px 0px rgba(0,0,0,0.5);
+
+        .actions
+        {
+            background-color: $color-hover-actions;
+        }
+
+    }
+}
+
+.mat-form-field-wrapper
+{
+    padding: 0px;
+}

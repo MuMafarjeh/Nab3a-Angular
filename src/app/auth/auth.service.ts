@@ -59,6 +59,7 @@ export class AuthService{
       }
       else //not logged in
       {
+        await this.anonymousLogin();
         // console.log(anon);
       }
     }, (error) =>
@@ -144,7 +145,7 @@ export class AuthService{
     return this._user.emailVerified;
   }
 
-  public get userData(): UserCustomer | UserBusiness
+  public get userData(): UserCustomer | UserBusiness | UserDelivery
   {
     if(this._userData === null || this._userData === undefined)
       return null;
@@ -170,8 +171,10 @@ export class AuthService{
   public async register(user, password: string) 
   {
     user.password = password;
-    await this.auth.auth.signInWithEmailAndPassword(user.email, password);
-    await this.sendEmailVerification();
+    // await this.auth.auth.signInWithEmailAndPassword(user.email, password);
+    const result = await this.httpService.registerUser(user);
+    console.log(result);
+    // await this.sendEmailVerification();
     // this.router.navigate(['/']);
   }
 
@@ -182,12 +185,14 @@ export class AuthService{
     try
     {
       await this.auth.auth.signInWithEmailAndPassword(email, password);
-      this.router.navigate(['/']);
     }
     catch(e)
     {
+      console.log("error with email")
       console.error(e);
     }
+
+    this.router.navigate(['/']);
   }
 
   public async sendEmailVerification() {
