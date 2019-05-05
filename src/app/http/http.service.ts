@@ -8,10 +8,12 @@ import { Observable } from 'rxjs';
 })
 export class HttpService {
 
-  registerUserCallable;
+  private getCartsCallable: (data: any) => Observable<any>;
+  private registerUserCallable: (userid: any) => Observable<any>;
 
   constructor(private httpClient: HttpClient, private functions: AngularFireFunctions) {
     this.registerUserCallable = this.functions.httpsCallable('register');
+    this.getCartsCallable = this.functions.httpsCallable('getCartsForUser');
   }
 
   async registerUser(userInfo: any): Promise<string>
@@ -19,6 +21,11 @@ export class HttpService {
     // console.log("before register called")
     userInfo.emailVerified = false;
     return await this.registerUserCallable(userInfo).toPromise();
+  }
+
+  public async getCartsForUser(userID): Promise<any>
+  {
+    return await this.getCartsCallable(userID).toPromise();
   }
 
 }

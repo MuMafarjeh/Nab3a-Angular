@@ -1,9 +1,11 @@
+import { HttpService } from './../http/http.service';
 import { ItemCart } from './../item/item.cart';
 import { Item } from 'src/app/item/item';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
 import { UtilityService } from './utility.service';
 import { Subject } from 'rxjs';
+import { UserBusiness } from '../user/userbusiness';
 
 @Injectable({
   providedIn: 'root'
@@ -12,44 +14,27 @@ export class CartService {
 
   public doneLoadingCart = new Subject<boolean>();
 
-  constructor(private firestore: AngularFirestore) 
+  constructor(private firestore: AngularFirestore, private httpsService: HttpService) 
   {
     this.doneLoadingCart.next(false);
   }
 
   private _carts: ItemCart[][] = [[]] as ItemCart[][];
+  private _businessData: UserBusiness[] = [] as UserBusiness[];
 
   public async getCartsForUser(userID): Promise<void>
   {
     this.doneLoadingCart.next(false);
 
-    this.firestore.collection('cart').ref
-      .where('customerID', '==', userID).orderBy('businessID').onSnapshot((result) => 
-      {
-        let itemDocs = result.docChanges();
-        let i: number = 0;
-        if(itemDocs.length > 0)
-        {
-          itemDocs.forEach(a => {
-            const id = a.doc.id;
-            const item = { id, ...a.doc.data() } as ItemCart;
+    const result = await this.httpsService.getCartsForUser(userID);
 
-            if(this._carts[i][0] && this._carts[i][0].businessID != item.businessID)
-            {
-              i++;
-              this._carts.push([] as ItemCart[]);
-            }
+    this._carts = result.carts;
+    this._businessData = result.businessData;
 
-            this._carts[i].push(item);
-          });
-        }
-      }, 
-      (e) => {
-        console.log("cart error", e);
-      });
+    console.log("carts", this._carts)
+    console.log("businessData", this._businessData)
 
     this.doneLoadingCart.next(true);
-    console.log(this._carts);
   }
 
   async addInventoryItemToCart(item: Item, quantity: number, userID: string)
@@ -65,6 +50,11 @@ export class CartService {
   public get carts()
   {
     return this._carts;
+  }
+
+  public get businessData()
+  {
+    return this._businessData;
   }
 
 }
