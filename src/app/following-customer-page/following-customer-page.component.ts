@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { following } from './following';
+import { FollowingService } from '../services/following.service';
 
 @Component({
   selector: 'app-following-customer-page',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FollowingCustomerPageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private followingService:FollowingService   ) { }
+
+  follow : following[];
 
   ngOnInit() {
+    this.follow= this.followingService.getfollowingCoustmer();
+
   }
 
 }

@@ -1,0 +1,38 @@
+.followingDiv{
+  background: rgb(63, 105, 221);
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+  margin-top: 20px;
+  border-radius: 10px;
+}
+.btn{
+  margin-top: 10px;
+}
+.title{
+   font-weight: bold;
+   font-family: "Georgia";
+   font-style: italic;
+   line-height: 12px;
+   font-size: 30px;
+}
+
+.icon{
+  margin-top: 15px;
+  font-size: 50px;
+  display: inline-block;
+  vertical-align: middle;
+
+}
+
+.pName{
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 10px;
+
+}
+.data{
+  color: white;
+  margin-bottom: 10px;
+
+  }
