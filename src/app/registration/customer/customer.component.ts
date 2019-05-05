@@ -9,13 +9,15 @@ import { UserCustomer } from 'src/app/user/usercustomer';
   styleUrls: ['./customer.component.scss']
 })
 export class CustomerComponent implements OnInit {
-  favoriteSeason: string;
   seasons: string[] = ['Male', 'Female',];
   hide = true;
 
+  passwordsNotMatch: boolean = false;
+
   customerForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
-    phone: new FormControl('', [Validators.required, Validators.minLength(10)]),
+    phone: new FormControl('', [Validators.required, Validators.pattern("[0-9]{10,10}")]),
+    city: new FormControl('', [Validators.required,]),
     location: new FormControl('', [Validators.required,]),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required,]),
@@ -35,7 +37,11 @@ export class CustomerComponent implements OnInit {
       this.customerForm.controls['email'].hasError('email') ? 'Please enter a valid email address' : '';
   }
   getErrorMessagePhone() {
-    return this.customerForm.controls['phone'].hasError('required') ? 'Phone is Required' : '';
+    return this.customerForm.controls['phone'].hasError('required') ? 'Phone is Required' :
+      this.customerForm.controls['phone'].errors.pattern ? 'Please enter a valid Phone Number (eg:0595480705)' : '';
+  }
+  getErrorMessageCity() {
+    return this.customerForm.controls['city'].hasError('required') ? 'City is Required' : '';
   }
   getErrorMessageLocation() {
     return this.customerForm.controls['location'].hasError('required') ? 'Location Discription is Required' : '';
@@ -47,28 +53,28 @@ export class CustomerComponent implements OnInit {
     this.customerForm.reset();
   }
 
-  onSubmit()
-  {
-    if(this.customerForm.controls['confirempassword'].value 
-    != this.customerForm.controls['password'].value)
-    {
-      // this.passwordsNotMatch = true;
+  submitForm() {
+    console.log("Hello");
+    
+    if (this.customerForm.controls['confiremPassword'].value
+      != this.customerForm.controls['password'].value) {
+      this.passwordsNotMatch = true;
       return;
     }
 
-    // this.passwordsNotMatch = false;
+     this.passwordsNotMatch = false;
 
     let user = {} as UserCustomer;
-    
+
     user.name = this.customerForm.controls['name'].value;
     user.email = this.customerForm.controls['email'].value;
-    user.phoneNumber = `+97${this.customerForm.controls['phone'].value}`;
-    // user.city = this.customerForm.controls['city'].value;
-    user.locationDescription = this.customerForm.controls['location'].value; 
+    user.phoneNumber = `+972${this.customerForm.controls['phone'].value}`;
+    user.city = this.customerForm.controls['city'].value;
+    user.locationDescription = this.customerForm.controls['location'].value;
     user.type = "customer";
 
-    // this.authService.register(user.email, this.customerForm.controls['password'].value);
     this.authService.register(user, this.customerForm.controls['password'].value);
+
   }
 
 

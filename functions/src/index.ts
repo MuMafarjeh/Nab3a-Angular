@@ -211,6 +211,7 @@ exports.register = functions.https.onCall(async (data, context) => {
 
 
 import * as algoliasearch from 'algoliasearch';
+import { FirebaseFirestore } from '@angular/fire';
 
 //Init algolia
 const client = algoliasearch(env.algolia.appid, env.algolia.apikey);

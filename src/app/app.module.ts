@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore';
@@ -51,6 +51,7 @@ import { CustomerCartPageComponent } from './customer-cart-page/customer-cart-pa
 import { BusinessFindProductComponent } from './items-page/business-find-product/business-find-product.component';
 import { ItemCustomerCartComponent } from './item-customer-cart/item-customer-cart.component';
 import { DeliveryManComponent } from './registration/delivery-man/delivery-man.component';
+import { FollowingCustomerPageComponent } from './following-customer-page/following-customer-page.component';
 
 @NgModule({
   entryComponents: [
@@ -87,7 +88,8 @@ import { DeliveryManComponent } from './registration/delivery-man/delivery-man.c
     BusinessFindProductComponent,
     ItemBusinessSuggestionComponent,
     ItemCustomerCartComponent,
-    DeliveryManComponent
+    DeliveryManComponent,
+    FollowingCustomerPageComponent
   ],
   imports: [
     FormsModule,

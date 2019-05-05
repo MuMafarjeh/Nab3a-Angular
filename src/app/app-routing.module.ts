@@ -1,3 +1,4 @@
+import { FollowingCustomerPageComponent } from './following-customer-page/following-customer-page.component';
 import { BusinessOrderComponent } from './business-order/business-order.component';
 import { BusinessGuard } from './auth/business-guard.service';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
@@ -23,25 +24,25 @@ import { Globals } from './globals';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'about', component: AboutComponent },
-  { path: 'contact', component: ContactComponent},
+  { path: 'contact', component: ContactComponent },
   {
     path: `${Globals.MyStoreRoute}`, component: ItemsPageComponent,
     canActivate: [BusinessGuard]
   },
-  { 
-    path: 'customer-cart-page', component: CustomerCartPageComponent, 
-    
+  {
+    path: 'customer-cart-page', component: CustomerCartPageComponent,
+
   },
-  { 
-    path: 'customer-notification-page', component: CustomerNotificationPageComponent, 
-    
+  {
+    path: 'customer-notification-page', component: CustomerNotificationPageComponent,
+
   },
-  { 
-    path: 'customer-browse-items', component: CustomerBrowseItemsComponent, 
-    
+  {
+    path: 'customer-browse-items', component: CustomerBrowseItemsComponent,
+
   },
-  { 
-    path: 'business-notifications', component: BusinessNotificationsComponent, 
+  {
+    path: 'business-notifications', component: BusinessNotificationsComponent,
     canActivate: [BusinessGuard]
   },
 
@@ -57,15 +58,15 @@ const routes: Routes = [
     path: 'home-page-customer', component: HomePageCustomerComponent,
   },
   { path: 'business-order', component: BusinessOrderComponent },
-
-  { 
+  { path: 'following-customer-page', component: FollowingCustomerPageComponent },
+  {
     path: 'item/:id', component: ItemCustomerPageComponent,
     runGuardsAndResolvers: 'paramsChange'
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, 
+  imports: [RouterModule.forRoot(routes,
     {
       onSameUrlNavigation: 'reload'
     })

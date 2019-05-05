@@ -13,7 +13,7 @@ export class NotificationsService {
   public getMyNotifications(): notificationsLog[]{
     var notifications = [];
     console.log(`${this.auth.userData}`);
-    this.firestore.collection("notificationLog").ref.where("toID","==", `aepPjKLaiSVwoyCKbEluLCroZzw2`).get().then(
+    this.firestore.collection("notificationLog").ref.where("toID","==", this.auth.userID).get().then(
       function (querySnapshot) {
         console.log(querySnapshot);
         querySnapshot.forEach(function (doc) {

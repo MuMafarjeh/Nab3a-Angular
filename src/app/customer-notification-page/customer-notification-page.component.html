@@ -1,3 +1,24 @@
-<p>
-  customer-notification-page works!
-</p>
+<h1>Notification</h1>
+<mat-accordion class="example-headers-align">
+  <mat-expansion-panel *ngFor="let notif of notifications" [expanded]="step === 0">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <mat-icon class="example-icon" aria-hidden="false" aria-label="Example heart icon" *ngIf="notif.textContent == 'Rating'">rate_review</mat-icon>
+      </mat-panel-title>
+      <mat-panel-title>
+          {{ notif.fromName }}
+        </mat-panel-title>
+      <mat-panel-description>
+        {{ notif.textContent }}
+      </mat-panel-description>
+      <mat-panel-description>
+        {{ notif.dateSent.toDate() | date: "d/M/yy h:mm a" }}
+      </mat-panel-description>
+      
+    </mat-expansion-panel-header>
+    <p *ngIf="notif.textContent == 'order'">{{ notif.fromName }} Is accepted For Order Wait until he delivers it to Delive Man </p>
+    <p *ngIf="notif.textContent == 'offer'">{{ notif.fromName }} Make an Offer </p>
+    <p *ngIf="notif.textContent == 'newItem'">{{ notif.fromName }} has become New Item </p>
+
+  </mat-expansion-panel>
+ 

@@ -1,14 +1,19 @@
 <h1>Browse</h1>
-
+<div class="grid-contener">
+  <h3>Businesses/Stores</h3>
+  <h3>Products</h3>
+</div>
 <div class="grid-contener">
 
-  <div>
-    <h3>Businesses/Stores</h3>
+
+  <div class="chiledDiv">
+    
     <mat-card class="search-result" *ngFor="let cate of categoryBusiness" (click)="onClick(cate)"> {{ cate.name }} </mat-card>
   </div>
 
-  <div>
-    <h3>Products</h3>
+
+  <div class="chiledDiv">
+    
     <mat-card class="search-result" *ngFor="let cate of categoryProducts" (click)="brawseByBusiness(cate)"> {{ cate.name }} </mat-card>
   </div>
 
@@ -20,10 +25,26 @@
     <div class="Result">
       <p> Results : {{ users.length }} </p>
     </div>
-    <mat-list-item class="search-result" *ngFor="let user of users">{{ user.name }} ---> {{ user.ownerName }} ---> {{ user.phoneNumber }}
-      <button mat-stroked-button style="background-color: white;color: black;margin-left: 200px">Following</button>
-    </mat-list-item>
-    <mat-divider></mat-divider>
+    <div class="tile" *ngFor="let user of users">
+      <div class="followingDiv">
+
+        <div>
+          <p>{{ user.name }}</p>
+        </div>
+        <div>
+          <p>{{ user.ownerName }}</p>
+        </div>
+        <div>
+          <p>{{ user.phoneNumber }}</p>
+        </div>
+        <div>
+          <button mat-stroked-button style="background-color: white;color: black;margin-top: 10px">Following</button>
+        </div>
+
+      </div>
+
+    </div>
+
   </div>
   <div *ngIf="currentCategory == 'product'">
     <div class="Result">
