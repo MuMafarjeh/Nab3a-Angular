@@ -1,3 +1,4 @@
+import { FollowingCustomerPageComponent } from './following-customer-page/following-customer-page.component';
 import { BusinessOrderComponent } from './business-order/business-order.component';
 import { BusinessGuard } from './auth/business-guard.service';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
@@ -57,6 +58,7 @@ const routes: Routes = [
     path: 'home-page-customer', component: HomePageCustomerComponent,
   },
   { path: 'business-order', component: BusinessOrderComponent },
+  { path: 'following-customer-page', component: FollowingCustomerPageComponent },
   {
     path: 'item/:id', component: ItemCustomerPageComponent,
     runGuardsAndResolvers: 'paramsChange'

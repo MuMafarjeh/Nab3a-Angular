@@ -40,7 +40,7 @@ import { MyDialogComponent } from './business-order/business-order-component/my-
 import { NgAisModule } from 'angular-instantsearch';
 import { ItemCustomerSuggestionComponent } from './item-customer-suggestion/item-customer-suggestion.component';
 import { ItemBusinessSuggestionComponent } from './item-business-suggestion/item-business-suggestion.component';
-import { NgxPageClickModule } from 'ngx-page-click';
+import {NgxPageClickModule} from 'ngx-page-click';
 import { ItemCustomerPageComponent } from './item-customer-page/item-customer-page.component'
 import { AuthService } from './auth/auth.service';
 import { BusinessNotificationsComponent } from './business-notifications/business-notifications.component'
@@ -51,6 +51,7 @@ import { CustomerCartPageComponent } from './customer-cart-page/customer-cart-pa
 import { BusinessFindProductComponent } from './items-page/business-find-product/business-find-product.component';
 import { ItemCustomerCartComponent } from './item-customer-cart/item-customer-cart.component';
 import { DeliveryManComponent } from './registration/delivery-man/delivery-man.component';
+import { FollowingCustomerPageComponent } from './following-customer-page/following-customer-page.component';
 
 @NgModule({
   entryComponents: [
@@ -88,6 +89,7 @@ import { DeliveryManComponent } from './registration/delivery-man/delivery-man.c
     ItemBusinessSuggestionComponent,
     ItemCustomerCartComponent,
     DeliveryManComponent,
+    FollowingCustomerPageComponent
   ],
   imports: [
     FormsModule,
