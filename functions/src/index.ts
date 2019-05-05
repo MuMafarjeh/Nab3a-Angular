@@ -41,7 +41,7 @@ exports.notifyBusinessWhenOrder = functions.firestore.document('/order/{orderID}
     if(!orderData.type || orderData.type !== "order")
     {
         return;
-    }
+    } 
 
     const notifDocuments = await firestore.collection('notification')
         .where('type', '==', 'customerToBusiness').where('subtype', '==', 'order').get();
@@ -75,7 +75,7 @@ exports.notifyBusinessWhenOrder = functions.firestore.document('/order/{orderID}
 
 const getBusinessData = async function(businessIDs: FirebaseFirestore.DocumentReference[]): Promise<UserBusiness[]>
 {
-    console.error("businessIDs", businessIDs);
+    // console.error("businessIDs", businessIDs);
     const docs = await firestore.getAll(...businessIDs);
     const _businessData: UserBusiness[] = [] as UserBusiness[];
     
@@ -113,7 +113,7 @@ exports.getCartsForUser = functions.https.onCall(async (data, context) =>
 
     const _carts: ItemCart[][] = [[]] as ItemCart[][];
     const _businessIDs: FirebaseFirestore.DocumentReference[] = [] as FirebaseFirestore.DocumentReference[];
-    const _businessData;
+    let _businessData: UserBusiness[] = [] as UserBusiness[];
 
     const docs = firestore.collection('cart')
         .where('customerID', '==', userID).orderBy('businessID').get();
@@ -128,10 +128,9 @@ exports.getCartsForUser = functions.https.onCall(async (data, context) =>
                     const id = a.id;
                     const item = { id, ...a.data() } as ItemCart;
 
-                    // console.error("businessID", item.businessID, item.businessName)
-
                     if(firstTime)
                     {
+                        console.error("doc", firestore.doc(`user/${item.businessID}`));
                         _businessIDs.push(firestore.doc(`user/${item.businessID}`));
                         firstTime = false;
                     }
@@ -140,21 +139,20 @@ exports.getCartsForUser = functions.https.onCall(async (data, context) =>
                     {
                         i++;
                         _carts.push([] as ItemCart[]);
+                        console.error("doc", firestore.doc(`user/${item.businessID}`));
                         _businessIDs.push(firestore.doc(`user/${item.businessID}`));
                     }
 
                     _carts[i].push(item);
                 });
                 // TODO - FIX 5ARA
-                const _businessData = await getBusinessData(_businessIDs);
+                _businessData = await getBusinessData(_businessIDs);
             }
         }, 
         (e) => {
             // console.error("cart error", e);
         });
     
-        
-
         // console.error("carts", _carts);
 
     return {

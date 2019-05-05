@@ -19,7 +19,7 @@ export class CustomerCartPageComponent implements OnInit {
   async ngOnInit() {
     await this.cartService.getCartsForUser(this.authService.userID);
     this.carts = this.cartService.carts;
-    this.businessData = this.cartService.businessData;
+    // this.businessData = this.cartService.businessData;
     // this.businessData = this.cartService.businessData;
   }
 

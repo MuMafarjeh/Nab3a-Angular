@@ -2,7 +2,7 @@
 
 <div class="carts-container" *ngIf="cartsAvailable()" >
   <div class="cart" *ngFor="let cart of carts; let i = index">
-    <div class="business-content">
+    <div *ngIf="businessData"  class="business-content">
       <img *ngIf="businessData[i] && businessData[i].image" [src]="businessData[i].image">  
       <img *ngIf="!businessData[i] || !businessData[i].image" src="assets/blank_profile_image.png">  
       <div class="business-title">
