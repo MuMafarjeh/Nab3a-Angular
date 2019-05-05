@@ -2,11 +2,12 @@
   <div class="nav-container grid">
     <nav class="buttons">
       <ul>
-        <li><a routerLink="/items" *ngIf="isBusiness && isVerified">My Store</a></li>
+        <li><a routerLink="/mystore" *ngIf="isBusiness && isVerified">My Store</a></li>
         <li><a routerLink="/business-order" *ngIf="isBusiness">Orders</a></li>
         <li><a routerLink="/home-page-customer" *ngIf="!isBusiness">Home Page</a></li>
         <li><a routerLink="/customer-browse-items" *ngIf="!isBusiness">Browse Products</a></li>
         <li><a routerLink="/customer-notification-page" *ngIf="!isBusiness">Notification Page</a></li>
+        <li><a routerLink="/business-order" *ngIf="!isBusiness">History Of Orders</a></li>
         <li><a routerLink="/customer-cart-page" *ngIf="!isBusiness">Cart Page</a></li>
         <!-- <li><a routerLink="/about">About</a></li> -->
         <li><a routerLink="/contact">Contact us</a></li>
@@ -22,7 +23,7 @@
       <img src="assets/logo.png">
     </a>
 
-    <ngx-page-click
+    <ngx-page-click class="search-container"
       [disabled]="clickOutsideDisabled"
       [outsideClickHandler]="outsideClickHandler"
       [listenTo]="clickOutsideOn"
@@ -34,8 +35,12 @@
         <ais-hits *ngIf="showResults"  class="overflowVisible">
           <ng-template let-hits="hits" class="dropdown" class="overflowVisible" >
             <div *ngFor="let hit of hits" >
-              <app-item-customer-suggestion class="dropdown-content" [item]="hit" (closeResults)="closeResults()"> {{hit.name}} </app-item-customer-suggestion>
-      
+              <div *ngIf="hit.type != 'business'" >
+                <app-item-customer-suggestion class="dropdown-content" [item]="prepareItem(hit)" (closeResults)="closeResults()"></app-item-customer-suggestion>
+              </div>
+              <div *ngIf="hit.type == 'business'" >
+                <app-item-customer-suggestion class="dropdown-content" [item]="prepareItem(hit)" (closeResults)="closeResults()"></app-item-customer-suggestion>
+              </div>
             </div>
           </ng-template>
         </ais-hits>

@@ -1,0 +1,81 @@
+<form [formGroup]="deliveryForm">
+  <table class="example-full-width" cellspacing="0">
+    <tr>
+      <td>
+        <mat-form-field class="width">
+          <input matInput placeholder="Full Name" formControlName="name" required>
+          <mat-error *ngIf="deliveryForm.controls['name'].invalid">{{getErrorMessageName()}}</mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <mat-form-field class="width">
+          <input matInput placeholder="Email" formControlName="email" required>
+          <mat-error *ngIf="deliveryForm.controls['email'].invalid">{{getErrorMessageEmail()}}</mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <mat-form-field class="width">
+          <span matPrefix>+972 &nbsp;</span>
+          <input type="tel" matInput placeholder="Telephone" formControlName="phone" type="number" min="0">
+          <mat-error *ngIf="deliveryForm.controls['phone'].invalid">{{getErrorMessagePhone()}}</mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <mat-form-field class="width">
+          <input matInput placeholder="Location Discription" formControlName="location" type="text" required>
+          <mat-error *ngIf="deliveryForm.controls['location'].invalid">{{getErrorMessageLocation()}}</mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <mat-form-field class="width">
+          <input matInput placeholder="City" formControlName="city" type="text" required>
+          <mat-error *ngIf="deliveryForm.controls['city'].invalid">{{ getErrorMessageCity()}}</mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+    <!-- <tr>
+      <td>
+        <mat-radio-group class="example-radio-group" >
+          <mat-radio-button class="example-radio-button" *ngFor="let season of seasons" [value]="season">
+            {{season}}
+          </mat-radio-button>
+        </mat-radio-group>
+        <div class="example-selected-value">Your Gender is: {{favoriteSeason}}</div>
+      </td>
+    </tr> -->
+    <tr>
+      <td>
+        <mat-form-field class="width">
+          <input matInput placeholder="Password" formControlName="password" type="password">
+          <mat-error *ngIf="deliveryForm.controls['password'].invalid">{{getErrorMessagePassword()}}</mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <mat-form-field class="width">
+          <input matInput placeholder="Confirem Password" formControlName="confiremPassword" type="password">
+          <mat-error *ngIf="deliveryForm.controls['confiremPassword'].invalid">{{getErrorMessagePassword()}}</mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <button mat-raised-button color="primary" [disabled]="deliveryForm.invalid">Submit</button>
+
+      </td>
+      <td>
+        <button mat-raised-button color="accent" (click)="clearAllField()">Clear</button>
+      </td>
+    </tr>
+  </table>
+</form>

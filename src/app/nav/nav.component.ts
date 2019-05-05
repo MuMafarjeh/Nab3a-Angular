@@ -2,6 +2,8 @@ import { SearchService } from './../search/search.service';
 import { AuthService } from './../auth/auth.service';
 import { Component, OnInit, ViewChild, Renderer2, ElementRef, HostListener, ChangeDetectionStrategy } from '@angular/core';
 import { Subscription, Subject } from 'rxjs';
+import { Item } from '../item/item';
+import {Globals} from 'globals';
 
 @Component({
   selector: 'app-nav',
@@ -78,6 +80,12 @@ export class NavComponent implements OnInit {
   closeResults()
   {
     this.showResults = false;
+  }
+
+  prepareItem(hit: Item)
+  {
+    hit.id = hit.objectID;
+    return hit;
   }
 
 }

@@ -3,21 +3,28 @@
     <!-- <div class="actions" align="right">
       <button mat-mini-fab>
         <mat-icon svgIcon="edit-icon"></mat-icon>
-      </button>  
+      </button>
 
     </div> -->
-  
+
     <div class="text-content" >
       <div class="data" *ngIf="!isEdit">
         <div class="name rows">{{ item.name }}</div>
         <div class="category rows">{{ item.category | uppercase }}</div>
         <div class="rows">{{ item.price | currency:'ILS':'symbol':'1.1-1' }}</div>
       </div>
-  
+
+      <div class="data right-side" *ngIf="!isEdit && displayMoreInfo">
+        <div class="name rows">{{ item.businessName }}</div>
+        <div class="category rows">{{ item.city | uppercase }}</div>
+        <div class="category rows">{{ item.locationDescription | uppercase }}</div>
+      </div>
+
     </div>
-  
+
     <div *ngIf="item.image"  class="image">
       <img [src]="item.image" >
     </div>
-  
+
+
   </div>

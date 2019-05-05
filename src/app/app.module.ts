@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore';
@@ -39,7 +39,8 @@ import { BusinessOrderComponentComponent } from './business-order/business-order
 import { MyDialogComponent } from './business-order/business-order-component/my-dialog/my-dialog.component';
 import { NgAisModule } from 'angular-instantsearch';
 import { ItemCustomerSuggestionComponent } from './item-customer-suggestion/item-customer-suggestion.component';
-import {NgxPageClickModule} from 'ngx-page-click';
+import { ItemBusinessSuggestionComponent } from './item-business-suggestion/item-business-suggestion.component';
+import { NgxPageClickModule } from 'ngx-page-click';
 import { ItemCustomerPageComponent } from './item-customer-page/item-customer-page.component'
 import { AuthService } from './auth/auth.service';
 import { BusinessNotificationsComponent } from './business-notifications/business-notifications.component'
@@ -47,11 +48,15 @@ import { HomePageCustomerComponent } from './home-page-customer/home-page-custom
 import { CustomerBrowseItemsComponent } from './customer-browse-items/customer-browse-items.component';
 import { CustomerNotificationPageComponent } from './customer-notification-page/customer-notification-page.component';
 import { CustomerCartPageComponent } from './customer-cart-page/customer-cart-page.component';
+import { BusinessFindProductComponent } from './items-page/business-find-product/business-find-product.component';
+import { ItemCustomerCartComponent } from './item-customer-cart/item-customer-cart.component';
+import { DeliveryManComponent } from './registration/delivery-man/delivery-man.component';
 
 @NgModule({
   entryComponents: [
     ItemDeleteSnackbarComponent,
     MyDialogComponent,
+    BusinessFindProductComponent
   ],
   declarations: [
     AppComponent,
@@ -79,6 +84,10 @@ import { CustomerCartPageComponent } from './customer-cart-page/customer-cart-pa
     CustomerBrowseItemsComponent,
     CustomerNotificationPageComponent,
     CustomerCartPageComponent,
+    BusinessFindProductComponent,
+    ItemBusinessSuggestionComponent,
+    ItemCustomerCartComponent,
+    DeliveryManComponent,
   ],
   imports: [
     FormsModule,

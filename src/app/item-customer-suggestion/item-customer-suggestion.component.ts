@@ -18,6 +18,9 @@ export class ItemCustomerSuggestionComponent implements OnInit {
   @Output()
   closeResults = new EventEmitter();
 
+  @Input()
+  displayMoreInfo: boolean = true;
+
   isEdit: boolean = false;
 
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer,
@@ -31,8 +34,10 @@ export class ItemCustomerSuggestionComponent implements OnInit {
 
   async onClick()
   {
+    // if(!this.item.id && this.item.objectID)
+    //   this.item.id = this.item.objectID;
+
     await this.router.navigate([`item/${this.item.id}`]);
     this.closeResults.emit();
   }
-
 }

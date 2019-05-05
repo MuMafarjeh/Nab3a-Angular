@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { OrderServiceService } from './business-order-component/order-service.service';
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-business-order',
@@ -19,7 +20,7 @@ export class BusinessOrderComponent implements OnInit {
   date = new FormControl(new Date());
   serializedDate = new FormControl((new Date()).toISOString());
 
-  constructor(private orderService: OrderServiceService) { }
+  constructor(private orderService: OrderServiceService,private auth: AuthService) { }
   orders: Order[];
 
   copyOrders: Order[];
@@ -27,7 +28,12 @@ export class BusinessOrderComponent implements OnInit {
   ordersFilter: Order[] = [];
 
   ngOnInit() {
-    this.orders = this.orderService.getOrder();
+    if(this.auth.userData.type == "customer"){
+      this.orders = this.orderService.getOrder("customerID");
+    }
+    else if(this.auth.userData.type == "business"){
+      this.orders = this.orderService.getOrder("businessID");
+    }
     this.copyOrders = this.orders;
   }
   filter() { 

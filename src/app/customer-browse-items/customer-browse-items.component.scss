@@ -1,3 +1,16 @@
+.followingDiv{
+    background: #7700FF;
+    display: grid;
+    color: white;
+    grid-template-columns: auto auto auto auto;
+    border-radius: 10px;
+  }
+.followingDiv:hover{
+   color: black;
+   background-color: #ddd;
+   cursor: pointer;
+   transition: background-color 0.4s, height 0.2s, box-shadow 0.3s;
+}
 .search-result {
     text-align: center;
     color: white;
@@ -7,6 +20,11 @@
     text-decoration: none;
     display: block;
   }
+  .chiledDiv{
+      display: grid;
+      grid-template-columns: auto auto;
+      grid-gap: 2.2em;
+  }
   .search-result:hover {
     background-color: #ddd;
     cursor: pointer;
@@ -15,7 +33,7 @@
   .grid-contener{
       display: grid;
       grid-template-columns: auto auto;
-      grid-gap: 2.2em;
+      grid-gap: 6em;
   }
   .divv{  
     padding-right: 100%;
@@ -117,5 +135,14 @@ $height: 80px;
     background-color: $color-hover;
     box-shadow: 20px 20px 40px 0px rgba(0,0,0,0.5);
 }
-
+.Result{
+    background-color: rgb(63, 105, 221);
+    border-radius: 50px;
+    padding-top: 2px;
+    color: white;
+    text-align: center;
+    height: 50px;
+    margin-bottom: 10px;
+    
+}
   

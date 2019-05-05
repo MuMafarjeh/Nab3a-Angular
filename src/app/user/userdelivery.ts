@@ -5,4 +5,5 @@ export interface UserDelivery
   phoneNumber: number;
   email: string;
   type: string;
+  image: string;
 }

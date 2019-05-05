@@ -1,9 +1,13 @@
 export interface Item
 {
+    objectID: string;
     id: string;
     name: string;
     type: string;
+
     businessName: string;
+    businessID: string;
+
     price: number;
     currency: string;
     image: any;
@@ -13,4 +17,7 @@ export interface Item
     inventory_productID: string;
     finalPrice: number;
     quantity: number;
+
+    city: string;
+    locationDescription: string;
 }

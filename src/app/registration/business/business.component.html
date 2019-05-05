@@ -27,6 +27,7 @@
         <tr>
             <td>
                 <mat-form-field class="width">
+                    <span matPrefix>+972 &nbsp;</span>
                     <input matInput placeholder="Phone Numer" formControlName="phone" type="tel">
                     <mat-error *ngIf="businessForm.controls['phone'].invalid">{{getErrorMessagePhone()}}</mat-error>
                 </mat-form-field>
@@ -62,6 +63,7 @@
                     <input matInput placeholder="Confirem Password" formControlName="confirempassword" type="password">
                     <mat-error *ngIf="businessForm.controls['confirempassword'].invalid">{{getErrorMessageConPassword()}}</mat-error>
                 </mat-form-field>
+                <mat-error *ngIf="passwordsNotMatch">Passwords do not match</mat-error>
             </td>
         </tr>
         <tr>
@@ -69,9 +71,9 @@
                 <button mat-raised-button color="primary" [disabled]="businessForm.invalid" (click)="submitForm()">Submit</button>
 
             </td>
-            <td>  
+            <td>
                 <button mat-raised-button color="accent" (click)="clearAllField()">Clear</button>
-                <mat-error *ngIf="passwordsNotMatch">Passwords do not match</mat-error>
+                
             </td>
         </tr>
     </table>

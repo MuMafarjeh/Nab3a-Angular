@@ -52,7 +52,7 @@ export class ItemsService {
   }
 
   public addItem(item: Item) {
-    return this.firestore.doc("inventory_item/" + item.id).set(item);
+    return this.firestore.doc("item/" + item.id).set(item);
   }
 
   public updateItem(item: Item) {
@@ -65,12 +65,14 @@ export class ItemsService {
 
   public async getInventoryItem(itemID: String): Promise<Item>
   {
-    const doc = await this.firestore.doc("inventory_item/" + itemID).get().toPromise()
+    const doc = await this.firestore.doc(`inventory_item/${itemID}`).get().toPromise();
     const item = doc.data() as Item;
+
     item.id = doc.id;
 
     return item;
   }
+
   public async getProductsByCategory(categoryName) {
     var items = [];
     await this.firestore.collection("inventory_item").ref.where("category", "==", categoryName).get().then(
@@ -84,4 +86,27 @@ export class ItemsService {
     return items;
   }
 
+  public async addInventoryItem(item: Item): Promise<Item>
+  {
+    item.businessName = this.authService.userData.name;
+    item.businessID = this.authService.userID;
+
+    const addedDoc = await this.firestore.collection('inventory_item').add(item);
+    const addedItem = (await addedDoc.get()).data() as Item;
+    addedItem.id = addedDoc.id;
+    return addedItem;
+  }
+
+  public async getInventoryItemsOfBusiness(businessID: string) {
+    var items = [];
+    await this.firestore.collection("inventory_item").ref.where("businessID", "==", businessID).get().then(
+      function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          let item = doc.data() as Item;
+          item.id = doc.id;
+          items.push(item);
+        });
+      });
+    return items;
+  }
 }

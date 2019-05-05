@@ -1,0 +1,36 @@
+$color-business: rgb(119, 0, 255);
+$color-business-hover: rgb(144, 47, 255);
+
+.page-title
+{
+    display: flex;
+}
+
+.cart
+{
+    border-style: solid;
+    border-color: rgb(180, 180, 180);
+    border-width: 2px;
+    border-radius: 0px 0px 10px 10px;
+    margin-bottom: 2em;
+
+    .business-content
+    {
+        background-color: $color-business;
+        height: 10em;
+    }
+
+    .cart-inner
+    {
+        padding: 2em;
+        display: grid;
+        grid-gap: 2em;
+        grid-template-columns: auto auto;
+
+        .item
+        {
+            
+        }
+    }
+}
+

@@ -20,12 +20,19 @@
       <td>
         <mat-form-field class="width">
           <span matPrefix>+972 &nbsp;</span>
-          <input type="tel" matInput placeholder="Telephone" formControlName="phone" type="number" min="0">
+          <input type="tel" matInput placeholder="Telephone" formControlName="phone">
           <mat-error *ngIf="customerForm.controls['phone'].invalid">{{getErrorMessagePhone()}}</mat-error>
         </mat-form-field>
       </td>
     </tr>
-
+    <tr>
+      <td>
+        <mat-form-field class="width">
+          <input matInput placeholder="City" formControlName="city" type="text" required>
+          <mat-error *ngIf="customerForm.controls['city'].invalid">{{getErrorMessageCity()}}</mat-error>
+        </mat-form-field>
+      </td>
+    </tr>
     <tr>
       <td>
         <mat-form-field class="width">
@@ -36,12 +43,11 @@
     </tr>
     <tr>
       <td>
-        <mat-radio-group class="example-radio-group" >
+        <mat-radio-group class="example-radio-group">
           <mat-radio-button class="example-radio-button" *ngFor="let season of seasons" [value]="season">
             {{season}}
           </mat-radio-button>
         </mat-radio-group>
-        <div class="example-selected-value">Your Gender is: {{favoriteSeason}}</div>
       </td>
     </tr>
     <tr>
@@ -58,12 +64,12 @@
           <input matInput placeholder="Confirem Password" formControlName="confiremPassword" type="password">
           <mat-error *ngIf="customerForm.controls['confiremPassword'].invalid">{{getErrorMessagePassword()}}</mat-error>
         </mat-form-field>
+        <mat-error *ngIf="passwordsNotMatch">Passwords do not match</mat-error>
       </td>
     </tr>
     <tr>
       <td>
-        <button mat-raised-button color="primary" [disabled]="customerForm.invalid">Submit</button>
-
+        <button mat-raised-button color="primary" [disabled]="customerForm.invalid" (click)="submitForm()">Submit</button>
       </td>
       <td>
         <button mat-raised-button color="accent" (click)="clearAllField()">Clear</button>

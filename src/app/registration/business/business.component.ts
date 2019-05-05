@@ -80,7 +80,7 @@ export class BusinessComponent implements OnInit {
     user.name = this.businessForm.controls['Pname'].value;
     user.ownerName = this.businessForm.controls['Oname'].value;
     user.email = this.businessForm.controls['email'].value;
-    user.phoneNumber = `+97${this.businessForm.controls['phone'].value}`;
+    user.phoneNumber = `+972${this.businessForm.controls['phone'].value}`;
     user.city = this.businessForm.controls['city'].value;
     user.locationDescription = this.businessForm.controls['location'].value; 
     user.type = "business";

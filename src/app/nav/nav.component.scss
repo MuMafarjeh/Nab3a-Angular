@@ -1,5 +1,7 @@
 $main-color: #7700FF;
 
+$break-large: 1070px;
+
 header {
   position:absolute;
   width: 100%;
@@ -46,10 +48,6 @@ header {
     color: white;
   }
 
-  .logo {
-    font-weight: bold;
-  }
-
   nav.buttons
   {
     justify-self: left;
@@ -70,10 +68,20 @@ header {
     }
   }
 
-  ngx-page-click
+  .search-container
   {
     margin-left: 1.2em;
-    width: 90%;
+    
+    max-height: 22px;
+
+    @media screen and (min-width: $break-large) {
+      width: 602px;
+      max-width: 602px;
+    }
+    @media screen and (max-width: $break-large) {
+      width: 94%;
+      max-width: 94%;
+    }
 
     grid-area: search;
   }
@@ -81,9 +89,16 @@ header {
   nav.user
   {
     justify-self: right;
-    margin-right: 1.2em;
+    margin-right: 0.2em;
     display: inline-block;
     vertical-align: middle;
+
+    text-overflow: ellipsis;
+
+    li
+    {
+      overflow: unset;
+    }
 
     grid-area: user;
   }

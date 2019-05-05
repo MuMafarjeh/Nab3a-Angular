@@ -1,3 +1,19 @@
-<p>
-  customer-cart-page works!
-</p>
+<h2>My Carts&nbsp;<img src="assets/icons/cart_icon.svg"></h2>
+
+<div class="carts-container" *ngIf="cartsAvailable()" >
+  <div class="business-content"> 
+
+  </div>
+  <div class="cart" *ngFor="let cart of carts">
+    <div class="cart-inner">
+      <app-item-customer-cart class="item" *ngFor="let item of cart" [item]="item">
+      </app-item-customer-cart>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!cartsAvailable()" >
+  <p>
+    Your cart is empty. Try to shop for something first.
+  </p>
+</div>

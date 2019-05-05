@@ -18,15 +18,21 @@ const userCollection = '/user/';
 //     admin.auth().createUser
 // });
 
-exports.notifyBusinessWhenOrder = functions.firestore.document('/order/{orderID}').onCreate(async (snapshot, context) => 
+exports.notifyBusinessWhenOrder = functions.firestore.document('/order/{orderID}').onWrite(async (snapshot, context) => 
 {
-    const orderData = snapshot.data();
+    const orderData = snapshot.after.data()
 
     if(!orderData)
     {
         console.error("Order doesn't exist");
         return;
     }
+
+    if(!orderData.type || orderData.type != "order")
+    {
+        return;
+    }
+
 
     const notifDocuments = await admin.firestore().collection('notification')
         .where('type', '==', 'customerToBusiness').where('subtype', '==', 'order').get();
@@ -351,3 +357,38 @@ exports.ITEM_INDEX_admin_duplicateItems = functions.https.onRequest(async (req, 
 //     }
 // });
 
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+////                                   Other admin things
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+
+// exports.admin_addProfilePhoto = functions.https.onRequest(async (req, resp) => {
+//     if(!req.query || !req.query.pincode || req.query.pincode !== adminPinCode)
+//     {
+//         console.log(req.query);
+//         console.log('unauthorized');
+//         resp.status(401).send('unauthorized');
+//     }
+//     else
+//     {
+//         if(!req.query.photourl || !req.query.uid)
+//         {
+//             console.log('missing parameters');
+//             resp.status(401).send('missing parameters');
+//         }
+//         else
+//         {
+//             await admin.auth().updateUser(req.query.uid, 
+//                 {
+//                     photoURL: req.query.photourl
+//                 });
+
+//             resp.status(200).send({status: 'done'});
+//         }
+//     }
+// })

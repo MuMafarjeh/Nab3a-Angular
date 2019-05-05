@@ -1,0 +1,41 @@
+.example-headers-align .mat-expansion-panel-header-title,
+.example-headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+
+.example-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+mat-form-field {
+  margin-right: 12px;
+  color: white;
+}
+mat-expansion-panel{
+  background-color: rgb(63, 105, 221);
+}
+mat-expansion-panel:hover{
+  background-color: white;
+  color: black;
+  mat-expansion-panel-header:hover{
+    mat-panel-title,mat-panel-description{
+      color: black;
+    }
+  }
+}
+mat-expansion-panel-header{
+  mat-panel-title,mat-panel-description{
+    color: white;
+  }
+}
+example-icon {
+  padding: 0 14px;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+p:hover{
+    color: black;
+}

@@ -17,30 +17,31 @@ import { HomePageCustomerComponent } from './home-page-customer/home-page-custom
 import { CustomerBrowseItemsComponent } from './customer-browse-items/customer-browse-items.component';
 import { CustomerNotificationPageComponent } from './customer-notification-page/customer-notification-page.component';
 import { CustomerCartPageComponent } from './customer-cart-page/customer-cart-page.component';
+import { Globals } from './globals';
 
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'about', component: AboutComponent },
-  { path: 'contact', component: ContactComponent},
+  { path: 'contact', component: ContactComponent },
   {
-    path: 'items', component: ItemsPageComponent,
+    path: `${Globals.MyStoreRoute}`, component: ItemsPageComponent,
     canActivate: [BusinessGuard]
   },
-  { 
-    path: 'customer-cart-page', component: CustomerCartPageComponent, 
-    
+  {
+    path: 'customer-cart-page', component: CustomerCartPageComponent,
+
   },
-  { 
-    path: 'customer-notification-page', component: CustomerNotificationPageComponent, 
-    
+  {
+    path: 'customer-notification-page', component: CustomerNotificationPageComponent,
+
   },
-  { 
-    path: 'customer-browse-items', component: CustomerBrowseItemsComponent, 
-    
+  {
+    path: 'customer-browse-items', component: CustomerBrowseItemsComponent,
+
   },
-  { 
-    path: 'business-notifications', component: BusinessNotificationsComponent, 
+  {
+    path: 'business-notifications', component: BusinessNotificationsComponent,
     canActivate: [BusinessGuard]
   },
 
@@ -56,12 +57,18 @@ const routes: Routes = [
     path: 'home-page-customer', component: HomePageCustomerComponent,
   },
   { path: 'business-order', component: BusinessOrderComponent },
-
-  { path: 'item/:id', component: ItemCustomerPageComponent }
+  {
+    path: 'item/:id', component: ItemCustomerPageComponent,
+    runGuardsAndResolvers: 'paramsChange'
+  }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes,
+    {
+      onSameUrlNavigation: 'reload'
+    })
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
