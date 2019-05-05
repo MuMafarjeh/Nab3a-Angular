@@ -1,5 +1,7 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
+import { ItemCart } from './item.cart';
+import { UserBusiness } from './userbusiness';
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -14,12 +16,20 @@ admin.initializeApp();
 const env = functions.config();
 const userCollection = '/user/';
 
+const firestore = admin.firestore();
+
 // exports.helloWorld = functions.https.onRequest((req, res) => {
 //     admin.auth().createUser
 // });
 
 exports.notifyBusinessWhenOrder = functions.firestore.document('/order/{orderID}').onWrite(async (snapshot, context) => 
 {
+    if(!snapshot || !snapshot.after)
+    {
+        console.error("snapshot does not exist");
+        return;
+    }
+
     const orderData = snapshot.after.data()
 
     if(!orderData)
@@ -28,13 +38,12 @@ exports.notifyBusinessWhenOrder = functions.firestore.document('/order/{orderID}
         return;
     }
 
-    if(!orderData.type || orderData.type != "order")
+    if(!orderData.type || orderData.type !== "order")
     {
         return;
     }
 
-
-    const notifDocuments = await admin.firestore().collection('notification')
+    const notifDocuments = await firestore.collection('notification')
         .where('type', '==', 'customerToBusiness').where('subtype', '==', 'order').get();
 
     if(!notifDocuments)
@@ -61,17 +70,107 @@ exports.notifyBusinessWhenOrder = functions.firestore.document('/order/{orderID}
         toName: orderData.businessName
     }
 
-    await admin.firestore().collection('notificationLog').add(notificationLog);
+    await firestore.collection('notificationLog').add(notificationLog);
+});
+
+const getBusinessData = async function(businessIDs: FirebaseFirestore.DocumentReference[]): Promise<UserBusiness[]>
+{
+    console.error("businessIDs", businessIDs);
+    const docs = await firestore.getAll(...businessIDs);
+    const _businessData: UserBusiness[] = [] as UserBusiness[];
+    
+    docs.forEach((doc) => {
+        const id = doc.id;
+        const user = { id, ...doc.data() } as UserBusiness;
+        _businessData.push(user);
+    });
+    
+    // console.error("getBusinessData", _businessData)
+
+    return _businessData;
+}
+
+exports.getCartsForUser = functions.https.onCall(async (data, context) =>
+{
+    // console.error("wrfa tegrsvf");
+    // console.error("context", context);
+    // console.error("data", data);
+
+    if(!context)
+    {
+        // console.error("unverified token");
+        return;
+    }
+
+    if(!data)
+    {
+        // console.error("no userID provided");
+        return;
+    }
+
+    const userID: string = data;
+    let firstTime: boolean = true;
+
+    const _carts: ItemCart[][] = [[]] as ItemCart[][];
+    const _businessIDs: FirebaseFirestore.DocumentReference[] = [] as FirebaseFirestore.DocumentReference[];
+    const _businessData;
+
+    const docs = firestore.collection('cart')
+        .where('customerID', '==', userID).orderBy('businessID').get();
+
+        docs.then(async (result) => 
+        {
+            const itemDocs = result.docs;
+            let i: number = 0;
+            if(itemDocs.length > 0)
+            {
+                itemDocs.forEach(a => {
+                    const id = a.id;
+                    const item = { id, ...a.data() } as ItemCart;
+
+                    // console.error("businessID", item.businessID, item.businessName)
+
+                    if(firstTime)
+                    {
+                        _businessIDs.push(firestore.doc(`user/${item.businessID}`));
+                        firstTime = false;
+                    }
+
+                    if(_carts[i][0] && _carts[i][0].businessID !== item.businessID)
+                    {
+                        i++;
+                        _carts.push([] as ItemCart[]);
+                        _businessIDs.push(firestore.doc(`user/${item.businessID}`));
+                    }
+
+                    _carts[i].push(item);
+                });
+                // TODO - FIX 5ARA
+                const _businessData = await getBusinessData(_businessIDs);
+            }
+        }, 
+        (e) => {
+            // console.error("cart error", e);
+        });
+    
+        
+
+        // console.error("carts", _carts);
+
+    return {
+        businessData: _businessData,
+        carts: _carts
+    }
 });
 
 exports.register = functions.https.onCall(async (data, context) => {
 
-    console.log("context");
-    console.log(context)
+    console.error("context");
+    console.error(context)
 
     if(!context)
     {
-        console.log("unverified token");
+        console.error("unverified token");
         return;
     }
     
@@ -83,22 +182,22 @@ exports.register = functions.https.onCall(async (data, context) => {
         emailVerified: true
     };
 
-    console.log("before createUser")
+    console.error("before createUser")
     const userRecord = await admin.auth().createUser(authInfo);
 
-    console.log("before add doc")
+    console.error("before add doc")
     delete data.emailVerified;
     delete data.password;
-    await admin.firestore().doc(userCollection + '' + userRecord.uid).create(data);
-    console.log(`New registeration: ${data.name}`);
+    await firestore.doc(userCollection + '' + userRecord.uid).create(data);
+    console.error(`New registeration: ${data.name}`);
 
     const emailLink = await admin.auth().generateEmailVerificationLink(data.email);
-    console.log(`email verification link sent to ${data.email}, ${emailLink}`);
+    console.error(`email verification link sent to ${data.email}, ${emailLink}`);
     return emailLink;
 });
 
 // exports.insertUser = functions.https.user().onCreate((user) => {
-//     admin.firestore().collection('/test').where()
+//     firestore.collection('/test').where()
 //     })
 // });
 
@@ -125,9 +224,9 @@ const items_index = client.initIndex('ITEMS_INDEX');
 // const stores_index = client.initIndex('STORES_INDEX');
 
 //Init collections
-const inventoryItemCollectionRef = admin.firestore().collection("inventory_item");
-const itemCollectionRef = admin.firestore().collection("item");
-const usersCollectionRef = admin.firestore().collection("user");
+const inventoryItemCollectionRef = firestore.collection("inventory_item");
+const itemCollectionRef = firestore.collection("item");
+const usersCollectionRef = firestore.collection("user");
 
 function inventoryItemObject(data: any): any
 {
@@ -135,7 +234,7 @@ function inventoryItemObject(data: any): any
 }
 
 /////////////////////
-///Inventory item iin ALL_INDEX
+///Inventory item in ALL_INDEX
 /////////////////////
 exports.ALL_INDEX_addInventoryItem = functions.firestore
     .document('inventory_item/{itemID}')
@@ -154,6 +253,25 @@ exports.ALL_INDEX_addInventoryItem = functions.firestore
         })
     });
 
+exports.ALL_INDEX_updateInventoryItem = functions.firestore
+    .document('inventory_item/{itemID}')
+    .onUpdate((change, context) => 
+    {
+        if(change.after)
+        {
+            const objectID = change.after.id;
+            const data = change.after.data();
+
+            return all_index.saveObject
+            ({
+                objectID,
+                ...data
+            })
+        }
+        else
+            return null;
+    })  
+
 exports.ALL_INDEX_removeInventoryItem = functions.firestore
     .document('inventory_item/{itemID}')
     .onDelete((snapshot, context) => 
@@ -165,8 +283,8 @@ exports.ALL_INDEX_removeInventoryItem = functions.firestore
 exports.ALL_INDEX_admin_duplicateInventoryItems = functions.https.onRequest(async (req, resp) => {
     if(!req.query || !req.query.pincode || req.query.pincode !== adminPinCode)
     {
-        console.log(req.query);
-        console.log('unauthorized');
+        console.error(req.query);
+        console.error('unauthorized');
         resp.status(401).send('unauthorized');
     }
     else
@@ -175,7 +293,7 @@ exports.ALL_INDEX_admin_duplicateInventoryItems = functions.https.onRequest(asyn
         
         if(!itemsDocs)
         {
-            console.log('no results');
+            console.error('no results');
             resp.status(404).send('no results');  
         }
 
@@ -203,7 +321,7 @@ exports.ALL_INDEX_addBusiness = functions.firestore
     .onCreate((snapshot, context) => 
     {
         const data = snapshot.data();
-        if(!data || data.type != 'business')
+        if(!data || data.type !== 'business')
         {
             return;
         }
@@ -217,6 +335,25 @@ exports.ALL_INDEX_addBusiness = functions.firestore
         })
     });
 
+exports.ALL_INDEX_updateBusiness = functions.firestore
+    .document('user/{userID}')
+    .onUpdate((change, context) => 
+    {
+        if(change.after)
+        {
+            const objectID = change.after.id;
+            const data = change.after.data();
+
+            return all_index.saveObject
+            ({
+                objectID,
+                ...data
+            })
+        }
+        else
+            return null;
+    });
+
 exports.ALL_INDEX_removeBusiness = functions.firestore
     .document('user/{userID}')
     .onDelete((snapshot, context) => 
@@ -228,8 +365,8 @@ exports.ALL_INDEX_removeBusiness = functions.firestore
 exports.ALL_INDEX_admin_duplicateBusiness = functions.https.onRequest(async (req, resp) => {
     if(!req.query || !req.query.pincode || req.query.pincode !== adminPinCode)
     {
-        console.log(req.query);
-        console.log('unauthorized');
+        console.error(req.query);
+        console.error('unauthorized');
         resp.status(401).send('unauthorized');
     }
     else
@@ -238,7 +375,7 @@ exports.ALL_INDEX_admin_duplicateBusiness = functions.https.onRequest(async (req
         
         if(!usersDocs)
         {
-            console.log('no results');
+            console.error('no results');
             resp.status(404).send('no results');  
         }
 
@@ -247,7 +384,7 @@ exports.ALL_INDEX_admin_duplicateBusiness = functions.https.onRequest(async (req
         usersDocs.forEach((result) => 
         {
             const data = result.data();
-            if(data && data.type == 'business')
+            if(data && data.type === 'business')
             {
                 const objectID = result.id;
                 usersObjects.push({ objectID, ...data });
@@ -264,11 +401,53 @@ exports.ALL_INDEX_admin_duplicateBusiness = functions.https.onRequest(async (req
 /////////////////////
 ///Global Items
 /////////////////////
+exports.ITEM_INDEX_addItem = functions.firestore
+    .document('item/{itemID}')
+    .onCreate((snapshot, context) => 
+    {
+        const data = snapshot.data();
+        const objectID = snapshot.id;
+
+        //Add data to algolia index
+        return items_index.addObject
+        ({
+            objectID,
+            ...data
+        })
+    });
+
+exports.ITEM_INDEX_removeItem = functions.firestore
+    .document('item/{itemID}')
+    .onDelete((snapshot, context) => 
+    {
+        const objectID = snapshot.id;
+        return items_index.deleteObject(objectID);
+    });
+
+exports.ITEM_INDEX_updateItem = functions.firestore
+    .document('item/{itemID}')
+    .onUpdate((change, context) => 
+    {
+        if(change.after)
+        {
+            const objectID = change.after.id;
+            const data = change.after.data();
+
+            return all_index.saveObject
+            ({
+                objectID,
+                ...data
+            })
+        }
+        else
+            return null;
+    });
+
 exports.ITEM_INDEX_admin_duplicateItems = functions.https.onRequest(async (req, resp) => {
     if(!req.query || !req.query.pincode || req.query.pincode !== adminPinCode)
     {
-        console.log(req.query);
-        console.log('unauthorized');
+        console.error(req.query);
+        console.error('unauthorized');
         resp.status(401).send('unauthorized');
     }
     else
@@ -277,7 +456,7 @@ exports.ITEM_INDEX_admin_duplicateItems = functions.https.onRequest(async (req, 
         
         if(!itemsDocs)
         {
-            console.log('no results');
+            console.error('no results');
             resp.status(404).send('no results');  
         }
 
@@ -328,8 +507,8 @@ exports.ITEM_INDEX_admin_duplicateItems = functions.https.onRequest(async (req, 
 // exports.INVENTORY_ITEMS_INDEX_admin_duplicateInventoryItems = functions.https.onRequest(async (req, resp) => {
 //     if(!req.query || !req.query.pincode || req.query.pincode !== adminPinCode)
 //     {
-//         console.log(req.query);
-//         console.log('unauthorized');
+//         console.error(req.query);
+//         console.error('unauthorized');
 //         resp.status(401).send('unauthorized');
 //     }
 //     else
@@ -338,7 +517,7 @@ exports.ITEM_INDEX_admin_duplicateItems = functions.https.onRequest(async (req, 
         
 //         if(!itemsDocs)
 //         {
-//             console.log('no results');
+//             console.error('no results');
 //             resp.status(404).send('no results');  
 //         }
 
@@ -370,15 +549,15 @@ exports.ITEM_INDEX_admin_duplicateItems = functions.https.onRequest(async (req, 
 // exports.admin_addProfilePhoto = functions.https.onRequest(async (req, resp) => {
 //     if(!req.query || !req.query.pincode || req.query.pincode !== adminPinCode)
 //     {
-//         console.log(req.query);
-//         console.log('unauthorized');
+//         console.error(req.query);
+//         console.error('unauthorized');
 //         resp.status(401).send('unauthorized');
 //     }
 //     else
 //     {
 //         if(!req.query.photourl || !req.query.uid)
 //         {
-//             console.log('missing parameters');
+//             console.error('missing parameters');
 //             resp.status(401).send('missing parameters');
 //         }
 //         else
