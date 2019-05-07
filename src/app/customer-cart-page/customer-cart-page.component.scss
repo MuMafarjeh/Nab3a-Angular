@@ -8,20 +8,69 @@ $color-business-hover: rgb(144, 47, 255);
 
 .cart
 {
-    border-style: solid;
-    border-color: rgb(180, 180, 180);
-    border-width: 2px;
-    border-radius: 0px 0px 10px 10px;
-    margin-bottom: 2em;
-
     .business-content
     {
         background-color: $color-business;
         height: 10em;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        transition-duration: 0.4s;
+
+        &:hover
+        {
+            background-color: $color-business-hover;
+            box-shadow: 10px 10px 10px 0px rgba(0,0,0,0.5);
+
+            // .cart-inner
+            // {
+            //     border-color: $color-business-hover;
+            //     background-color: white;
+            // }
+        }
+
+        .business-left
+        {
+            .number
+            {
+                padding: 1em;
+            }
+    
+            .business-title
+            {
+                margin-left: 1em; 
+
+                .business-name
+                {
+                    margin-top: -0.4em;
+                }
+            }
+        }
+
+        .image
+        {
+            width: fit-content;
+            max-width: fit-content;
+            height: 100%;
+            max-height: 100%;
+            img{
+                object-fit: contain;
+                max-height: 100%;
+            }
+        }
     }
 
     .cart-inner
     {
+        border-style: solid;
+        border-color: $color-business;
+        border-width: 2px;
+        border-top: 0px;
+        border-radius: 0px 0px 10px 10px;
+        margin-bottom: 2em;
+
         padding: 2em;
         display: grid;
         grid-gap: 2em;
@@ -32,5 +81,6 @@ $color-business-hover: rgb(144, 47, 255);
             
         }
     }
+
 }
 

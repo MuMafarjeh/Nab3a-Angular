@@ -3,16 +3,22 @@
 <div class="carts-container" *ngIf="cartsAvailable()" >
   <div class="cart" *ngFor="let cart of carts; let i = index">
     <div *ngIf="businessData"  class="business-content">
-      <img *ngIf="businessData[i] && businessData[i].image" [src]="businessData[i].image">  
-      <img *ngIf="!businessData[i] || !businessData[i].image" src="assets/blank_profile_image.png">  
-      <div class="business-title">
-        <h2 class="business-name">{{ businessData[i].name }}</h2>
-        <div class="italic">{{ businessData[i].city | uppercase }}</div>
-        <div class="italic">{{ businessData[i].locationDescription | uppercase }}</div>
+      <div class="business-left">
+        <div class="italic number">#{{ i + 1 }}</div>
+        <div class="business-title">
+          <h2 class="business-name">{{ businessData[i].name }}</h2>
+          <div class="italic">{{ businessData[i].city | uppercase }}</div>
+          <div class="italic">{{ businessData[i].locationDescription | uppercase }}</div>
+        </div>
+      </div>
+      <div class="image">
+        <img *ngIf="businessData[i] && businessData[i].image" [src]="businessData[i].image">  
+        <img *ngIf="!businessData[i] || !businessData[i].image" src="assets/blank_profile_image.png">  
       </div>
     </div>
     <div class="cart-inner">
-      <app-item-customer-cart class="item" *ngFor="let item of cart" [item]="item">
+      <app-item-customer-cart class="item" *ngFor="let item of cart; let j = index" [item]="item" [inCart]='true' 
+        [cartNum]="i" [itemNum]="j" (removeFromCart)="removeFromCart($event)">
       </app-item-customer-cart>
     </div>
   </div>

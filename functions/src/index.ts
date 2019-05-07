@@ -75,9 +75,16 @@ exports.notifyBusinessWhenOrder = functions.firestore.document('/order/{orderID}
 
 const getBusinessData = async function(businessIDs: FirebaseFirestore.DocumentReference[]): Promise<UserBusiness[]>
 {
-    // console.error("businessIDs", businessIDs);
-    const docs = await firestore.getAll(...businessIDs);
     const _businessData: UserBusiness[] = [] as UserBusiness[];
+    if(!businessIDs || businessIDs.length == 0)
+        return _businessData;
+
+    const docs = await firestore.getAll(...businessIDs);
+
+    if(!docs)
+    {
+        return _businessData;
+    }
     
     docs.forEach((doc) => {
         const id = doc.id;
@@ -85,27 +92,24 @@ const getBusinessData = async function(businessIDs: FirebaseFirestore.DocumentRe
         _businessData.push(user);
     });
     
-    // console.error("getBusinessData", _businessData)
-
     return _businessData;
 }
 
 exports.getCartsForUser = functions.https.onCall(async (data, context) =>
 {
-    // console.error("wrfa tegrsvf");
-    // console.error("context", context);
-    // console.error("data", data);
-
     if(!context)
     {
-        // console.error("unverified token");
+        console.error("unverified token");
         return;
     }
 
     if(!data)
     {
-        // console.error("no userID provided");
-        return;
+        console.error("no userID provided");
+        return {
+            businessData: [],
+            carts: []
+        }
     }
 
     const userID: string = data;
@@ -118,53 +122,91 @@ exports.getCartsForUser = functions.https.onCall(async (data, context) =>
     const docs = firestore.collection('cart')
         .where('customerID', '==', userID).orderBy('businessID').get();
 
-        docs.then(async (result) => 
+        await docs.then(async (result) => 
         {
             const itemDocs = result.docs;
             let i: number = 0;
             if(itemDocs.length > 0)
             {
                 itemDocs.forEach(a => {
-                    const id = a.id;
-                    const item = { id, ...a.data() } as ItemCart;
 
-                    if(firstTime)
+                    if(a.data().valid === null || a.data().valid === undefined || 
+                        a.data().valid === true)
                     {
-                        console.error("doc", firestore.doc(`user/${item.businessID}`));
-                        _businessIDs.push(firestore.doc(`user/${item.businessID}`));
-                        firstTime = false;
+                        const itemData = a.data();
+                        // delete itemData['id'];
+                        const item = { cartID: a.id, ...itemData } as ItemCart;
+    
+                        if(firstTime)
+                        {
+                            _businessIDs.push(firestore.doc(`user/${item.businessID}`));
+                            firstTime = false;
+                        }
+    
+                        if(_carts[i][0] && _carts[i][0].businessID !== item.businessID)
+                        {
+                            i++;
+                            _carts.push([] as ItemCart[]);
+                            _businessIDs.push(firestore.doc(`user/${item.businessID}`));
+                        }
+    
+                        _carts[i].push(item);
                     }
-
-                    if(_carts[i][0] && _carts[i][0].businessID !== item.businessID)
-                    {
-                        i++;
-                        _carts.push([] as ItemCart[]);
-                        console.error("doc", firestore.doc(`user/${item.businessID}`));
-                        _businessIDs.push(firestore.doc(`user/${item.businessID}`));
-                    }
-
-                    _carts[i].push(item);
+                    
                 });
                 // TODO - FIX 5ARA
                 _businessData = await getBusinessData(_businessIDs);
             }
         }, 
         (e) => {
-            // console.error("cart error", e);
+            console.error("cart error", e);
         });
     
-        // console.error("carts", _carts);
-
     return {
         businessData: _businessData,
         carts: _carts
     }
 });
 
+exports.updateCartQuantity = functions.https.onCall(async (data, context) =>
+{
+    console.log(data)
+
+    if(!context)
+    {
+        console.error("unverified token");
+        return false;
+    }
+
+    if(!data)
+    {
+        console.error("no data provided");
+        return false;
+    }
+
+    const item = data as ItemCart;
+
+    // console.log(item.cartID);
+
+    const itemInCart = (await firestore.doc(`cart/${item.cartID}`).get()).data() as ItemCart;
+    const quantity = (itemInCart? itemInCart.quantity: 0) + item.quantity;
+
+    if(!itemInCart || !itemInCart.stock || quantity > itemInCart.stock)
+        return false;
+
+    let result: boolean = true;
+
+    await firestore.doc(`cart/${item.cartID}`).update({quantity: quantity})
+        .then(() => result = true)
+        .catch(() => result = false);
+
+    return result;
+});
+
 exports.register = functions.https.onCall(async (data, context) => {
 
-    console.error("context");
-    console.error(context)
+    // console.error("context");
+    // console.error(context)
 
     if(!context)
     {
@@ -180,17 +222,17 @@ exports.register = functions.https.onCall(async (data, context) => {
         emailVerified: true
     };
 
-    console.error("before createUser")
+    // console.error("before createUser")
     const userRecord = await admin.auth().createUser(authInfo);
 
-    console.error("before add doc")
+    // console.error("before add doc")
     delete data.emailVerified;
     delete data.password;
     await firestore.doc(userCollection + '' + userRecord.uid).create(data);
-    console.error(`New registeration: ${data.name}`);
+    // console.error(`New registeration: ${data.name}`);
 
     const emailLink = await admin.auth().generateEmailVerificationLink(data.email);
-    console.error(`email verification link sent to ${data.email}, ${emailLink}`);
+    // console.error(`email verification link sent to ${data.email}, ${emailLink}`);
     return emailLink;
 });
 
@@ -211,7 +253,6 @@ exports.register = functions.https.onCall(async (data, context) => {
 
 
 import * as algoliasearch from 'algoliasearch';
-import { FirebaseFirestore } from '@angular/fire';
 
 //Init algolia
 const client = algoliasearch(env.algolia.appid, env.algolia.apikey);
@@ -319,6 +360,7 @@ exports.ALL_INDEX_addBusiness = functions.firestore
     .document('user/{userID}')
     .onCreate((snapshot, context) => 
     {
+
         const data = snapshot.data();
         if(!data || data.type !== 'business')
         {

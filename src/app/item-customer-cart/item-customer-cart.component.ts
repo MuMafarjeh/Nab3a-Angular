@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Item } from '../item/item';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ItemsService } from '../item/items.service';
@@ -9,6 +9,8 @@ import { AuthService } from '../auth/auth.service';
 import { UserService } from '../user/user.service';
 import { CartService } from '../services/cart.service';
 import { UserBusiness } from '../user/userbusiness';
+import { Subject } from 'rxjs';
+import { ItemCart } from 'functions/src/item.cart';
 
 @Component({
   selector: 'app-item-customer-cart',
@@ -18,8 +20,19 @@ import { UserBusiness } from '../user/userbusiness';
 export class ItemCustomerCartComponent implements OnInit {
 
   @Input()
-  item: Item;
+  item: ItemCart;
   itemID: string;
+
+  @Input()
+  inCart: boolean = false;
+
+  @Input()
+  public cartNum: number = 0;
+  @Input()
+  public itemNum: number = 0;
+
+  @Output()
+  public removeFromCart = new EventEmitter<any>();
 
   quantityForm: FormGroup;
 
@@ -35,13 +48,11 @@ export class ItemCustomerCartComponent implements OnInit {
 
   ngOnInit()
   { 
-    console.log(this.item.name, this.item.quantity)
-
     this.quantityForm = this.formBuilder.group({
       quantity: [`${this.item.quantity}`, [Validators.required, Validators.pattern('[1-9][0-9]{0,3}')]],
     });
 
-    console.log(this.item.name, this.item.quantity)
+    console.log(this.item.name, this.item.cartID, this.item.id)
   }
 
   getFinalPrice(): number
@@ -59,7 +70,9 @@ export class ItemCustomerCartComponent implements OnInit {
 
   btnRemoveFromCart()
   {
-
+    this.removeFromCart.emit({
+      cartNum: this.cartNum, 
+      itemNum: this.itemNum
+    });
   }
-
 }

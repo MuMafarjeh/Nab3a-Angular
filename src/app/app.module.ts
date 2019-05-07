@@ -89,7 +89,7 @@ import { FollowingCustomerPageComponent } from './following-customer-page/follow
     ItemBusinessSuggestionComponent,
     ItemCustomerCartComponent,
     DeliveryManComponent,
-    FollowingCustomerPageComponent
+    FollowingCustomerPageComponent,
   ],
   imports: [
     FormsModule,

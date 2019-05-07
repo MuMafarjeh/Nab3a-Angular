@@ -3,10 +3,10 @@
   <div class="business-content" *ngIf="item" >
     <img *ngIf="businessData && businessData.image" [src]="businessData.image">  
     <img *ngIf="!businessData || !businessData.image" src="assets/blank_profile_image.png">  
-    <div class="business-title">
-      <h2 class="business-name">{{ item.businessName }}</h2>
-      <div class="italic">{{ item.city | uppercase }}</div>
-      <div class="italic">{{ item.locationDescription | uppercase }}</div>
+    <div class="business-title" *ngIf="businessData" >
+      <h2 class="business-name">{{ businessData.name }}</h2>
+      <div class="italic">{{ businessData.city | uppercase }}</div>
+      <div class="italic">{{ businessData.locationDescription | uppercase }}</div>
     </div>
    
   </div>
@@ -16,14 +16,14 @@
     <div class="item-content">
       <div class="text-content" >
         <div class="data">
-            <div class="name rows">{{ item.name | uppercase }}</div>
-            <div class="category rows">{{ item.category }}</div>
-            <div class="rows">{{ item.price | currency:'ILS':'symbol':'1.1-1' }}</div>
-            <div class="rows">{{ item.stock }} pcs.</div>
+          <div class="name rows">{{ item.name | uppercase }}</div>
+          <div class="category rows">{{ item.category }}</div>
+          <div class="rows">{{ item.price | currency:'ILS':'symbol':'1.1-1' }}</div>
+          <div class="rows">{{ item.stock }} pcs.</div>
         </div>
         
         <div class="data right-side">
-        
+          
         </div>
       </div>
 
@@ -33,14 +33,18 @@
     </div>
 
     <div class="actions" align="right" [formGroup]="quantityForm" *ngIf="item.type == 'product'">
-      <p>Add to cart</p>
+      <div class="in-cart" *ngIf="inCart" >
+        <img class="check" src="assets/icons/check_icon.svg">
+        <div class="in-cart-text">Added to cart!</div>
+      </div>
+      <p *ngIf="!inCart" >Add to cart</p>
       <mat-form-field>
         <mat-label>Quantity</mat-label>
         <input matInput type="number" [value]="quantity"
-          name="quantity" formControlName="quantity">
+          name="quantity" formControlName="quantity" [(ngModel)]="quantityModel">
         <mat-error *ngIf="quantityForm.invalid">Please enter a quantity</mat-error>
       </mat-form-field>
-      <p>{{ getFinalPrice() | currency:'ILS':'symbol':'1.1-1' }}</p>
+      <p>{{ quantityModel > 0 ? quantityModel: '1' }}{{inCart? ' MORE': ''}}: for {{ getFinalPrice() | currency:'ILS':'symbol':'1.1-1' }}</p>
       <button (click)="btnAddToCart()"
         mat-mini-fab color="accent" class="order-btn" [disabled]="quantityForm.invalid">
         <mat-icon svgIcon="add-to-cart-icon"></mat-icon>

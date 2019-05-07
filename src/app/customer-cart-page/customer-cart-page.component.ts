@@ -17,15 +17,18 @@ export class CustomerCartPageComponent implements OnInit {
   businessData: UserBusiness[];
 
   async ngOnInit() {
-    await this.cartService.getCartsForUser(this.authService.userID);
+    // await this.cartService.getCartsForUser(this.authService.userID);
     this.carts = this.cartService.carts;
-    // this.businessData = this.cartService.businessData;
-    // this.businessData = this.cartService.businessData;
+    this.businessData = this.cartService.businessData;
   }
 
   public cartsAvailable(): boolean
   {
-    return this.carts && this.carts.length > 0;
+    return this.carts && this.carts[0] && this.carts[0].length > 0;
   }
 
+  public removeFromCart(numbers: any)
+  {
+    this.cartService.removeItemFromCart(numbers.cartNum, numbers.itemNum);
+  }
 }

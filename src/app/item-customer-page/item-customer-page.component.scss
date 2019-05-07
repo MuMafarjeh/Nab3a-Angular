@@ -130,10 +130,14 @@ $item-font-color-2: rgb(217, 219, 255);
 
         display: flex;
         justify-content: space-between;
+        margin-right: 6%;
 
         .right-side
         {
             text-align: end;
+
+            display: flex;
+            flex-direction: column;
         }
     }
 
@@ -167,6 +171,28 @@ $item-font-color-2: rgb(217, 219, 255);
         justify-content: space-between;
         align-items: center;
         align-content: flex-start;
+
+
+        .in-cart
+        {
+            margin-left: 1.2em;
+
+            .check
+            {
+                size: 1.2em;
+                overflow: visible;
+                padding-left: 40%;
+                padding-right: 40%;
+            }
+
+            .in-cart-text
+            {
+                text-align: center;
+                color: #54db54;
+                font-weight: bold;
+                font-size: 1.4em;
+            }
+        }
 
         p
         {

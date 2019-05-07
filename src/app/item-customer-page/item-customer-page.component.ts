@@ -28,8 +28,11 @@ export class ItemCustomerPageComponent implements OnInit{
 
   quantity: number = 1;
   quantityForm: FormGroup;
+  quantityModel: number = 1;
 
   navigationSubscription: Subscription;
+  inCart: boolean;
+  cartID: string;
 
   constructor(private itemsService: ItemsService, private router: Router,
     iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private authService: AuthService,
@@ -42,20 +45,20 @@ export class ItemCustomerPageComponent implements OnInit{
 
       this.navigationSubscription = this.router.events.subscribe(async (e: any) => {
         const itemID = this.router.url.split('/').pop();
+       
         // If it is a NavigationEnd event re-initalise the component
         if (e instanceof NavigationEnd) {
           try
           {
-            if(itemID != this.itemID)
-            {
-              await this.getItemData(itemID)
-              // console.log("newBusiness", this.newBusiness);
-              this.getItemsOfBusiness();
-              if(this.newBusiness)
-              {  
-                this.getBusinessInfo();
-              }
+            await this.getItemData(itemID)
+            console.log(this.item)
+            this.getInCart();
+            this.getItemsOfBusiness();
+            if(this.newBusiness)
+            {  
+              this.getBusinessInfo();
             }
+            
           }
           catch(e)
           {
@@ -78,15 +81,16 @@ export class ItemCustomerPageComponent implements OnInit{
 
     if(this.item)
     {
+      this.getInCart();
       this.getItemsOfBusiness();
       this.getBusinessInfo();
     }
   }
 
-  btnAddToCart()
+  async btnAddToCart()
   {
-    this.cartService.addInventoryItemToCart(this.item, this.quantityForm.get('quantity').value, 
-      this.authService.userID);
+    await this.cartService.addInventoryItemToCart(this.item, this.quantityForm.get('quantity').value, 
+      this.authService.userID, this.inCart, this.cartID).then(() => this.getInCart());
   }
 
   getFinalPrice(): number
@@ -95,6 +99,14 @@ export class ItemCustomerPageComponent implements OnInit{
       return this.quantityForm.get('quantity').value * this.item.price;
     else
       return 0;
+  }
+
+  getInCart()
+  {
+    const cartID = this.cartService.getInCart(this.item);
+    this.inCart = cartID != null;
+    if(cartID)
+      this.cartID = cartID;
   }
 
   async getItemData(itemID: string)

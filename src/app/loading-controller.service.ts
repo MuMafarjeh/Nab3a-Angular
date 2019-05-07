@@ -20,7 +20,7 @@ export class LoadingControllerService {
     {
       if(done)
       { 
-        // await this.cartService.getCartsForUser(this.authService.userID);
+        await this.cartService.getCartsForUser(this.authService.userID);
       }
       this.doneLoading.next(done);
     });
