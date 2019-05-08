@@ -45,7 +45,6 @@ export class BusinessAddProductComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private itemService: ItemsService , private storage: StorageService
     , private authService: AuthService, private router: Router) 
     {
-      // console.log(authService.userID);
     }
 
 

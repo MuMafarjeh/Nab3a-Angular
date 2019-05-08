@@ -51,7 +51,6 @@ export class ItemCustomerPageComponent implements OnInit{
           try
           {
             await this.getItemData(itemID)
-            console.log(this.item)
             this.getInCart();
             this.getItemsOfBusiness();
             if(this.newBusiness)
@@ -124,9 +123,9 @@ export class ItemCustomerPageComponent implements OnInit{
       this.itemNotFound = false;
       this.justLoaded = false;
       
-    }, () =>
+    }, (err) =>
     {
-      // console.log(err);
+      console.log(err);
       this.itemNotFound = true;
       this.justLoaded = false;
       this.item = null;
@@ -136,7 +135,6 @@ export class ItemCustomerPageComponent implements OnInit{
 
   async getItemsOfBusiness()
   {
-    // console.log(this.item.businessID);
     
     let items: Item[] = await this.itemsService.getInventoryItemsOfBusiness(this.item.businessID);
     let index = items.findIndex((item) => item.id == this.item.id); //exclude current item

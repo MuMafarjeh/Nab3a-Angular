@@ -36,7 +36,6 @@ export class LoginEmailComponent implements OnInit {
     }
 
     this.error = await this.authService.login(this.form.controls.email.value, this.form.controls.password.value);
-    console.log("email error:" + this.error);
   }
  
 }

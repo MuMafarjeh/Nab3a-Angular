@@ -4,12 +4,18 @@
   <div class="cart" *ngFor="let cart of carts; let i = index">
     <div *ngIf="businessData"  class="business-content">
       <div class="business-left">
-        <div class="italic number">#{{ i + 1 }}</div>
+        <div class="italic number">Cart #{{ i + 1 }}</div>
         <div class="business-title">
           <h2 class="business-name">{{ businessData[i].name }}</h2>
           <div class="italic">{{ businessData[i].city | uppercase }}</div>
           <div class="italic">{{ businessData[i].locationDescription | uppercase }}</div>
         </div>
+      </div>
+      <div class="business-center">
+        <p>Final price: {{ finalPrice[i] | currency:'ILS':'symbol':'1.1-1' }}</p>
+        <button mat-raised-button matTooltip="Confirm your order from {{businessData[i].name}}" 
+         *ngIf="!getConfirmed(i)" (click)="onOrder(i)">Confirm Order</button>
+         <p *ngIf="getConfirmed(i)"  class="confirmed-p">Order In Progress...</p>
       </div>
       <div class="image">
         <img *ngIf="businessData[i] && businessData[i].image" [src]="businessData[i].image">  
@@ -18,7 +24,7 @@
     </div>
     <div class="cart-inner">
       <app-item-customer-cart class="item" *ngFor="let item of cart; let j = index" [item]="item" [inCart]='true' 
-        [cartNum]="i" [itemNum]="j" (removeFromCart)="removeFromCart($event)">
+        [disabled]="getConfirmed(i)" [cartNum]="i" [itemNum]="j" (removeFromCart)="removeFromCart($event)" (confirmQuantity)="confirmQuantity($event)">
       </app-item-customer-cart>
     </div>
   </div>

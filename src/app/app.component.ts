@@ -20,7 +20,6 @@ export class AppComponent {
   constructor(private loading: LoadingControllerService, private authService: AuthService, 
     private router: Router, private titleService: Title, private cartService: CartService)
   {
-    console.log("start");
     this.titleService.setTitle( this.title );
     this.loading.doneLoading.subscribe((done) => {
       this.doneLoading = done;

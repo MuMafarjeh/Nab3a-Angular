@@ -54,7 +54,6 @@ export class CustomerComponent implements OnInit {
   }
 
   submitForm() {
-    console.log("Hello");
     
     if (this.customerForm.controls['confiremPassword'].value
       != this.customerForm.controls['password'].value) {

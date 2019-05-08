@@ -31,10 +31,19 @@ export class ItemCustomerCartComponent implements OnInit {
   @Input()
   public itemNum: number = 0;
 
+  @Input()
+  public disabled: boolean = false;
+
   @Output()
   public removeFromCart = new EventEmitter<any>();
 
+  @Output()
+  public confirmQuantity = new EventEmitter<ItemCart>();
+
   quantityForm: FormGroup;
+  quantity: number;
+
+  originalQuantity: number;
 
   businessData: UserBusiness;
 
@@ -52,7 +61,7 @@ export class ItemCustomerCartComponent implements OnInit {
       quantity: [`${this.item.quantity}`, [Validators.required, Validators.pattern('[1-9][0-9]{0,3}')]],
     });
 
-    console.log(this.item.name, this.item.cartID, this.item.id)
+    this.originalQuantity = this.item.quantity;
   }
 
   getFinalPrice(): number
@@ -74,5 +83,16 @@ export class ItemCustomerCartComponent implements OnInit {
       cartNum: this.cartNum, 
       itemNum: this.itemNum
     });
+  }
+
+  onConfirmQuantity()
+  {
+    this.item.quantity = this.quantityForm.get('quantity').value;
+    this.confirmQuantity.emit(this.item);
+  }
+
+  getQuantityChanged(): boolean
+  {
+    return this.quantityForm.get('quantity').value != this.originalQuantity;
   }
 }

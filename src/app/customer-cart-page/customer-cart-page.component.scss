@@ -8,6 +8,7 @@ $color-business-hover: rgb(144, 47, 255);
 
 .cart
 {
+    margin-bottom: 1.2em;
     .business-content
     {
         background-color: $color-business;
@@ -46,6 +47,21 @@ $color-business-hover: rgb(144, 47, 255);
                 {
                     margin-top: -0.4em;
                 }
+            }
+        }
+
+        .business-center
+        {
+            margin-top: 1.2em;
+            margin-bottom: 1.2em;
+            display: flex;
+            flex-direction: column-reverse;
+
+            .confirmed-p
+            {
+                color: #54db54;
+                font-weight: bolder;
+                
             }
         }
 

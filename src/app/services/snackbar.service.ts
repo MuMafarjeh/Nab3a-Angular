@@ -8,7 +8,7 @@ export class SnackbarService {
 
   constructor(private snackbar: MatSnackBar) { }
 
-  private defaultDuration = 3;
+  private defaultDuration = 7;
 
   openSnackbar(message: string)
   {

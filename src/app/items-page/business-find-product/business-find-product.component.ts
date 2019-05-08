@@ -52,7 +52,6 @@ export class BusinessFindProductComponent implements OnInit {
   onClickItem(item)
   {
     this.clickedItem = item;
-    // console.log(`clicked item: ${this.clickedItem}`);
     this.showResults = false;
     // this.MatDialogRef.close();
   }

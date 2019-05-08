@@ -173,7 +173,6 @@ export class AuthService{
     user.password = password;
     // await this.auth.auth.signInWithEmailAndPassword(user.email, password);
     const result = await this.httpService.registerUser(user);
-    console.log(result);
     // await this.sendEmailVerification();
     // this.router.navigate(['/']);
   }

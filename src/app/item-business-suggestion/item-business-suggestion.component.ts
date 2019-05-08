@@ -33,7 +33,6 @@ export class ItemBusinessSuggestionComponent implements OnInit {
 
   onClick()
   {
-    // console.log(`clicked item suggestion: ${this.item.name}`)
     this.onClickItem.emit(this.item);
   }
 
