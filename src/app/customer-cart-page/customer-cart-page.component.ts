@@ -57,16 +57,16 @@ export class CustomerCartPageComponent implements OnInit {
 
   async confirmQuantity(item: ItemCart)
   {
-    if(this.getConfirmed(cartNum))
-      return;
+    // if(this.getConfirmed())
+    //   return;
       
     await this.cartService.updateQuantity(item);
     this.getData();
   }
 
-  getConfirmed(i: number)
+  getConfirmed(i: number): boolean
   {
-    return this.confirmed && this.confirmed[i] != null && this.confirmed[i] != undefined && this.confirmed[i];
+    return this.cartService.getConfirmed(i);
   }
   
 }

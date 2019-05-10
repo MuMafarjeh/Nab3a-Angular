@@ -21,6 +21,7 @@ export interface ItemCart
     inventory_productID: string;
     finalPrice: number;
     quantity: number;
+    status: string;
 
     city: string;
     locationDescription: string;

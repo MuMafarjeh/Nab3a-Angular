@@ -41,10 +41,10 @@
       <mat-form-field>
         <mat-label>Quantity</mat-label>
         <input matInput type="number" [value]="quantity"
-          name="quantity" formControlName="quantity" [(ngModel)]="quantityModel">
+          name="quantity" formControlName="quantity">
         <mat-error *ngIf="quantityForm.invalid">Please enter a quantity</mat-error>
       </mat-form-field>
-      <p>{{ quantityModel > 0 ? quantityModel: '1' }}{{inCart? ' MORE': ''}}: for {{ getFinalPrice() | currency:'ILS':'symbol':'1.1-1' }}</p>
+      <p>{{ quantityForm.invalid ? '1': quantityForm.get('quantity').value }}{{inCart? ' MORE': ''}}: for {{ getFinalPrice() | currency:'ILS':'symbol':'1.1-1' }}</p>
       <button (click)="btnAddToCart()"
         mat-mini-fab color="accent" class="order-btn" [disabled]="quantityForm.invalid">
         <mat-icon svgIcon="add-to-cart-icon"></mat-icon>

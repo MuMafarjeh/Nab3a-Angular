@@ -28,7 +28,7 @@
     </mat-form-field>
     <button mat-raised-button matTooltip="Confirm quantity for {{item.name}}" 
       *ngIf="getQuantityChanged() && !disabled" [disabled]="quantityForm.invalid" (click)="onConfirmQuantity()">Confirm Quantity</button>
-    <p>{{ getFinalPrice() | currency:'ILS':'symbol':'1.1-1' }}</p>
+    <p>Price: {{ getFinalPrice() | currency:'ILS':'symbol':'1.1-1' }}{{disabled? ', Quantity: ' + item.quantity: ''}}</p>
     <button *ngIf="!disabled" (click)="btnRemoveFromCart()" matTooltip="Remove item from cart"
       mat-mini-fab color="warn" class="order-btn">
       <mat-icon svgIcon="remove-from-cart-icon"></mat-icon>

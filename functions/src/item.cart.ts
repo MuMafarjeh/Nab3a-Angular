@@ -1,5 +1,6 @@
 export interface ItemCart
 {
+    status: string;
     objectID: string;
     id: string;
     cartID: string;
