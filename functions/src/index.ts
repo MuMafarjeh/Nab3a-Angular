@@ -3,6 +3,8 @@ import * as admin from 'firebase-admin';
 import { ItemCart } from './item.cart';
 import { UserBusiness } from './userbusiness';
 import { UserCustomer } from './usercustomer';
+import * as algoliasearch from 'algoliasearch';
+
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -18,10 +20,6 @@ const env = functions.config();
 const userCollection = '/user/';
 
 const firestore = admin.firestore();
-
-// exports.helloWorld = functions.https.onRequest((req, res) => {
-//     admin.auth().createUser
-// });
 
 exports.notifyBusinessWhenOrder = functions.firestore.document('/order/{orderID}').onWrite(async (snapshot, context) => 
 {
@@ -101,16 +99,13 @@ exports.getCartsForUser = functions.https.onCall(async (data, context) =>
     if(!context)
     {
         console.error("unverified token");
-        return;
+        return false;
     }
 
     if(!data)
     {
         console.error("no userID provided");
-        return {
-            businessData: [],
-            carts: []
-        }
+        return false;
     }
 
     const userID: string = data;
@@ -121,50 +116,82 @@ exports.getCartsForUser = functions.https.onCall(async (data, context) =>
     let _businessData: UserBusiness[] = [] as UserBusiness[];
     const _finalPrice: number[] = [0];
 
-    const docs = firestore.collection('cart')
+    const itemDocs = [] as FirebaseFirestore.QueryDocumentSnapshot[];
+
+    let i: number = 0;
+
+    const cartPromise = firestore.collection('cart')
         .where('customerID', '==', userID).orderBy('businessID').get();
 
-        await docs.then(async (result) => 
-        {
-            const itemDocs = result.docs;
-            let i: number = 0;
-            if(itemDocs.length > 0)
-            {
-                itemDocs.forEach(a => {
+    cartPromise.then((result) => {
+        itemDocs.push(...result.docs);
+    }).catch((e) => {
+        console.error("cart promise error", e);
+    });
 
-                    if(a.data().valid === null || a.data().valid === undefined || 
-                        a.data().valid === true)
-                    {
-                        const itemData = a.data();
-                        const item = { cartID: a.id, ...itemData } as ItemCart;
-    
-                        if(firstTime)
-                        {
-                            _businessIDs.push(firestore.doc(`user/${item.businessID}`));
-                            _finalPrice.push(0);
-                            firstTime = false;
-                        }
-    
-                        if(_carts[i][0] && _carts[i][0].businessID !== item.businessID)
-                        {
-                            i++;
-                            _carts.push([] as ItemCart[]);
-                            _businessIDs.push(firestore.doc(`user/${item.businessID}`));
-                            _finalPrice.push(0);
-                        }
-    
-                        _carts[i].push(item);
-                        _finalPrice[i] += item.quantity * item.price;
-                    }
-                    
-                });
-                _businessData = await getBusinessData(_businessIDs);
-            }
-        }, 
-        (e) => {
-            console.error("cart error", e);
+    const orderPromise = firestore.collection('order').where('customerID', '==', userID)
+        .where('done', '==', false).orderBy('timeGenerated').get();
+
+    const orderPromises = [] as Promise<FirebaseFirestore.QuerySnapshot>[];
+    orderPromise.then(async (result) => {
+
+        result.docs.forEach(async (doc) => 
+        {
+            const orderedProductsPromise = 
+                firestore.doc(`order/${doc.id}`).collection('orderedProducts').get();
+
+            orderedProductsPromise.then((result2) => 
+            {
+                itemDocs.push(...result2.docs);
+            }).catch((e) => {
+                console.error("orderedProduct promise error", e);
+            })
+            
+            orderPromises.push(orderedProductsPromise);
         });
+
+    }).catch((e) => {
+        console.error("order promise error", e);
+    });
+
+    await Promise.all([orderPromise, cartPromise]).catch((e) => console.error("ALL promise error", e))
+
+    await Promise.all(orderPromises);
+
+    // TODO - add in-progress status to first item of array of ORDERED items
     
+    if(itemDocs.length > 0)
+    {
+        itemDocs.forEach(a => {
+            if(a.data().valid === null || a.data().valid === undefined || 
+                a.data().valid === true)
+            {
+                const itemData = a.data();
+                const item = { cartID: a.id, ...itemData } as ItemCart;
+
+                if(firstTime)
+                {
+                    _businessIDs.push(firestore.doc(`user/${item.businessID}`));
+                    _finalPrice.push(0);
+                    firstTime = false;
+                }
+
+                if(_carts[i][0] && _carts[i][0].businessID !== item.businessID)
+                {
+                    i++;
+                    _carts.push([] as ItemCart[]);
+                    _businessIDs.push(firestore.doc(`user/${item.businessID}`));
+                    _finalPrice.push(0);
+                }
+
+                _carts[i].push(item);
+                _finalPrice[i] += item.quantity * item.price;
+            }    
+        });
+    }
+
+    _businessData = await getBusinessData(_businessIDs);
+
     return {
         businessData: _businessData,
         carts: _carts,
@@ -187,7 +214,6 @@ exports.updateCartQuantity = functions.https.onCall(async (data, context) =>
     }
 
     const item = data as ItemCart;
-
 
     const itemInCart = (await firestore.doc(`cart/${item.cartID}`).get()).data() as ItemCart;
     const quantity = (itemInCart? itemInCart.quantity: 0) + item.quantity;
@@ -218,7 +244,7 @@ exports.customerConfirmOrder = functions.https.onCall(async (data, context) =>
         return false;
     }
 
-    console.error(data.customer, data.businessID);
+    // console.error(data.customer, data.businessID);
 
     const customer: UserCustomer = data.customer;
     const businessID: string = data.businessID;
@@ -261,6 +287,7 @@ exports.customerConfirmOrder = functions.https.onCall(async (data, context) =>
                 {
                     const itemData = a.data();
                     const item = { cartID: a.id, ...itemData } as ItemCart;
+                    item.status = 'issued';
 
                     cart.push(item);
                     finalPrice += item.price * item.quantity;
@@ -364,8 +391,6 @@ exports.register = functions.https.onCall(async (data, context) => {
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
 
-
-import * as algoliasearch from 'algoliasearch';
 
 //Init algolia
 const client = algoliasearch(env.algolia.appid, env.algolia.apikey);

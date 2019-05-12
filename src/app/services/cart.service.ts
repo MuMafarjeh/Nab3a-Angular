@@ -36,12 +36,11 @@ export class CartService {
 
     const result = await this.httpsService.getCartsForUser(userID);
 
-    this._carts = result.carts;
+    this._carts = result.carts; 
     this._businessData = result.businessData;
     this._finalPrice = result.finalPrice;
 
-    // console.log(this._carts[0][0]);
-
+    this.fillConfirmed();
 
     this.doneLoadingCart.next(true);
   }
@@ -51,11 +50,19 @@ export class CartService {
   {
     let success: boolean = false;
 
+    let cartIndex = this.getCartIndex(item);
+    if(this.getConfirmed(cartIndex))
+    {
+      success = false;
+      this.snackbar.openSnackbar(`Could not add to cart. You already have an ongoing order from ${this._businessData[cartIndex].name}.`);
+      return success;
+    }
+
     if(item.stock < quantity)
     {
       success = false;
       this.snackbar.openSnackbar(`Could not add to cart. You are ordering ${quantity} but there is only ${item.stock})`);
-      return;
+      return success;
     }
 
     if(!inCart)
@@ -157,6 +164,26 @@ export class CartService {
     return cartID;
   }
 
+  getCartIndex(myItem: Item)
+  {
+    let index = null;
+    this._carts.forEach((cart, i) => {
+      if(cart.length > 0 && myItem.businessID == cart[0].businessID)
+        index = i;
+        return index;
+    });
+
+    return index;
+  }
+
+  private fillConfirmed()
+  {
+    this._carts.forEach((cart, i) => {
+      if(cart.length > 0 && cart[0].status != null && cart[0].status != undefined)
+        this._confirmed[i] = true;     
+    });
+  }
+
   public async confirmOrder(cartNum: number, customer: UserCustomer)
   {
     const result = await this.httpsService.confirmOrder(customer, this._businessData[cartNum].id); 
@@ -201,6 +228,14 @@ export class CartService {
   public get confirmed()
   {
     return this._confirmed;
+  }
+
+  public getConfirmed(i: number): boolean
+  {
+    if(!this._carts[i])
+      return false;
+      
+    return (this._confirmed && this._confirmed[i] != null && this._confirmed[i] != undefined && this._confirmed[i]);
   }
 
 }
