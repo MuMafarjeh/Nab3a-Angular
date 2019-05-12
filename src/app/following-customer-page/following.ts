@@ -1,11 +1,12 @@
 export interface following
 {
   id: string;
-businessName : String;
-businessID:number;
-customerName:String;
-customerId:number;
-city:String;
-locationDescription:String;
+businessName : string;
+businessID:string;
+customerName:string;
+customerId:string;
+city:string;
+locationDescription:string;
+status:string;
 
 }

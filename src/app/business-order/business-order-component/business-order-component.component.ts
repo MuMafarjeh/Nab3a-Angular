@@ -1,10 +1,11 @@
 import { Item } from './../../item/item';
 import { Order } from './order';
 
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { MyDialogComponent } from './my-dialog/my-dialog.component';
 import { OrderServiceService } from './order-service.service';
 import { Input, Component, OnInit } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -13,13 +14,17 @@ import { Input, Component, OnInit } from '@angular/core';
   styleUrls: ['./business-order-component.component.scss']
 })
 export class BusinessOrderComponentComponent implements OnInit {
-  constructor(public dialog: MatDialog,private orderService: OrderServiceService) { }
+
+  constructor(public dialog: MatDialog,private orderService: OrderServiceService,private snackBar: MatSnackBar) { }
 
   @Input()
  order:Order;
 item:Item[];
 
 // product:Item;
+notPrepared=true;
+
+
 
   ngOnInit() {
 
@@ -30,7 +35,7 @@ item:Item[];
     const dialogRef = this.dialog.open(MyDialogComponent, {
      data:  this.item ,
 
-get width() {
+   get width() {
         return this._width;
       },
 
@@ -42,5 +47,27 @@ get width() {
 
     });
   }
+  confirm(){
+
+
+    if(this.order.status=="prepared"){
+
+      this.snackBar.open("nottttttttttttt" ,"!!!!!",{
+        duration: 2000,
+      });
+    }else{
+      this.orderService.confirmOrder(this.order);
+
+       this.snackBar.open("The order is confirmed!" ,"!!!!!",{
+         duration: 2000,
+       });
+
+    }
+
+
+    //alert("the order is confirmed!");
+
+
+}
 
 }

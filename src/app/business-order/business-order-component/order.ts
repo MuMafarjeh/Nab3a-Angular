@@ -11,4 +11,5 @@ export interface Order
     id:string;
     TGDate: Date;
     TRDate: Date;
+    status:string;
 }

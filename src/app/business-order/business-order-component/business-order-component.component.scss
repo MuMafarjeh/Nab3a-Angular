@@ -1,18 +1,27 @@
 .business-oeder{
-  // position: absolute;
-
-
   background: rgb(63, 105, 221);;
   height: initial;
   border-radius: 10px;
 
 }
+.btnprepared{
+  display: inline;
+  width:125px;
+  border-radius: 11px;
+  background-color: #673ab7;
+  font-size: 13px;
+  line-height: 16px;
+  color: rgb(255,255,255);
+  font-family: "Georgia";
+  border: none;
+  height: 35px;
+  margin-left: 330px;
+  margin-top: -35px;
+}
 .btn{
 
     display: inline;
-    //background: pink;
-
-    width:145px;
+    width:125px;
     border-radius: 11px;
     background-color: #76c38f;
     font-size: 13px;
@@ -21,10 +30,15 @@
     font-family: "Georgia";
     border: none;
     height: 35px;
-    margin-left: 330px;
-    float: right;
-    margin-top: -25px;
+    margin-left: 20px;
 
+
+
+}
+.divs{
+ display: grid;
+ padding-top: 10px;
+// grid-template-columns: auto auto;
 
 }
 .names{

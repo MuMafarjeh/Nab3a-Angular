@@ -12,7 +12,7 @@ import { UserCustomer } from '../user/usercustomer';
 })
 export class CustomerCartPageComponent implements OnInit {
 
-  constructor(private cartService: CartService, private authService: AuthService) 
+  constructor(private cartService: CartService, private authService: AuthService)
   {
   }
 
@@ -33,7 +33,7 @@ export class CustomerCartPageComponent implements OnInit {
   }
 
   public cartsAvailable(): boolean
-  { 
+  {
     return this.carts && this.carts[0] && this.carts[0].length > 0;
   }
 
@@ -55,11 +55,11 @@ export class CustomerCartPageComponent implements OnInit {
     this.confirmed = this.cartService.confirmed;
   }
 
-  async confirmQuantity(item: ItemCart)
+  async confirmQuantity(item: ItemCart,cartNum: number)
   {
     if(this.getConfirmed(cartNum))
       return;
-      
+
     await this.cartService.updateQuantity(item);
     this.getData();
   }
@@ -68,5 +68,5 @@ export class CustomerCartPageComponent implements OnInit {
   {
     return this.confirmed && this.confirmed[i] != null && this.confirmed[i] != undefined && this.confirmed[i];
   }
-  
+
 }

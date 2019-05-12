@@ -2,12 +2,16 @@
   my-dialog works!
 </p> -->
 <h1 matDialogTitle class="title">More details about order</h1>
+<!-- <cdk-virtual-scroll-viewport itemSize="500" class="example-viewport"> -->
+    <div class="dialod">
+<mat-dialog-content *ngFor="let item of items"   >
 
-<mat-dialog-content *ngFor="let item of items" class="dialod">
   <div class="divs">
+    <div class="imageStyle">
       <div *ngIf="item.image"  class="image" >
           <img [src]="item.image" >
         </div>
+      </div>
 <div class="text-content"  >
   <div class="name rows"  >The Name:  {{item.name}}</div>
   <div class="name rows"   >The Currency: {{item.currency}} </div>
@@ -19,6 +23,7 @@
 </div>
 
 </mat-dialog-content>
+<!-- </cdk-virtual-scroll-viewport> -->
 
 <mat-dialog-actions>
 
@@ -26,7 +31,7 @@
 
 </mat-dialog-actions>
 
-
+</div>
 
 
 

@@ -47,15 +47,24 @@
    }
 
 
+
+  .dialod{
+    margin: 20px 20px 20px 20px ;
+    width: 500px;
+    height: 300px;
+
+  }
    .divs{
     display: flex;
     flex-wrap: wrap;
+    margin-bottom: 20px;
 
   }
   .text-content{
    display: flex;
    flex-direction: column;
    flex-wrap: wrap;
+   width: 300px;
    background: rgb(63, 105, 221);;
   }
 //    .text-content>* {
@@ -68,17 +77,20 @@ $color-hover: rgb(81, 140, 228);
 $color-edit: rgb(255, 219, 91);
 $height: 80px;
 
+.imageStyle{
 
+  background-color: rgb(63, 105, 221);
+}
 
    .image
    {
        border-image: rgb(63, 105, 221);
-       background-color: rgba(0, 0, 0, 0.267);
+       background-color: rgb(63, 105, 221);
        height: 100%;
        width: 200px;
        max-width: 200px;
        max-height:100%;
-       vertical-align: middle;
+       vertical-align: top;
        img{
            object-fit: cover;
            width: 100%; /* Here you can use wherever you want to specify the width and also the height of the <img>*/

@@ -12,7 +12,7 @@ import { StringifyOptions } from 'querystring';
 export class OrderServiceService {
 
   constructor(private firestore: AngularFirestore,private auth: AuthService) { }
-  
+
     // TODO - Muayed: get orders with type == 'order' only, because the type can be 'cart' too
     public getOrder(chackBy: string): Order[]
     {
@@ -21,11 +21,12 @@ export class OrderServiceService {
       this.firestore.collection("order").ref.where(chackBy,"==",this.auth.userID).get().then(function(querySnapshot) {
 
         querySnapshot.forEach(function(doc) {
-          
+
           var order = doc.data() as Order;
           order.id = doc.id;
           order.TGDate = doc.data().timeGenerated.toDate();
-          order.TRDate = doc.data().timeReceiving.toDate();
+          if(doc.data().timeReceiving)
+            order.TRDate = doc.data().timeReceiving.toDate();
           orders.push(order);
 
         });
@@ -45,6 +46,10 @@ export class OrderServiceService {
        });
       });
       return products;
+    }
+
+    public confirmOrder(order:Order){
+      this.firestore.doc('order/' + order.id).update({status: 'prepared'})
     }
 
 }
