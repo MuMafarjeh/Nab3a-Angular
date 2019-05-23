@@ -1,12 +1,15 @@
+import { following } from './../following-customer-page/following';
 import { AuthService } from './../auth/auth.service';
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { following } from '../following-customer-page/following';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+
+import { promise } from 'protractor';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FollowingService {
+  unfollow: AngularFirestoreDocument<following>;
 
   constructor(private firestore: AngularFirestore, private aut: AuthService) { }
 
@@ -24,5 +27,12 @@ export class FollowingService {
     console.log(follows);
     return follows;
 
+  }
+
+
+  public unFollow(follows:following){
+   this.unfollow= this.firestore.doc('following/' + follows.id);
+   this.unfollow.delete();
+    console.log(follows.id);
   }
 }
