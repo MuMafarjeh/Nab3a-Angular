@@ -1,25 +1,23 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
+import * as algoliasearch from 'algoliasearch';
+const { integrify } = require('integrify'); 
+
 import { ItemCart } from './item.cart';
 import { UserBusiness } from './userbusiness';
 import { UserCustomer } from './usercustomer';
-import * as algoliasearch from 'algoliasearch';
-
-
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
-
-const adminPinCode: string = 'Q25UWl5DuKWPW4RLBYUZ1C67qSHIE9Ly';
 
 admin.initializeApp();
+const firestore = admin.firestore();
 const env = functions.config();
+integrify({ config: { functions, db: firestore } });
+
+//=================================================================
+
+const adminPinCode: string = 'Q25UWl5DuKWPW4RLBYUZ1C67qSHIE9Ly';
 const userCollection = '/user/';
 
-const firestore = admin.firestore();
+//=================================================================
 
 exports.notifyBusinessWhenOrder = functions.firestore.document('/order/{orderID}').onWrite(async (snapshot, context) => 
 {
@@ -137,12 +135,19 @@ exports.getCartsForUser = functions.https.onCall(async (data, context) =>
 
         result.docs.forEach(async (doc) => 
         {
+            if (!(doc.data().valid === null || doc.data().valid === undefined ||
+                doc.data().valid === true)) 
+                return;
+
             const orderedProductsPromise = 
-                firestore.doc(`order/${doc.id}`).collection('orderedProducts').get();
+                firestore.doc(`order/${doc.id}`).collection('orderedProducts').get(); 
 
             orderedProductsPromise.then((result2) => 
             {
-                itemDocs.push(...result2.docs);
+                result2.docs.forEach((productDoc) => {
+                    itemDocs.push(productDoc);
+                });
+                
             }).catch((e) => {
                 console.error("orderedProduct promise error", e);
             })
@@ -167,7 +172,13 @@ exports.getCartsForUser = functions.https.onCall(async (data, context) =>
                 a.data().valid === true)
             {
                 const itemData = a.data();
-                const item = { cartID: a.id, ...itemData } as ItemCart;
+                const isOrder = (a.data().status !== null && a.data().status !== undefined)
+                const item = { 
+                        cartID: a.id,
+                        orderID: isOrder && a.ref.parent.parent !== null ? a.ref.parent.parent.id: null,
+                        ...itemData
+                    } as ItemCart;
+                console.log(a.ref.parent.parent ? a.ref.parent.parent.path + " " + a.ref.parent.parent.id: "kys");
 
                 if(firstTime)
                 {
@@ -310,7 +321,7 @@ exports.customerConfirmOrder = functions.https.onCall(async (data, context) =>
                 price: finalPrice,
                 status: 'issued',
                 done: false,
-                businessData: business
+                businessData: business,
             }
 
             const added = await firestore.collection('order').add(order);
@@ -376,10 +387,195 @@ exports.register = functions.https.onCall(async (data, context) => {
     return emailLink;
 });
 
-// exports.insertUser = functions.https.user().onCreate((user) => {
-//     firestore.collection('/test').where()
-//     })
-// });
+//====================================================================================
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+////                                   INTEGRIFY
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+
+exports.inventory_item_replicate = integrify({
+    rule: 'REPLICATE_ATTRIBUTES',
+    source: {
+      collection: 'inventory_item',
+    },
+    targets: [
+      {
+        collection: 'cart',
+        foreignKey: 'id',
+        attributeMapping: { 
+            'barcode': 'barcode',
+            'category': 'category', 
+            'image': 'image', 
+            'name': 'name', 
+            'price': 'price',
+            'stock': 'stock',
+            'type': 'type',
+        },
+      },
+    ],
+  });
+
+exports.user_order_replicate = functions.firestore.document('user/{userId}')
+    .onUpdate((change, context) => {
+
+        const orderCollection = "order";
+        const promises = [];
+        if(!change || !change.after || !change.after.data())
+        {
+            console.error("no change")
+            return;
+        }
+
+        const data = change.after.data();
+
+        if(!data)
+        {
+            console.error("no data")
+            return;
+        }
+
+        const type = data !== undefined? data.type: null; 
+        let newData: any;
+
+        if(type === 'business')
+        {
+           newData = {
+               businessData: data,
+               businessName: data.name
+           }
+        }
+        else if(type === 'customer')
+        {
+            newData = {
+                customerName: data.name
+            }
+        }
+        else
+        {
+            console.error("not a business or customer")
+            return;
+        }
+
+        promises.push(firestore
+            .collection(orderCollection)
+            .where(`${type}ID`, '==', change.after.id)
+            .get()
+            .then((docs) => {
+                docs.forEach((doc) => {
+                    promises.push(firestore
+                        .collection(orderCollection)
+                        .doc(doc.id)
+                        .update(newData));
+                });
+            }));
+
+        Promise.all(promises).then(() => {
+            console.log("updated " + data.name);
+            return;
+        }).catch((e) => {
+            console.error(e);
+            return;
+        })
+    });
+
+exports.user_notif_replicate = integrify({
+    rule: 'REPLICATE_ATTRIBUTES',
+    source: {
+        collection: 'user',
+    },
+    targets: [
+        {
+            collection: 'notificationLog',
+            foreignKey: 'fromID',
+            attributeMapping: {
+                'name': 'fromName',
+            },
+        },
+        {
+            collection: 'notificationLog',
+            foreignKey: 'toID',
+            attributeMapping: {
+                'name': 'toName',
+            },
+        },
+    ],
+});
+
+// exports.user_notif_replicate = functions.firestore.document('user/{userId}')
+//     .onUpdate((change, context) => {
+
+//         const notifCollection = "notificationLog";
+//         const promises = [];
+//         if(!change || !change.after || !change.after.data())
+//         {
+//             console.error("no change")
+//             return;
+//         }
+
+//         const data = change.after.data();
+
+//         if(!data)
+//         {
+//             console.error("no data")
+//             return;
+//         }
+
+//         const type = data !== undefined? data.type: null; 
+//         let newData: any;
+
+//         if(type === 'business')
+//         {
+//            newData = {
+//                businessData: data,
+//                businessName: data.name
+//            }
+//         }
+//         else if(type === 'customer')
+//         {
+//             newData = {
+//                 customerName: data.name
+//             }
+//         }
+//         else
+//         {
+//             console.error("not a business or customer")
+//             return;
+//         }
+
+//         promises.push(firestore
+//             .collection(notifCollection)
+//             .where(`${type}ID`, '==', change.after.id)
+//             .get()
+//             .then((docs) => {
+//                 docs.forEach((doc) => {
+//                     promises.push(firestore
+//                         .collection(notifCollection)
+//                         .doc(doc.id)
+//                         .update(newData));
+//                 });
+//             }));
+
+//         Promise.all(promises).then(() => {
+//             console.log("updated " + data.name);
+//             return;
+//         }).catch((e) => {
+//             console.error(e);
+//             return;
+//         })
+//     });
+
+//====================================================================================
+
+
+
 
 
 
@@ -420,8 +616,6 @@ exports.ALL_INDEX_addInventoryItem = functions.firestore
     {
         const data = inventoryItemObject(snapshot.data());
         const objectID = snapshot.id;
-    
-        
 
         //Add data to algolia index
         return all_index.addObject

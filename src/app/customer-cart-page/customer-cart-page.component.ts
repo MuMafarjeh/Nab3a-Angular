@@ -30,6 +30,7 @@ export class CustomerCartPageComponent implements OnInit {
     this.carts = this.cartService.carts;
     this.businessData = this.cartService.businessData;
     this.finalPrice = this.cartService.finalPrice;
+    this.confirmed = this.cartService.confirmed;
   }
 
   public cartsAvailable(): boolean
@@ -53,6 +54,15 @@ export class CustomerCartPageComponent implements OnInit {
 
     await this.cartService.confirmOrder(cartNum, this.authService.userData as UserCustomer);
     this.confirmed = this.cartService.confirmed;
+  }
+
+  public async cancelOrder(cartNum: number)
+  {
+    if(!this.getConfirmed(cartNum))
+      return;
+    
+    await this.cartService.cancelOrder(cartNum);
+    
   }
 
   async confirmQuantity(item: ItemCart)
