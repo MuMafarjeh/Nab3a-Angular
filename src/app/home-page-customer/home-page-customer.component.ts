@@ -9,6 +9,7 @@ export class HomePageCustomerComponent implements OnInit {
 
   constructor() { }
 
+
   ngOnInit() {
   }
 
