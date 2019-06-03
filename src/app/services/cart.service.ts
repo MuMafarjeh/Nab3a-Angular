@@ -53,14 +53,12 @@ export class CartService {
     let cartIndex = this.getCartIndex(item);
     if(this.getConfirmed(cartIndex))
     {
-      success = false;
       this.snackbar.openSnackbar(`Could not add to cart. You already have an ongoing order from ${this._businessData[cartIndex].name}.`);
       return success;
     }
 
     if(item.stock < quantity)
     {
-      success = false;
       this.snackbar.openSnackbar(`Could not add to cart. You are ordering ${quantity} but there is only ${item.stock})`);
       return success;
     }
@@ -135,13 +133,16 @@ export class CartService {
     const itemID = item.cartID;
     await this.firestore.doc(`cart/${itemID}`).update({valid: false}).then(() => {
       this._carts[cartNum].splice(itemNum, 1)
+      this._finalPrice[cartNum] -= item.quantity * item.price;
+
       if(this._carts[cartNum].length == 0)
       {
         this._carts.splice(cartNum, 1);
+        this._confirmed.splice(cartNum, 1);
+        this._businessData.splice(cartNum, 1);
+        this._finalPrice.splice(cartNum, 1);
       }
 
-      this._finalPrice[cartNum] -= item.quantity * item.price;
-      
       this.snackbar.openSnackbar(`Removed ${item.name} from cart!`);
     }).catch((e) => {
       console.log(e);
@@ -203,6 +204,23 @@ export class CartService {
       this._carts[cartNum].push(...orderedProducts);
       this._businessData[cartNum] = business;
     }
+  }
+
+  public async cancelOrder(cartNum: number)
+  {
+    const orderID = this._carts[cartNum][0].orderID;
+
+    console.log(orderID);
+
+    if(!orderID || orderID === undefined)
+    {
+      console.error("not an order");
+      return;
+    }
+
+    await this.firestore.doc(`order/${orderID}`).update({ valid: false }).then(() => {
+      this._carts.splice(cartNum, 1);
+    });
   }
 
   private addConfirmed(cartNum: number)

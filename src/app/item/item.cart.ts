@@ -25,4 +25,6 @@ export interface ItemCart
 
     city: string;
     locationDescription: string;
+
+    orderID: string;
 }
