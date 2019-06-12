@@ -16,6 +16,7 @@ export class OrderServiceService {
   // TODO - Muayed: get orders with type == 'order' only, because the type can be 'cart' too
   public async getOrder(chackBy: string): Promise<Order[]> {
     var orders = [];
+    console.log("abed in get order");
     console.log(this.auth.userID);
     await this.firestore.collection("order").ref.where(chackBy, "==", this.auth.userID).get().then(function (querySnapshot) {
 

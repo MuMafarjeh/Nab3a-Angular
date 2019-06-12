@@ -20,9 +20,10 @@
  <button mat-raised-button  type="submit" (click)="filter()" class="filter">Check</button>
 </form>
 
-<p class="result"> Number Of Result = {{ orders.length }} </p>
+<p class="result" *ngIf="orders"> Number Of Result = {{ orders.length }} </p>
 <div class="grid" >
   <div class="tile" *ngFor="let order of orders">
+
     <app-business-order-component [order]="order"> </app-business-order-component>
   </div>
 

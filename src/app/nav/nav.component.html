@@ -1,29 +1,5 @@
 <header>
-  <div class="search-box">
-      <ngx-page-click class="search-container"
-      [disabled]="clickOutsideDisabled"
-      [outsideClickHandler]="outsideClickHandler"
-      [listenTo]="clickOutsideOn"
-    >
-      <ais-instantsearch class="searchBar overflowVisible" [config]="searchConfig">
-        <ais-search-box placeholder='Search for anything...' [searchAsYouType]="false"
-          [autofocus]="true" (click)="searchSubmit($event)"></ais-search-box>
-
-        <ais-hits *ngIf="showResults"  class="overflowVisible">
-          <ng-template let-hits="hits" class="dropdown" class="overflowVisible" >
-            <div *ngFor="let hit of hits" >
-              <div *ngIf="hit.type != 'business'" >
-                <app-item-customer-suggestion class="dropdown-content" [item]="prepareItem(hit)" (closeResults)="closeResults()"></app-item-customer-suggestion>
-              </div>
-              <div *ngIf="hit.type == 'business'" >
-                <app-item-customer-suggestion class="dropdown-content" [item]="prepareItem(hit)" (closeResults)="closeResults()"></app-item-customer-suggestion>
-              </div>
-            </div>
-          </ng-template>
-        </ais-hits>
-      </ais-instantsearch>
-    </ngx-page-click>
-  </div>
+  
 
   <!--<div class="nav-container grid">
     <nav class="buttons">
@@ -72,7 +48,8 @@
       <ul>
         <li *ngIf="username" ><div id="username">{{username}}</div></li>
 
-        <li><a routerLink="/mystore" *ngIf="isBusiness && isVerified" matTooltip=" My Store"> My Store</a></li>
+        <li><a routerLink="/home-page-business" *ngIf="isBusiness"matTooltip=" Home Page"><mat-icon>home</mat-icon></a></li>
+        <li><a routerLink="/mystore" *ngIf="isBusiness && isVerified" matTooltip=" My Store"><mat-icon>store</mat-icon></a></li>
         <li><a routerLink="/business-order" *ngIf="isBusiness"matTooltip="Orders"><mat-icon>reorder</mat-icon></a></li>
         <li><a routerLink="/home-page-customer" *ngIf="!isBusiness"matTooltip=" Home Page"><mat-icon>home</mat-icon></a></li>
         <li><a routerLink="/customer-browse-items" *ngIf="!isBusiness" matTooltip=" Browse Products"><mat-icon>category</mat-icon></a></li>
@@ -97,16 +74,29 @@
 
 
 
-    <nav class="user">
-      <ul>
-        <li *ngIf="username">
-          <div id="username">{{username}}</div>
-        </li>
-        <li>
-          <a routerLink="/" (click)="logout()" *ngIf="canLogout"> Logout </a>
-        </li>
-      </ul>
-    </nav>
+      <ngx-page-click class="search-container"
+      [disabled]="clickOutsideDisabled"
+      [outsideClickHandler]="outsideClickHandler"
+      [listenTo]="clickOutsideOn"
+    >
+      <ais-instantsearch class="searchBar overflowVisible" [config]="searchConfig">
+        <ais-search-box placeholder='Search for anything...' [searchAsYouType]="false"
+          [autofocus]="true" (click)="searchSubmit($event)"></ais-search-box>
+
+        <ais-hits *ngIf="showResults"  class="overflowVisible">
+          <ng-template let-hits="hits" class="dropdown" class="overflowVisible" >
+            <div *ngFor="let hit of hits" >
+              <div *ngIf="hit.type != 'business'" >
+                <app-item-customer-suggestion class="dropdown-content" [item]="prepareItem(hit)" (closeResults)="closeResults()"></app-item-customer-suggestion>
+              </div>
+              <div *ngIf="hit.type == 'business'" >
+                <app-item-customer-suggestion class="dropdown-content" [item]="prepareItem(hit)" (closeResults)="closeResults()"></app-item-customer-suggestion>
+              </div>
+            </div>
+          </ng-template>
+        </ais-hits>
+      </ais-instantsearch>
+    </ngx-page-click>
 
   </div>
 

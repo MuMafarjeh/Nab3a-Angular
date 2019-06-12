@@ -27,6 +27,7 @@
     <h1>{{ date | date : "dd.MM.y"}}</h1>
   </mat-card>
 </div>
+<h1 style="border-top: 15px solid black;border-radius: 10px">Products Low in stock</h1>
 <div *ngFor="let items of item" style="background-color: dodgerblue">
   <p *ngIf="items.stock <= 5">
       <app-item [item]="items"></app-item>

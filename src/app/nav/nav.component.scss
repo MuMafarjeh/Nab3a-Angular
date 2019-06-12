@@ -1,11 +1,11 @@
-$main-color:#1ee3cf;
+$main-color:#FDEA95;
 
 $break-large: 1070px;
 
 .search-box{
  width: 60%;
  margin-left: 200px;
-
+margin-bottom: 200px;
 
 
 }
@@ -16,7 +16,10 @@ header {
   z-index: 100 !important;
   background: $main-color;
 
-  background: linear-gradient(to right, $main-color, $main-color, $main-color,  white);
+  background: $main-color;
+  
+
+  // linear-gradient(to right, $main-color, $main-color, $main-color,  white);
 
   // -webkit-gradient(radial, center, 0px, center, 100%, color-stop(0%,#XXXXXX), color-stop(100%,#YYYYYY));
 
@@ -53,7 +56,12 @@ header {
   {
     font-style: italic;
     margin-right: 0.5em;
-    color: white;
+    color: #3A68B0;
+    font-weight: bold;
+
+    &:hover {
+      color: #54BFCB;
+    }
   }
 
   nav.buttons
@@ -71,7 +79,6 @@ float: right;
     justify-self: right;
     margin-right: 1.2em;
     grid-area: title;
-    margin-top: -80px;
     img{
       object-fit: contain;
       height: 4em;
@@ -83,7 +90,6 @@ float: right;
   {
     max-width: 100px;
     margin-left: 1.2em;
-
     max-height: 22px;
 
     @media screen and (min-width: $break-large) {
@@ -129,11 +135,12 @@ float: right;
           margin: 1.5em;
           text-transform: uppercase;
           font-size: .8em;
+          font-weight: bold;
 
-          color: white;
+          color: #3A68B0;
 
           &:hover {
-            color: black;
+            color: #54BFCB;
           }
         }
       }
