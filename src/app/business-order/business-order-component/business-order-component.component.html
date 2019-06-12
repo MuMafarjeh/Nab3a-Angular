@@ -12,11 +12,11 @@
       <!-- <p> {{ order.timeGenerated.toDate() |date: 'h:mm:ss a' }} </p> -->
       <div class="category" *ngIf="order"> <p class="names">Time of order</p> {{ order.timeGenerated.toDate() |date: 'h:mm:ss a' }} </div>
 
-      <div class="category " ><p class="names" >Date of recieving</p>
+      <div class="category " *ngIf="order && order.timeReceiving"><p class="names" >Date of recieving</p>
       <div *ngIf="order && order.timeReceiving">   {{ order.timeReceiving.toDate()  | date: 'dd/MM/yyyy' }}</div>
       </div>
 
-      <div class="category" >  <p class="names">Time of recieving</p>
+      <div class="category" *ngIf="order && order.timeReceiving">  <p class="names">Time of recieving</p>
        <div *ngIf="order  && order.timeReceiving"> {{ order.timeReceiving.toDate()  |date: 'h:mm:ss a' }}</div>
           </div>
 
@@ -24,7 +24,7 @@
      <p> <button mat-raised-button  class="btn"  matTooltip="More information about the order "
         (click)="openDialog()">Read more details</button>
       </p>
-      <button mat-raised-button *ngIf="order.status == 'issued'"  class="btnprepared" matTooltip="Confirm Orderr "  (click)="confirm()">Confirm Order</button>
+      <!-- <button mat-raised-button *ngIf="order.status == 'issued'"  class="btnprepared" matTooltip="Confirm Orderr "  (click)="confirm()">Confirm Order</button> -->
     </div>
 
       <!-- -->

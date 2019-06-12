@@ -44,7 +44,6 @@
 .divs{
  display: grid;
  padding-top: 10px;
-// grid-template-columns: auto auto;
 
 }
 
@@ -55,32 +54,20 @@
 }
 .names{
  padding-left: 10px;
-
-//  font-style: oblique;
-//  font-weight: bold;
  font-size: 20px;
  color: black;
 
 }
 .category{
-
-  border-bottom: 0.5px dotted   white;
   border-radius: 10px;
   width: 190px;
-
-//  font-family: "sans-serif";
   font-style: italic;
   line-height: 12px;
   color: rgb(54, 52, 52);
 }
 .rows{
-
-  border-bottom: 0.5px dotted   white;
   border-radius: 10px;
   width: 120px;
-
-
-//  font-family: "sans-serif";
   font-style: italic;
   line-height: 12px;
   color: rgb(54, 52, 52);
