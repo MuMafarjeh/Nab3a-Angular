@@ -19,15 +19,17 @@ const userCollection = '/user/';
 
 //=================================================================
 
-exports.notifyBusinessWhenOrder = functions.firestore.document('/order/{orderID}').onWrite(async (snapshot, context) => 
+exports.notifyBusinessWhenOrder = 
+    functions.firestore.document('/order/{orderID}')
+        .onCreate(async (snapshot, context) => 
 {
-    if(!snapshot || !snapshot.after)
+    if(!snapshot || !snapshot.exists)
     {
         console.error("snapshot does not exist");
         return;
     }
 
-    const orderData = snapshot.after.data()
+    const orderData = snapshot.data()
 
     if(!orderData)
     {
@@ -178,7 +180,6 @@ exports.getCartsForUser = functions.https.onCall(async (data, context) =>
                         orderID: isOrder && a.ref.parent.parent !== null ? a.ref.parent.parent.id: null,
                         ...itemData
                     } as ItemCart;
-                console.log(a.ref.parent.parent ? a.ref.parent.parent.path + " " + a.ref.parent.parent.id: "kys");
 
                 if(firstTime)
                 {
