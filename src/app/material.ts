@@ -21,6 +21,7 @@ import {MatListModule} from '@angular/material/list';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {ScrollDispatchModule} from '@angular/cdk/scrolling';
+import {ChartModule} from 'primeng/chart';
 
 
 
@@ -55,6 +56,7 @@ import {ScrollDispatchModule} from '@angular/cdk/scrolling';
         MatSidenavModule,
         MatTooltipModule,
         ScrollDispatchModule,
+        ChartModule,
 
     ],
     exports: [
@@ -87,6 +89,7 @@ import {ScrollDispatchModule} from '@angular/cdk/scrolling';
         MatSidenavModule,
         MatTooltipModule,
         ScrollDispatchModule,
+        ChartModule,
 
     ]
 })

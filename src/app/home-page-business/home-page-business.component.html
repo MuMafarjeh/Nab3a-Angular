@@ -1,0 +1,37 @@
+<h1>Home Page</h1>
+<div class="divider">
+  <div>
+    <mat-card>
+      <p-chart style="height: 100px;" type="bar" [data]="data"></p-chart>
+
+    </mat-card>
+
+  </div>
+
+  <div>
+    <mat-card>
+      <h1>{{ follow.length }}</h1>
+      <p>the Total Following</p>
+    </mat-card>
+
+
+  </div>
+</div>
+<div class="divider">
+  <mat-card>
+    the Total Orders is
+    <h1>{{ orders.length }}</h1>
+  </mat-card>
+  <mat-card>
+
+    <h1>{{ date | date : "dd.MM.y"}}</h1>
+  </mat-card>
+</div>
+<div *ngFor="let items of item" style="background-color: dodgerblue">
+  <p *ngIf="items.stock <= 5">
+      <app-item [item]="items"></app-item>
+  <!--<img style="width: 100px;height: 100px;" src="{{ items.image }}"> {{ items.name }} {{ items.stock }} {{ items.price }}-->
+  </p>
+
+
+</div>

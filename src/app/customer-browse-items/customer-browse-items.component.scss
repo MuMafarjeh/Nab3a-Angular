@@ -1,9 +1,10 @@
 .followingDiv{
-    background: #7700FF;
+    background: rgb(63, 105, 221);
     display: grid;
     color: white;
     grid-template-columns: auto auto auto auto;
     border-radius: 10px;
+    margin-bottom: 10px;
   }
 .followingDiv:hover{
    color: black;
@@ -14,7 +15,7 @@
 .search-result {
     text-align: center;
     color: white;
-    background-color:#7700FF; 
+    background-color:rgb(63, 105, 221); 
     padding: 12px 16px;
     margin-bottom: 10px;
     text-decoration: none;
@@ -134,6 +135,10 @@ $height: 80px;
 {
     background-color: $color-hover;
     box-shadow: 20px 20px 40px 0px rgba(0,0,0,0.5);
+}
+.title{
+    display: grid;
+    grid-template-columns: auto auto auto auto;
 }
 .Result{
     background-color: rgb(63, 105, 221);

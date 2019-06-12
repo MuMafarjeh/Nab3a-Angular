@@ -70,9 +70,10 @@ header {
 
   .search-container
   {
+    max-width: 100px;
     margin-left: 1.2em;
     
-    max-height: 22px;
+    
 
     @media screen and (min-width: $break-large) {
       width: 602px;

@@ -2,9 +2,6 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import { ItemCart } from './item.cart';
 import { UserBusiness } from './userbusiness';
-import { UserCustomer } from './usercustomer';
-import * as algoliasearch from 'algoliasearch';
-
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -20,6 +17,10 @@ const env = functions.config();
 const userCollection = '/user/';
 
 const firestore = admin.firestore();
+
+// exports.helloWorld = functions.https.onRequest((req, res) => {
+//     admin.auth().createUser
+// });
 
 exports.notifyBusinessWhenOrder = functions.firestore.document('/order/{orderID}').onWrite(async (snapshot, context) => 
 {
@@ -40,7 +41,7 @@ exports.notifyBusinessWhenOrder = functions.firestore.document('/order/{orderID}
     if(!orderData.type || orderData.type !== "order")
     {
         return;
-    } 
+    }
 
     const notifDocuments = await firestore.collection('notification')
         .where('type', '==', 'customerToBusiness').where('subtype', '==', 'order').get();
@@ -74,16 +75,9 @@ exports.notifyBusinessWhenOrder = functions.firestore.document('/order/{orderID}
 
 const getBusinessData = async function(businessIDs: FirebaseFirestore.DocumentReference[]): Promise<UserBusiness[]>
 {
-    const _businessData: UserBusiness[] = [] as UserBusiness[];
-    if(!businessIDs || businessIDs.length === 0)
-        return _businessData;
-
+    console.error("businessIDs", businessIDs);
     const docs = await firestore.getAll(...businessIDs);
-
-    if(!docs)
-    {
-        return _businessData;
-    }
+    const _businessData: UserBusiness[] = [] as UserBusiness[];
     
     docs.forEach((doc) => {
         const id = doc.id;
@@ -91,21 +85,27 @@ const getBusinessData = async function(businessIDs: FirebaseFirestore.DocumentRe
         _businessData.push(user);
     });
     
+    // console.error("getBusinessData", _businessData)
+
     return _businessData;
 }
 
 exports.getCartsForUser = functions.https.onCall(async (data, context) =>
 {
+    // console.error("wrfa tegrsvf");
+    // console.error("context", context);
+    // console.error("data", data);
+
     if(!context)
     {
-        console.error("unverified token");
-        return false;
+        // console.error("unverified token");
+        return;
     }
 
     if(!data)
     {
-        console.error("no userID provided");
-        return false;
+        // console.error("no userID provided");
+        return;
     }
 
     const userID: string = data;
@@ -113,240 +113,60 @@ exports.getCartsForUser = functions.https.onCall(async (data, context) =>
 
     const _carts: ItemCart[][] = [[]] as ItemCart[][];
     const _businessIDs: FirebaseFirestore.DocumentReference[] = [] as FirebaseFirestore.DocumentReference[];
-    let _businessData: UserBusiness[] = [] as UserBusiness[];
-    const _finalPrice: number[] = [0];
+    const _businessData;
 
-    const itemDocs = [] as FirebaseFirestore.QueryDocumentSnapshot[];
-
-    let i: number = 0;
-
-    const cartPromise = firestore.collection('cart')
+    const docs = firestore.collection('cart')
         .where('customerID', '==', userID).orderBy('businessID').get();
 
-    cartPromise.then((result) => {
-        itemDocs.push(...result.docs);
-    }).catch((e) => {
-        console.error("cart promise error", e);
-    });
-
-    const orderPromise = firestore.collection('order').where('customerID', '==', userID)
-        .where('done', '==', false).orderBy('timeGenerated').get();
-
-    const orderPromises = [] as Promise<FirebaseFirestore.QuerySnapshot>[];
-    orderPromise.then(async (result) => {
-
-        result.docs.forEach(async (doc) => 
+        docs.then(async (result) => 
         {
-            const orderedProductsPromise = 
-                firestore.doc(`order/${doc.id}`).collection('orderedProducts').get();
-
-            orderedProductsPromise.then((result2) => 
+            const itemDocs = result.docs;
+            let i: number = 0;
+            if(itemDocs.length > 0)
             {
-                itemDocs.push(...result2.docs);
-            }).catch((e) => {
-                console.error("orderedProduct promise error", e);
-            })
-            
-            orderPromises.push(orderedProductsPromise);
+                itemDocs.forEach(a => {
+                    const id = a.id;
+                    const item = { id, ...a.data() } as ItemCart;
+
+                    // console.error("businessID", item.businessID, item.businessName)
+
+                    if(firstTime)
+                    {
+                        _businessIDs.push(firestore.doc(`user/${item.businessID}`));
+                        firstTime = false;
+                    }
+
+                    if(_carts[i][0] && _carts[i][0].businessID !== item.businessID)
+                    {
+                        i++;
+                        _carts.push([] as ItemCart[]);
+                        _businessIDs.push(firestore.doc(`user/${item.businessID}`));
+                    }
+
+                    _carts[i].push(item);
+                });
+                // TODO - FIX 5ARA
+                const _businessData = await getBusinessData(_businessIDs);
+            }
+        }, 
+        (e) => {
+            // console.error("cart error", e);
         });
-
-    }).catch((e) => {
-        console.error("order promise error", e);
-    });
-
-    await Promise.all([orderPromise, cartPromise]).catch((e) => console.error("ALL promise error", e))
-
-    await Promise.all(orderPromises);
-
-    // TODO - add in-progress status to first item of array of ORDERED items
     
-    if(itemDocs.length > 0)
-    {
-        itemDocs.forEach(a => {
-            if(a.data().valid === null || a.data().valid === undefined || 
-                a.data().valid === true)
-            {
-                const itemData = a.data();
-                const item = { cartID: a.id, ...itemData } as ItemCart;
+        
 
-                if(firstTime)
-                {
-                    _businessIDs.push(firestore.doc(`user/${item.businessID}`));
-                    _finalPrice.push(0);
-                    firstTime = false;
-                }
-
-                if(_carts[i][0] && _carts[i][0].businessID !== item.businessID)
-                {
-                    i++;
-                    _carts.push([] as ItemCart[]);
-                    _businessIDs.push(firestore.doc(`user/${item.businessID}`));
-                    _finalPrice.push(0);
-                }
-
-                _carts[i].push(item);
-                _finalPrice[i] += item.quantity * item.price;
-            }    
-        });
-    }
-
-    _businessData = await getBusinessData(_businessIDs);
+        // console.error("carts", _carts);
 
     return {
         businessData: _businessData,
-        carts: _carts,
-        finalPrice: _finalPrice
+        carts: _carts
     }
-});
-
-exports.updateCartQuantity = functions.https.onCall(async (data, context) =>
-{
-    if(!context)
-    {
-        console.error("unverified token");
-        return false;
-    }
-
-    if(!data)
-    {
-        console.error("no data provided");
-        return false;
-    }
-
-    const item = data as ItemCart;
-
-    const itemInCart = (await firestore.doc(`cart/${item.cartID}`).get()).data() as ItemCart;
-    const quantity = (itemInCart? itemInCart.quantity: 0) + item.quantity;
-
-    if(!itemInCart || !itemInCart.stock || quantity > itemInCart.stock)
-        return false;
-
-    let result: boolean = true;
-
-    await firestore.doc(`cart/${item.cartID}`).update({quantity: quantity})
-        .then(() => result = true)
-        .catch(() => result = false);
-
-    return result;
-});
-
-exports.customerConfirmOrder = functions.https.onCall(async (data, context) =>
-{
-    if(!context)
-    {
-        console.error("unverified token");
-        return false;
-    }
-
-    if(!data || !data.customer || !data.businessID)
-    {
-        console.error("no data provided");
-        return false;
-    }
-
-    // console.error(data.customer, data.businessID);
-
-    const customer: UserCustomer = data.customer;
-    const businessID: string = data.businessID;
-
-    const cart: ItemCart[] = [] as ItemCart[];
-    let finalPrice: number = 0;
-
-    const businessData = await firestore.doc(`user/${businessID}`).get();
-
-    if(!businessData)
-    {
-        console.error('no business found');
-        return false;
-    }
-
-    const business: UserBusiness = businessData.data() as UserBusiness;
-
-    if(!business)
-    {
-        console.error('no business data found');
-        return false;
-    }
-
-    let success = true;
-
-    const docs = firestore.collection('cart')
-        .where('customerID', '==', customer.id).where('businessID', '==', businessID).get();
-
-    let order;
-
-    await docs.then(async (result) => 
-    {
-        const itemDocs = result.docs;
-        if(itemDocs.length > 0)
-        {
-            itemDocs.forEach(a => 
-            {
-                if(a.data().valid === null || a.data().valid === undefined || 
-                    a.data().valid === true)
-                {
-                    const itemData = a.data();
-                    const item = { cartID: a.id, ...itemData } as ItemCart;
-                    item.status = 'issued';
-
-                    cart.push(item);
-                    finalPrice += item.price * item.quantity;
-                }
-                
-                a.ref.update({valid: false}).then(() => success = true).catch((e) => {
-                    console.log("error while invalidating cart item", a.id, e);
-                    success = false
-                });
-            });
-
-            order = 
-            {
-                businessName: business.name,
-                businessID: businessID,
-                customerName: customer.name,
-                customerID: customer.id,
-                timeGenerated: admin.firestore.Timestamp.now().toDate(),
-                timeReceiving: null,
-                price: finalPrice,
-                status: 'issued',
-                done: false,
-                businessData: business
-            }
-
-            const added = await firestore.collection('order').add(order);
-            
-            if(!added)
-                success = false;
-
-            const productsRef = firestore.doc(`order/${added.id}`).collection('orderedProducts');
-            cart.forEach((item: ItemCart) => 
-            {
-                productsRef.add(item).then(() => success = true).catch((e) => {
-                    console.log("error while adding item to order", item, e);
-                    success = false
-                });    
-            });
-        }
-    }).catch((e) => {
-        console.log("error while confirming order", e)
-        success = false;
-    });
-
-    if(success)
-    {
-        return { 
-            orderedProducts: cart,
-            order: order
-        } 
-    }
-    else
-        return false;
 });
 
 exports.register = functions.https.onCall(async (data, context) => {
 
-    // console.error("context");
-    // console.error(context)
+    console.error("context");
+    console.error(context)
 
     if(!context)
     {
@@ -362,17 +182,17 @@ exports.register = functions.https.onCall(async (data, context) => {
         emailVerified: true
     };
 
-    // console.error("before createUser")
+    console.error("before createUser")
     const userRecord = await admin.auth().createUser(authInfo);
 
-    // console.error("before add doc")
+    console.error("before add doc")
     delete data.emailVerified;
     delete data.password;
     await firestore.doc(userCollection + '' + userRecord.uid).create(data);
-    // console.error(`New registeration: ${data.name}`);
+    console.error(`New registeration: ${data.name}`);
 
     const emailLink = await admin.auth().generateEmailVerificationLink(data.email);
-    // console.error(`email verification link sent to ${data.email}, ${emailLink}`);
+    console.error(`email verification link sent to ${data.email}, ${emailLink}`);
     return emailLink;
 });
 
@@ -391,6 +211,9 @@ exports.register = functions.https.onCall(async (data, context) => {
 //////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
 
+
+import * as algoliasearch from 'algoliasearch';
+import { FirebaseFirestore } from '@angular/fire';
 
 //Init algolia
 const client = algoliasearch(env.algolia.appid, env.algolia.apikey);
@@ -498,7 +321,6 @@ exports.ALL_INDEX_addBusiness = functions.firestore
     .document('user/{userID}')
     .onCreate((snapshot, context) => 
     {
-
         const data = snapshot.data();
         if(!data || data.type !== 'business')
         {

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UserDelivery } from '../../user/userdelivery';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-delivery-man',
@@ -7,6 +9,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   styleUrls: ['./delivery-man.component.scss']
 })
 export class DeliveryManComponent implements OnInit {
+
+  passwordsNotMatch: boolean = false;
 
   deliveryForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -17,7 +21,7 @@ export class DeliveryManComponent implements OnInit {
     password: new FormControl('', [Validators.required,]),
     confiremPassword: new FormControl('', [Validators.required,]),
   })
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
   }
@@ -44,4 +48,25 @@ export class DeliveryManComponent implements OnInit {
   clearAllField() {
     this.deliveryForm.reset();
   }
+  Submit(){
+    if (this.deliveryForm.controls['confiremPassword'].value
+      != this.deliveryForm.controls['password'].value) {
+      this.passwordsNotMatch = true;
+      return;
+    }
+
+     this.passwordsNotMatch = false;
+
+    let user = {} as UserDelivery;
+
+    user.name = this.deliveryForm.controls['name'].value;
+    user.email = this.deliveryForm.controls['email'].value;
+    user.phoneNumber = `${this.deliveryForm.controls['phone'].value}`;
+    user.city = this.deliveryForm.controls['city'].value;
+    user.locationDescription = this.deliveryForm.controls['location'].value;
+    user.type = "delivery";
+    console.log(user.phoneNumber);
+    this.authService.register(user, this.deliveryForm.controls['password'].value);
+  }
+
 }

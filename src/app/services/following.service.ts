@@ -13,10 +13,10 @@ export class FollowingService {
 
   constructor(private firestore: AngularFirestore, private aut: AuthService) { }
 
-  public getfollowingCoustmer(): following []{
+  public getfollowingCoustmer(checkBy:string): following[] {
     var follows = [];
-    this.firestore.collection("following").ref.where('customerID','==', this.aut.userID).get().then(function(querySnapshot) {
-      querySnapshot.forEach(function(doc) {
+    this.firestore.collection("following").ref.where(checkBy, '==', this.aut.userID).get().then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
 
         var follow = doc.data() as following;
         follow.id = doc.id;
@@ -24,15 +24,16 @@ export class FollowingService {
       });
 
     });
-    console.log(follows);
     return follows;
 
   }
+  public addFollow(following: following) {
+    this.firestore.collection('following').add(following);
+  }
 
-
-  public unFollow(follows:following){
-   this.unfollow= this.firestore.doc('following/' + follows.id);
-   this.unfollow.delete();
+  public unFollow(follows: following) {
+    this.unfollow = this.firestore.doc('following/' + follows.id);
+    this.unfollow.delete();
     console.log(follows.id);
   }
 }
