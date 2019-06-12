@@ -31,6 +31,9 @@
         ]
       }
     ],
+    "scripts": [
+      "../node_modules/chart.js/dist/Chart.js"
+    ],
     "no-consecutive-blank-lines": false,
     "no-console": [
       true,

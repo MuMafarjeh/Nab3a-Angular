@@ -25,10 +25,10 @@
     <div class="Result">
       <p> Results : {{ users.length }} </p>
     </div>
-    <div class="tile" *ngFor="let user of users">
+    <div class="tile" *ngFor="let user of users; let i=index">
       <div class="followingDiv">
 
-        <div>
+        <div style="margin-left: 50px;width: 150px">
           <p>{{ user.name }}</p>
         </div>
         <div>
@@ -37,8 +37,8 @@
         <div>
           <p>{{ user.phoneNumber }}</p>
         </div>
-        <div>
-          <button mat-stroked-button style="background-color: white;color: black;margin-top: 10px">Following</button>
+        <div style="margin-left: 100px">
+          <button mat-stroked-button style="background-color: white;color: black;margin-top: 10px" (click)="onFollow(user)">Follow</button>
         </div>
 
       </div>
@@ -53,6 +53,6 @@
     <div *ngFor="let item of items">
       <app-item-customer-suggestion [item]="item"></app-item-customer-suggestion>
       <hr>
-    </div>
+    </div>ي
   </div>
 </mat-list>

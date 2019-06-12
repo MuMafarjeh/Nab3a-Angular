@@ -5,6 +5,11 @@ import { User } from 'firebase';
 import { UserService } from '../user/user.service';
 import { ItemsService } from '../item/items.service';
 import { Item } from '../item/item';
+import { UserBusiness } from 'functions/src/userbusiness';
+import { following } from '../following-customer-page/following';
+import { AuthService } from '../auth/auth.service';
+import { FollowingService } from '../services/following.service';
+import { emptyScheduled, empty } from 'rxjs/internal/observable/empty';
 
 @Component({
   selector: 'app-customer-browse-items',
@@ -19,12 +24,15 @@ export class CustomerBrowseItemsComponent implements OnInit {
 
   users: User[];
 
+  follow:following={} as any;
+
   items: Item[];
 
   currentCategory:string;
   
 
-  constructor(private categoryServic: CategoryService,private userServic: UserService,private itemServic: ItemsService) {
+  constructor(private categoryServic: CategoryService,private userServic: UserService,
+    private auth: AuthService,private itemServic: ItemsService,private following: FollowingService) {
 
   }
 
@@ -49,7 +57,20 @@ export class CustomerBrowseItemsComponent implements OnInit {
     }
 
   }
+  onFollow(user: UserBusiness){
+    this.follow.businessID = user.id;
+    this.follow.businessName = user.name;
 
+    this.follow.customerId = this.auth.userID;
+    this.follow.customerName = this.auth.userData.name;
+
+    this.follow.city = user.city;
+    this.follow.locationDescription = user.locationDescription;
+    this.follow.status = "active";
+
+    this.following.addFollow(this.follow);
+    
+  }
   async onClick(category) {
     this.users = await this.userServic.getUsersByCategory(category.name);
     this.currentCategory = 'business';

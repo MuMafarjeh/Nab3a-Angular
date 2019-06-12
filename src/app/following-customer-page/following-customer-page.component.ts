@@ -15,8 +15,8 @@ export class FollowingCustomerPageComponent implements OnInit {
   follow : following[];
 
   ngOnInit() {
-    this.follow= this.followingService.getfollowingCoustmer();
-
+    this.follow= this.followingService.getfollowingCoustmer("customerId");
+    console.log(this.follow.length)
   }
 
   delete(followingcustomer){

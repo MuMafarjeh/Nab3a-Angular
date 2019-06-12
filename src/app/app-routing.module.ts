@@ -19,7 +19,7 @@ import { CustomerBrowseItemsComponent } from './customer-browse-items/customer-b
 import { CustomerNotificationPageComponent } from './customer-notification-page/customer-notification-page.component';
 import { CustomerCartPageComponent } from './customer-cart-page/customer-cart-page.component';
 import { Globals } from './globals';
-
+import { HomePageBusinessComponent } from './home-page-business/home-page-business.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -41,6 +41,7 @@ const routes: Routes = [
     path: 'customer-browse-items', component: CustomerBrowseItemsComponent,
 
   },
+  { path: 'home-page-business', component: HomePageBusinessComponent },
   {
     path: 'business-notifications', component: BusinessNotificationsComponent,
     canActivate: [BusinessGuard]

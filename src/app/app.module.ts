@@ -1,5 +1,5 @@
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
-import { MatBottomSheetRef } from '@angular/material';
+import { MatBottomSheetRef, MatMenuItem } from '@angular/material';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -40,7 +40,7 @@ import { MyDialogComponent } from './business-order/business-order-component/my-
 import { NgAisModule } from 'angular-instantsearch';
 import { ItemCustomerSuggestionComponent } from './item-customer-suggestion/item-customer-suggestion.component';
 import { ItemBusinessSuggestionComponent } from './item-business-suggestion/item-business-suggestion.component';
-import {NgxPageClickModule} from 'ngx-page-click';
+import { NgxPageClickModule } from 'ngx-page-click';
 import { ItemCustomerPageComponent } from './item-customer-page/item-customer-page.component'
 import { AuthService } from './auth/auth.service';
 import { BusinessNotificationsComponent } from './business-notifications/business-notifications.component'
@@ -52,7 +52,16 @@ import { BusinessFindProductComponent } from './items-page/business-find-product
 import { ItemCustomerCartComponent } from './item-customer-cart/item-customer-cart.component';
 import { DeliveryManComponent } from './registration/delivery-man/delivery-man.component';
 import { FollowingCustomerPageComponent } from './following-customer-page/following-customer-page.component';
-
+//anmation 
+//anmation
+import { SliderModule } from 'angular-image-slider';
+import { HomePageBusinessComponent } from './home-page-business/home-page-business.component';
+//
+//
+//promeFases
+import { ChartModule } from 'primeng/chart';
+//
+//
 @NgModule({
   entryComponents: [
     ItemDeleteSnackbarComponent,
@@ -90,6 +99,7 @@ import { FollowingCustomerPageComponent } from './following-customer-page/follow
     ItemCustomerCartComponent,
     DeliveryManComponent,
     FollowingCustomerPageComponent,
+    HomePageBusinessComponent,
   ],
   imports: [
     FormsModule,
@@ -105,7 +115,11 @@ import { FollowingCustomerPageComponent } from './following-customer-page/follow
     AngularFireAuthModule,
     AngularFireFunctionsModule,
     NgAisModule.forRoot(),
-    NgxPageClickModule
+    NgxPageClickModule,
+    SliderModule,
+    ChartModule,
+
+
   ],
   providers: [
     Title,
@@ -117,6 +131,7 @@ import { FollowingCustomerPageComponent } from './following-customer-page/follow
     { provide: MAT_BOTTOM_SHEET_DATA, useValue: [] },
     { provide: FirestoreSettingsToken, useValue: {} }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+
 })
 export class AppModule { }

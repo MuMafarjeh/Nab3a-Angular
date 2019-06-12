@@ -28,13 +28,8 @@ export class BusinessOrderComponent implements OnInit {
   ordersFilter: Order[] = [];
 
   ngOnInit() {
-    if(this.auth.userData.type == "customer"){
-      this.orders = this.orderService.getOrder("customerID");
-    }
-    else if(this.auth.userData.type == "business"){
-      this.orders = this.orderService.getOrder("businessID");
-    }
-    this.copyOrders = this.orders;
+    this.fillOrders();
+   
   }
   filter() { 
     this.ordersFilter = [];
@@ -47,6 +42,17 @@ export class BusinessOrderComponent implements OnInit {
     });
 
     this.orders = this.ordersFilter;
+  }
+  public async fillOrders(){
+    console.log(this.auth.userData.type)
+    if(this.auth.userData.type == "customer"){
+      this.orders = await this.orderService.getOrder("customerID");
+      
+    }
+    else if(this.auth.userData.type == "business"){
+      this.orders = await this.orderService.getOrder("businessID");
+    }
+    this.copyOrders = this.orders;
   }
 
 }

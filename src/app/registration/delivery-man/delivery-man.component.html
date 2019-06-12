@@ -66,11 +66,12 @@
           <input matInput placeholder="Confirem Password" formControlName="confiremPassword" type="password">
           <mat-error *ngIf="deliveryForm.controls['confiremPassword'].invalid">{{getErrorMessagePassword()}}</mat-error>
         </mat-form-field>
+        <mat-error *ngIf="passwordsNotMatch">Passwords do not match</mat-error>
       </td>
     </tr>
     <tr>
       <td>
-        <button mat-raised-button color="primary" [disabled]="deliveryForm.invalid">Submit</button>
+        <button mat-raised-button color="primary" [disabled]="deliveryForm.invalid" (click)="Submit()">Submit</button>
 
       </td>
       <td>
