@@ -24,7 +24,6 @@ import {ScrollDispatchModule} from '@angular/cdk/scrolling';
 import {ChartModule} from 'primeng/chart';
 
 
-
 @NgModule({
     imports: [
         MatButtonModule,

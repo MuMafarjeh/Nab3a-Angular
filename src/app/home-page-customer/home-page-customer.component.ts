@@ -21,6 +21,7 @@ export class HomePageCustomerComponent implements OnInit {
    
    }
 
+
   ngOnInit() {
     this.imagesUrl = [
       'assets/logo.png',

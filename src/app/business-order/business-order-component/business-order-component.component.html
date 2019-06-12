@@ -1,25 +1,30 @@
-<div class="business-oeder" cols="1">
+<div class="business-oeder" >
 
 
-      <div class="names">The name</div>
-      <div class="name rows"> {{ order.customerName }}</div>
-      <div class="names">The price</div>
-      <div class="rows"> {{ order.price | currency:'ILS':'symbol':'1.1-1' }}</div>
-      <div class="names">Date of order</div>
+
+      <div class=" category"><p class="names">The name</p><div class="cutomerName"> {{ order.customerName }}</div></div>
+
+      <div class="rows">  <p class="names">The price</p>{{ order.price | currency:'ILS':'symbol':'1.1-1' }}</div>
+
       <!-- <mat-cell *matCellDef="let order">{{order.date.toDate() | date}}</mat-cell> -->
-     <div class="rows" *ngIf="order"> {{ order.timeGenerated.toDate()| date: 'dd/MM/yyyy' }} </div>
-      <div class="names">Time of order</div>
+     <div class="category" *ngIf="order"><p class="names">Date of order</p> {{ order.timeGenerated.toDate()| date: 'dd/MM/yyyy' }} </div>
+
       <!-- <p> {{ order.timeGenerated.toDate() |date: 'h:mm:ss a' }} </p> -->
-      <div class="rows" *ngIf="order"> {{ order.timeGenerated.toDate() |date: 'h:mm:ss a' }} </div>
-      <div class="names" *ngIf="order && order.timeReceiving">Date of recieving</div>
-      <div class="category rows" *ngIf="order && order.timeReceiving">{{ order.timeReceiving.toDate()  | date: 'dd/MM/yyyy' }}
+      <div class="category" *ngIf="order"> <p class="names">Time of order</p> {{ order.timeGenerated.toDate() |date: 'h:mm:ss a' }} </div>
+
+      <div class="category " *ngIf="order && order.timeReceiving"><p class="names" >Date of recieving</p>
+      <div *ngIf="order && order.timeReceiving">   {{ order.timeReceiving.toDate()  | date: 'dd/MM/yyyy' }}</div>
       </div>
-      <div class="names" *ngIf="order  && order.timeReceiving">Time of recieving</div>
-      <div class="rows" *ngIf="order  && order.timeReceiving"> {{ order.timeReceiving.toDate()  |date: 'h:mm:ss a' }} </div>
+
+      <div class="category" *ngIf="order && order.timeReceiving">  <p class="names">Time of recieving</p>
+       <div *ngIf="order  && order.timeReceiving"> {{ order.timeReceiving.toDate()  |date: 'h:mm:ss a' }}</div>
+          </div>
+
       <div class="divs">
-      <button mat-raised-button  class="btn"  matTooltip="More information about the order "
+     <p> <button mat-raised-button  class="btn"  matTooltip="More information about the order "
         (click)="openDialog()">Read more details</button>
-      <button mat-raised-button *ngIf="order.status == 'issued'"  class="btnprepared" matTooltip="Confirm Orderr "  (click)="confirm()">Confirm Order</button>
+      </p>
+      <!-- <button mat-raised-button *ngIf="order.status == 'issued'"  class="btnprepared" matTooltip="Confirm Orderr "  (click)="confirm()">Confirm Order</button> -->
     </div>
 
       <!-- -->

@@ -1,15 +1,23 @@
-$main-color: #7700FF;
+$main-color:#1ee3cf;
 
 $break-large: 1070px;
+
+.search-box{
+ width: 60%;
+ margin-left: 200px;
+
+
+
+}
 
 header {
   position:absolute;
   width: 100%;
   z-index: 100 !important;
   background: $main-color;
-  
+
   background: linear-gradient(to right, $main-color, $main-color, $main-color,  white);
-  
+
   // -webkit-gradient(radial, center, 0px, center, 100%, color-stop(0%,#XXXXXX), color-stop(100%,#YYYYYY));
 
   .overflowVisible
@@ -19,7 +27,7 @@ header {
 
   .grid
   {
-    min-height: 0; 
+    min-height: 0;
     max-height: inherit;
     overflow: visible;
   }
@@ -27,9 +35,9 @@ header {
   .dropdown{
     max-height: 0px;
   }
-  
+
   .dropdown-content {
-  
+
     float: none;
     color: black;
     display: block;
@@ -37,7 +45,7 @@ header {
 
   }
 
-  // .dropdown-content:hover{   
+  // .dropdown-content:hover{
   //   background-color: #ddd;
   // }
 
@@ -53,14 +61,17 @@ header {
     justify-self: left;
     grid-area: nav-buttons;
   }
+  .logo{
+float: right;
+
+  }
 
   .title
   {
     justify-self: right;
-    margin-right: 1.2em; 
-
+    margin-right: 1.2em;
     grid-area: title;
-
+    margin-top: -80px;
     img{
       object-fit: contain;
       height: 4em;
@@ -72,8 +83,8 @@ header {
   {
     max-width: 100px;
     margin-left: 1.2em;
-    
-    
+
+    max-height: 22px;
 
     @media screen and (min-width: $break-large) {
       width: 602px;
@@ -119,7 +130,7 @@ header {
           text-transform: uppercase;
           font-size: .8em;
 
-          color: white; 
+          color: white;
 
           &:hover {
             color: black;

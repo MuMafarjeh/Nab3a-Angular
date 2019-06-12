@@ -1,22 +1,23 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
+import * as algoliasearch from 'algoliasearch';
+const { integrify } = require('integrify'); 
+
 import { ItemCart } from './item.cart';
 import { UserBusiness } from './userbusiness';
-
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
-
-const adminPinCode: string = 'Q25UWl5DuKWPW4RLBYUZ1C67qSHIE9Ly';
+import { UserCustomer } from './usercustomer';
 
 admin.initializeApp();
+const firestore = admin.firestore();
 const env = functions.config();
+integrify({ config: { functions, db: firestore } });
+
+//=================================================================
+
+const adminPinCode: string = 'Q25UWl5DuKWPW4RLBYUZ1C67qSHIE9Ly';
 const userCollection = '/user/';
 
-const firestore = admin.firestore();
+//=================================================================
 
 // exports.helloWorld = functions.https.onRequest((req, res) => {
 //     admin.auth().createUser
@@ -120,40 +121,61 @@ exports.getCartsForUser = functions.https.onCall(async (data, context) =>
 
         docs.then(async (result) => 
         {
-            const itemDocs = result.docs;
-            let i: number = 0;
-            if(itemDocs.length > 0)
+            if (!(doc.data().valid === null || doc.data().valid === undefined ||
+                doc.data().valid === true)) 
+                return;
+
+            const orderedProductsPromise = 
+                firestore.doc(`order/${doc.id}`).collection('orderedProducts').get(); 
+
+            orderedProductsPromise.then((result2) => 
             {
-                itemDocs.forEach(a => {
-                    const id = a.id;
-                    const item = { id, ...a.data() } as ItemCart;
-
-                    // console.error("businessID", item.businessID, item.businessName)
-
-                    if(firstTime)
-                    {
-                        _businessIDs.push(firestore.doc(`user/${item.businessID}`));
-                        firstTime = false;
-                    }
-
-                    if(_carts[i][0] && _carts[i][0].businessID !== item.businessID)
-                    {
-                        i++;
-                        _carts.push([] as ItemCart[]);
-                        _businessIDs.push(firestore.doc(`user/${item.businessID}`));
-                    }
-
-                    _carts[i].push(item);
+                result2.docs.forEach((productDoc) => {
+                    itemDocs.push(productDoc);
                 });
-                // TODO - FIX 5ARA
-                const _businessData = await getBusinessData(_businessIDs);
-            }
-        }, 
-        (e) => {
-            // console.error("cart error", e);
+                
+            }).catch((e) => {
+                console.error("orderedProduct promise error", e);
+            })
+            
+            orderPromises.push(orderedProductsPromise);
         });
     
-        
+    if(itemDocs.length > 0)
+    {
+        itemDocs.forEach(a => {
+            if(a.data().valid === null || a.data().valid === undefined || 
+                a.data().valid === true)
+            {
+                const itemData = a.data();
+                const isOrder = (a.data().status !== null && a.data().status !== undefined)
+                const item = { 
+                        cartID: a.id,
+                        orderID: isOrder && a.ref.parent.parent !== null ? a.ref.parent.parent.id: null,
+                        ...itemData
+                    } as ItemCart;
+                console.log(a.ref.parent.parent ? a.ref.parent.parent.path + " " + a.ref.parent.parent.id: "kys");
+
+                if(firstTime)
+                {
+                    _businessIDs.push(firestore.doc(`user/${item.businessID}`));
+                    _finalPrice.push(0);
+                    firstTime = false;
+                }
+
+                if(_carts[i][0] && _carts[i][0].businessID !== item.businessID)
+                {
+                    i++;
+                    _carts.push([] as ItemCart[]);
+                    _businessIDs.push(firestore.doc(`user/${item.businessID}`));
+                    _finalPrice.push(0);
+                }
+
+                _carts[i].push(item);
+                _finalPrice[i] += item.quantity * item.price;
+            }    
+        });
+    }
 
         // console.error("carts", _carts);
 
@@ -161,6 +183,150 @@ exports.getCartsForUser = functions.https.onCall(async (data, context) =>
         businessData: _businessData,
         carts: _carts
     }
+});
+
+exports.updateCartQuantity = functions.https.onCall(async (data, context) =>
+{
+    if(!context)
+    {
+        console.error("unverified token");
+        return false;
+    }
+
+    if(!data)
+    {
+        console.error("no data provided");
+        return false;
+    }
+
+    const item = data as ItemCart;
+
+    const itemInCart = (await firestore.doc(`cart/${item.cartID}`).get()).data() as ItemCart;
+    const quantity = (itemInCart? itemInCart.quantity: 0) + item.quantity;
+
+    if(!itemInCart || !itemInCart.stock || quantity > itemInCart.stock)
+        return false;
+
+    let result: boolean = true;
+
+    await firestore.doc(`cart/${item.cartID}`).update({quantity: quantity})
+        .then(() => result = true)
+        .catch(() => result = false);
+
+    return result;
+});
+
+exports.customerConfirmOrder = functions.https.onCall(async (data, context) =>
+{
+    if(!context)
+    {
+        console.error("unverified token");
+        return false;
+    }
+
+    if(!data || !data.customer || !data.businessID)
+    {
+        console.error("no data provided");
+        return false;
+    }
+
+    // console.error(data.customer, data.businessID);
+
+    const customer: UserCustomer = data.customer;
+    const businessID: string = data.businessID;
+
+    const cart: ItemCart[] = [] as ItemCart[];
+    let finalPrice: number = 0;
+
+    const businessData = await firestore.doc(`user/${businessID}`).get();
+
+    if(!businessData)
+    {
+        console.error('no business found');
+        return false;
+    }
+
+    const business: UserBusiness = businessData.data() as UserBusiness;
+
+    if(!business)
+    {
+        console.error('no business data found');
+        return false;
+    }
+
+    let success = true;
+
+    const docs = firestore.collection('cart')
+        .where('customerID', '==', customer.id).where('businessID', '==', businessID).get();
+
+    let order;
+
+    await docs.then(async (result) => 
+    {
+        const itemDocs = result.docs;
+        if(itemDocs.length > 0)
+        {
+            itemDocs.forEach(a => 
+            {
+                if(a.data().valid === null || a.data().valid === undefined || 
+                    a.data().valid === true)
+                {
+                    const itemData = a.data();
+                    const item = { cartID: a.id, ...itemData } as ItemCart;
+                    item.status = 'issued';
+
+                    cart.push(item);
+                    finalPrice += item.price * item.quantity;
+                }
+                
+                a.ref.update({valid: false}).then(() => success = true).catch((e) => {
+                    console.log("error while invalidating cart item", a.id, e);
+                    success = false
+                });
+            });
+
+            order = 
+            {
+                businessName: business.name,
+                businessID: businessID,
+                customerName: customer.name,
+                customerID: customer.id,
+                timeGenerated: admin.firestore.Timestamp.now().toDate(),
+                timeReceiving: null,
+                price: finalPrice,
+                status: 'issued',
+                done: false,
+                businessData: business,
+            }
+
+            const added = await firestore.collection('order').add(order);
+            
+            if(!added)
+                success = false;
+
+            const productsRef = firestore.doc(`order/${added.id}`).collection('orderedProducts');
+            cart.forEach((item: ItemCart) => 
+            {
+                productsRef.add(item).then(() => success = true).catch((e) => {
+                    console.log("error while adding item to order", item, e);
+                    success = false
+                });    
+            });
+        }
+    }).catch((e) => {
+        console.log("error while confirming order", e)
+        success = false;
+    });
+
+    if(success)
+    {
+        return { 
+            orderedProducts: cart,
+            order: order
+        } 
+    }
+    else
+        return false;
 });
 
 exports.register = functions.https.onCall(async (data, context) => {
@@ -196,10 +362,195 @@ exports.register = functions.https.onCall(async (data, context) => {
     return emailLink;
 });
 
-// exports.insertUser = functions.https.user().onCreate((user) => {
-//     firestore.collection('/test').where()
-//     })
-// });
+//====================================================================================
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+////                                   INTEGRIFY
+//////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+
+exports.inventory_item_replicate = integrify({
+    rule: 'REPLICATE_ATTRIBUTES',
+    source: {
+      collection: 'inventory_item',
+    },
+    targets: [
+      {
+        collection: 'cart',
+        foreignKey: 'id',
+        attributeMapping: { 
+            'barcode': 'barcode',
+            'category': 'category', 
+            'image': 'image', 
+            'name': 'name', 
+            'price': 'price',
+            'stock': 'stock',
+            'type': 'type',
+        },
+      },
+    ],
+  });
+
+exports.user_order_replicate = functions.firestore.document('user/{userId}')
+    .onUpdate((change, context) => {
+
+        const orderCollection = "order";
+        const promises = [];
+        if(!change || !change.after || !change.after.data())
+        {
+            console.error("no change")
+            return;
+        }
+
+        const data = change.after.data();
+
+        if(!data)
+        {
+            console.error("no data")
+            return;
+        }
+
+        const type = data !== undefined? data.type: null; 
+        let newData: any;
+
+        if(type === 'business')
+        {
+           newData = {
+               businessData: data,
+               businessName: data.name
+           }
+        }
+        else if(type === 'customer')
+        {
+            newData = {
+                customerName: data.name
+            }
+        }
+        else
+        {
+            console.error("not a business or customer")
+            return;
+        }
+
+        promises.push(firestore
+            .collection(orderCollection)
+            .where(`${type}ID`, '==', change.after.id)
+            .get()
+            .then((docs) => {
+                docs.forEach((doc) => {
+                    promises.push(firestore
+                        .collection(orderCollection)
+                        .doc(doc.id)
+                        .update(newData));
+                });
+            }));
+
+        Promise.all(promises).then(() => {
+            console.log("updated " + data.name);
+            return;
+        }).catch((e) => {
+            console.error(e);
+            return;
+        })
+    });
+
+exports.user_notif_replicate = integrify({
+    rule: 'REPLICATE_ATTRIBUTES',
+    source: {
+        collection: 'user',
+    },
+    targets: [
+        {
+            collection: 'notificationLog',
+            foreignKey: 'fromID',
+            attributeMapping: {
+                'name': 'fromName',
+            },
+        },
+        {
+            collection: 'notificationLog',
+            foreignKey: 'toID',
+            attributeMapping: {
+                'name': 'toName',
+            },
+        },
+    ],
+});
+
+// exports.user_notif_replicate = functions.firestore.document('user/{userId}')
+//     .onUpdate((change, context) => {
+
+//         const notifCollection = "notificationLog";
+//         const promises = [];
+//         if(!change || !change.after || !change.after.data())
+//         {
+//             console.error("no change")
+//             return;
+//         }
+
+//         const data = change.after.data();
+
+//         if(!data)
+//         {
+//             console.error("no data")
+//             return;
+//         }
+
+//         const type = data !== undefined? data.type: null; 
+//         let newData: any;
+
+//         if(type === 'business')
+//         {
+//            newData = {
+//                businessData: data,
+//                businessName: data.name
+//            }
+//         }
+//         else if(type === 'customer')
+//         {
+//             newData = {
+//                 customerName: data.name
+//             }
+//         }
+//         else
+//         {
+//             console.error("not a business or customer")
+//             return;
+//         }
+
+//         promises.push(firestore
+//             .collection(notifCollection)
+//             .where(`${type}ID`, '==', change.after.id)
+//             .get()
+//             .then((docs) => {
+//                 docs.forEach((doc) => {
+//                     promises.push(firestore
+//                         .collection(notifCollection)
+//                         .doc(doc.id)
+//                         .update(newData));
+//                 });
+//             }));
+
+//         Promise.all(promises).then(() => {
+//             console.log("updated " + data.name);
+//             return;
+//         }).catch((e) => {
+//             console.error(e);
+//             return;
+//         })
+//     });
+
+//====================================================================================
+
+
+
 
 
 
@@ -243,8 +594,6 @@ exports.ALL_INDEX_addInventoryItem = functions.firestore
     {
         const data = inventoryItemObject(snapshot.data());
         const objectID = snapshot.id;
-    
-        
 
         //Add data to algolia index
         return all_index.addObject

@@ -2,6 +2,9 @@
   background: rgb(63, 105, 221);;
   height: initial;
   border-radius: 10px;
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto auto ;
+  margin-left: -60px;
 
 }
 .btnprepared{
@@ -14,12 +17,14 @@
   color: rgb(255,255,255);
   font-family: "Georgia";
   border: none;
-  height: 35px;
-  margin-left: 330px;
-  margin-top: -35px;
+  height: 20px;
+  margin-left: 20px;
+  margin-top: -10px;
+  margin-bottom: 15px;
+  margin-right: 5px;
 }
 .btn{
-
+     margin-right: 5px;
     display: inline;
     width:125px;
     border-radius: 11px;
@@ -29,8 +34,9 @@
     color: rgb(255,255,255);
     font-family: "Georgia";
     border: none;
-    height: 35px;
+    height: 20px;
     margin-left: 20px;
+    margin-bottom: 20px;
 
 
 
@@ -38,25 +44,33 @@
 .divs{
  display: grid;
  padding-top: 10px;
-// grid-template-columns: auto auto;
+
+}
+
+.cutomerName{
+  margin-left: 10px;
+  line-height: 20px;
 
 }
 .names{
  padding-left: 10px;
- font-style: oblique;
- font-weight: bold;
  font-size: 20px;
+ color: black;
 
 }
-.rows{
-  padding: 10px 10px 10px 10px;
-  border-bottom: 0.5px dotted   white;
+.category{
   border-radius: 10px;
-
-//  font-family: "sans-serif";
+  width: 190px;
   font-style: italic;
   line-height: 12px;
-  color: white;
+  color: rgb(54, 52, 52);
+}
+.rows{
+  border-radius: 10px;
+  width: 120px;
+  font-style: italic;
+  line-height: 12px;
+  color: rgb(54, 52, 52);
 
 
 }
