@@ -1,0 +1,24 @@
+<div class="top-content">
+
+  <div class="business-content" *ngIf="businessData"  >
+    <img *ngIf="businessData && businessData.image" [src]="businessData.image">  
+    <img *ngIf="!businessData || !businessData.image" src="assets/blank_profile_image.png">  
+    <div class="business-title" *ngIf="businessData" >
+      <h2 class="business-name">{{ businessData.name }}</h2>
+      <div class="italic">{{ businessData.city | uppercase }}</div>
+      <div class="italic">{{ businessData.locationDescription | uppercase }}</div>
+    </div>
+   
+  </div>
+
+  <div *ngIf="businessNotFound && !justLoaded"> Business not found </div>
+
+</div>
+
+<mat-divider></mat-divider>
+
+<h2 div="more-items-header" *ngIf="!businessNotFound && businessData">More items from {{businessData.name}}</h2>
+
+<div class="more-items" *ngIf="!businessNotFound" >
+  <app-item-customer-suggestion *ngFor="let item of otherItems" [displayMoreInfo]="false" [item]=item> </app-item-customer-suggestion>
+</div>

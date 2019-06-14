@@ -20,6 +20,8 @@ import { CustomerNotificationPageComponent } from './customer-notification-page/
 import { CustomerCartPageComponent } from './customer-cart-page/customer-cart-page.component';
 import { Globals } from './globals';
 import { HomePageBusinessComponent } from './home-page-business/home-page-business.component';
+import { CustomerGuard } from './auth/customer-guard.service';
+import { StoreCustomerPageComponent } from './store-customer-page/store-customer-page.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -31,23 +33,28 @@ const routes: Routes = [
   },
   {
     path: 'customer-cart-page', component: CustomerCartPageComponent,
-
+    canActivate: [CustomerGuard]
   },
   {
     path: 'customer-notification-page', component: CustomerNotificationPageComponent,
-
+    canActivate: [CustomerGuard]
   },
   {
     path: 'customer-browse-items', component: CustomerBrowseItemsComponent,
 
   },
-  { path: 'home-page-business', component: HomePageBusinessComponent },
+  { 
+    path: 'home-page-business', component: HomePageBusinessComponent,
+    canActivate: [BusinessGuard]
+  },
   {
     path: 'business-notifications', component: BusinessNotificationsComponent,
     canActivate: [BusinessGuard]
   },
 
-  { path: 'registration', component: RegistrationComponent },
+  { 
+    path: 'registration', component: RegistrationComponent 
+  },
   {
     path: 'business-add-product', component: BusinessAddProductComponent,
     canActivate: [BusinessGuard]
@@ -57,11 +64,22 @@ const routes: Routes = [
   { path: 'page-not-found', component: PageNotFoundComponent },
   {
     path: 'home-page-customer', component: HomePageCustomerComponent,
+    canActivate: [CustomerGuard]
   },
-  { path: 'business-order', component: BusinessOrderComponent },
-  { path: 'following-customer-page', component: FollowingCustomerPageComponent },
+  { 
+    path: 'business-order', component: BusinessOrderComponent, 
+    canActivate: [BusinessGuard]
+  },
+  { 
+    path: 'following-customer-page', component: FollowingCustomerPageComponent,
+    canActivate: [CustomerGuard]
+  },
   {
     path: 'item/:id', component: ItemCustomerPageComponent,
+    runGuardsAndResolvers: 'paramsChange'
+  },
+  {
+    path: 'business/:id', component: StoreCustomerPageComponent,
     runGuardsAndResolvers: 'paramsChange'
   }
 ];

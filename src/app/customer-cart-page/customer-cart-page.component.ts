@@ -53,6 +53,7 @@ export class CustomerCartPageComponent implements OnInit {
       return;
 
     await this.cartService.confirmOrder(cartNum, this.authService.userData as UserCustomer);
+    console.log("usrData", this.authService.userData)
     this.confirmed = this.cartService.confirmed;
   }
 

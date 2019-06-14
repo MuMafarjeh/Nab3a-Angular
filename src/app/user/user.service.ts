@@ -30,7 +30,14 @@ export class UserService {
 
   async getUser2(userID: string): Promise<UserBusiness | UserCustomer | UserDelivery | User> 
   {
+    console.log("getting user");
+
     const userDoc = await this.firestore.doc<User>(`/user/${userID}`).get().toPromise();
+
+    console.log("just got user");
+
+    if(!userDoc || !userDoc.exists)
+      return null;
 
     const data = userDoc.data();
     data.id = userDoc.id;
