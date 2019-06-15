@@ -1,11 +1,7 @@
-.mainContant{
-    
+.divider{
     display: grid;
-    grid-template-columns: 25% 25% 50%;
+    grid-template-columns: 80% 20%;
 }
-
-    // display: grid;
-    // grid-template-columns: 27.5% 45% 27.5%;
-//}
-
-
+.item-customer-suggestion{
+    margin-bottom: 10px;
+}

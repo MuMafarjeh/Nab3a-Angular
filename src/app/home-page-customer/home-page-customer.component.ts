@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { FollowingService } from '../services/following.service';
+import { ItemsService } from '../item/items.service';
+import { following } from '../following-customer-page/following';
+import { Item } from '../item/item';
 import { OrderServiceService } from '../business-order/business-order-component/order-service.service';
 import { Order } from '../business-order/business-order-component/order';
-import { FollowingService } from '../services/following.service';
-import { following } from '../following-customer-page/following';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'home-page-customer',
@@ -11,29 +12,49 @@ import { Router } from '@angular/router';
   styleUrls: ['./home-page-customer.component.scss']
 })
 export class HomePageCustomerComponent implements OnInit {
-  imagesUrl;
-  imagesItemUrl;
 
-  order:following[];
 
+  follow: following[];
+  item: Item[];
+  orders: Order[];
+
+  randomItem: Item[] = [];
+  forRandomItem = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1,];
   constructor(private OrderService: OrderServiceService,
-    private router: Router,private FollowingService:FollowingService) { 
-   
-   }
+    private FollowingService: FollowingService, private itemService: ItemsService) {
+    this.follow = FollowingService.getfollowingCoustmer("customerId");
+
+    itemService.getRandomInventory().then(res => {
+      this.item = res;
+    });
+
+  }
 
 
   ngOnInit() {
-    this.imagesUrl = [
-      'assets/logo.png',
-      'assets/thermal.jpg',
-      'assets/3-d.jpg',
-      ];
-      this.getImageItem();
-      
+    this.getData();
+
+
   }
-  public getImageItem(){
-    this.order = this.FollowingService.getfollowingCoustmer("customerID");
-    console.log(this.FollowingService.getfollowingCoustmer("customerID").length);
+
+
+  public async getData() {
+    this.orders = await this.OrderService.getOrder("customerID");
+
+    // for (let index = 0; index < 10; ) {
+    //   let random = Math.floor((Math.random() * 10) + 1);
+    //   if (this.forRandomItem[random] == 1) {
+    //     this.randomItem[index] = this.item[random];
+    //     this.forRandomItem[random] = 0;
+    //     index++
+
+    //    }
+
+    // }
+
   }
+
+
+
 
 }

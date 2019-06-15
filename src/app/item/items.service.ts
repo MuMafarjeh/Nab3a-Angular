@@ -35,6 +35,18 @@ export class ItemsService {
     });
     return items;
   }
+  public async getRandomInventory(): Promise<Item[]> {
+    if (this.businessGuard.canActivate)
+      var items = [];
+    await this.firestore.collection("inventory_item").ref.limit(7).get().then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        let item = doc.data() as Item;
+        item.id = doc.id;
+        items.push(item);
+      });
+    });
+    return items;
+  }
 
   public getCategory(): string[] {
     var categories = [];
@@ -63,8 +75,7 @@ export class ItemsService {
     return this.firestore.doc("inventory_item/" + item.id).delete();
   }
 
-  public async getInventoryItem(itemID: String): Promise<Item>
-  {
+  public async getInventoryItem(itemID: String): Promise<Item> {
     const doc = await this.firestore.doc(`inventory_item/${itemID}`).get().toPromise();
     const item = doc.data() as Item;
 
@@ -86,8 +97,7 @@ export class ItemsService {
     return items;
   }
 
-  public async addInventoryItem(item: Item): Promise<Item>
-  {
+  public async addInventoryItem(item: Item): Promise<Item> {
     item.businessName = this.authService.userData.name;
     item.businessID = this.authService.userID;
 

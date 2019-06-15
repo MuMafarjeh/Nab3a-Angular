@@ -1,2 +1,25 @@
+<h1>Home Page</h1>
+<div class="divider">
+  <div>
+    <mat-card>
+      <p>the Total Orders is</p>
+      <h1>{{ orders.length }}</h1>
+    </mat-card>
 
-<angular-image-slider [images]="imagesUrl"></angular-image-slider>
+  </div>
+
+  <div>
+    <mat-card>
+      <h1>{{ follow.length }}</h1>
+      <p>the Total Following</p>
+    </mat-card>
+
+
+  </div>
+</div>
+
+<h1 style="border-top: 15px solid black;border-radius: 10px"></h1>
+<div *ngFor="let randomItem of item" style="background-color: dodgerblue" class="item-customer-suggestion">
+
+  <app-item-customer-suggestion  [item]="randomItem"></app-item-customer-suggestion>
+</div>

@@ -1,9 +1,7 @@
 import { UserService } from './../../user/user.service';
-import { User } from 'firebase';
 import { AuthService } from './../../auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
-
 import { UserBusiness } from './../../user/userbusiness';
 
 @Component({
