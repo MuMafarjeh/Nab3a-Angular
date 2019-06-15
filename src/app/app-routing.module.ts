@@ -1,5 +1,6 @@
 import { FollowingCustomerPageComponent } from './following-customer-page/following-customer-page.component';
 import { BusinessOrderComponent } from './business-order/business-order.component';
+import { CustomerOrderComponent } from './customer-order/customer-order.component';
 import { BusinessGuard } from './auth/business-guard.service';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { LoginEmailComponent } from './registration/login/login-email/login-email.component';
@@ -43,7 +44,7 @@ const routes: Routes = [
     path: 'customer-browse-items', component: CustomerBrowseItemsComponent,
 
   },
-  { 
+  {
     path: 'home-page-business', component: HomePageBusinessComponent,
     canActivate: [BusinessGuard]
   },
@@ -52,8 +53,8 @@ const routes: Routes = [
     canActivate: [BusinessGuard]
   },
 
-  { 
-    path: 'registration', component: RegistrationComponent 
+  {
+    path: 'registration', component: RegistrationComponent
   },
   {
     path: 'business-add-product', component: BusinessAddProductComponent,
@@ -66,11 +67,11 @@ const routes: Routes = [
     path: 'home-page-customer', component: HomePageCustomerComponent,
     canActivate: [CustomerGuard]
   },
-  { 
-    path: 'business-order', component: BusinessOrderComponent, 
+  {
+    path: 'business-order', component: BusinessOrderComponent,
     canActivate: [BusinessGuard]
   },
-  { 
+  {
     path: 'following-customer-page', component: FollowingCustomerPageComponent,
     canActivate: [CustomerGuard]
   },
@@ -81,7 +82,11 @@ const routes: Routes = [
   {
     path: 'business/:id', component: StoreCustomerPageComponent,
     runGuardsAndResolvers: 'paramsChange'
-  }
+  },
+  {
+    path: 'customer-order', component: CustomerOrderComponent,
+    canActivate: [CustomerGuard]
+  },
 ];
 
 @NgModule({

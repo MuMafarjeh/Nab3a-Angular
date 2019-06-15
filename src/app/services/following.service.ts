@@ -31,9 +31,17 @@ export class FollowingService {
     this.firestore.collection('following').add(following);
   }
 
-  public unFollow(follows: following) {
+  public async unFollow(follows: following): Promise<boolean> {
     this.unfollow = this.firestore.doc('following/' + follows.id);
-    this.unfollow.delete();
+    let success: boolean = false;
+    await this.unfollow.delete().then(() => {
+      success = true;
+    }).catch((e) => {
+      success = false;
+      console.error(e);
+    });
+
     console.log(follows.id);
+    return success;
   }
 }

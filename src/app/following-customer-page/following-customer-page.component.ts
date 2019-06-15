@@ -19,13 +19,12 @@ export class FollowingCustomerPageComponent implements OnInit {
     console.log(this.follow.length)
   }
 
-  delete(followingcustomer){
-
-  //  console.log(this.Follow.customerId);
-     this.followingService.unFollow(followingcustomer);
-     window.location.reload();
-
-
+  delete(followingcustomer, i){
+    this.followingService.unFollow(followingcustomer).then((success) =>
+    {
+      if(success)
+        this.follow.splice(i, 1);
+    });
   }
 
 }

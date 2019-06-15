@@ -1,0 +1,31 @@
+<p class="title">
+  Orders page
+
+</p>
+<form [formGroup]="formDate">
+
+  <mat-form-field class="example-full-width">
+    <input matInput [matDatepicker]="picker" formControlName="fromDate" placeholder="Choose Start Period">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker touchUi #picker></mat-datepicker>
+  </mat-form-field>
+
+
+  <mat-form-field class="example-full-width">
+    <input matInput [matDatepicker]="pickerTo" formControlName="toDate" placeholder="Choose End Period">
+    <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+    <mat-datepicker touchUi #pickerTo></mat-datepicker>
+  </mat-form-field>
+ <!-- <button type="submit" (click)="filter()"> Check </button> -->
+ <button mat-raised-button  type="submit" (click)="filter()" class="filter">Check</button>
+</form>
+
+<p class="result" *ngIf="orders"> Number Of Result = {{ orders.length }} </p>
+<div class="grid" >
+  <div class="tile" *ngFor="let order of orders">
+
+    <app-customer-order-component [order]="order"> </app-customer-order-component>
+  </div>
+
+  <!-- (deleteEvent)="deleteItem($event)" -->
+</div>
