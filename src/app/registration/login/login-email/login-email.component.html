@@ -1,10 +1,10 @@
-<div>
+<div >
   <a routerLink="/login" id="goback">Go back</a>
 
   <h2>Login with email</h2>
 
   <mat-error class="error" *ngIf="error" [@fallIn]='state'>{{ error }}</mat-error>
-    
+
   <form class="form" [formGroup]='form' (ngSubmit)="onSubmit()">
     <mat-form-field>
       <input matInput type="text" placeholder="Email address" formControlName="email" class="txt">
@@ -19,7 +19,7 @@
       </div>
     </mat-form-field>
 
-    <button mat-raised-button color="accent" type="submit" 
+    <button mat-raised-button color="accent" type="submit"
       [disabled]="!form.valid" class="basic-btn">Login</button>
   </form>
 </div>

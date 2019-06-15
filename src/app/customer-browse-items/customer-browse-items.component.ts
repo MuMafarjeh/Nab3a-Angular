@@ -84,7 +84,7 @@ export class CustomerBrowseItemsComponent implements OnInit {
 
   onClickBusinessProfile(user: UserBusiness)
   {
-    this.router.navigate([`/business/${user.id}`])
+    this.router.navigate([`/business/${user.id}`]);
   }
 
 

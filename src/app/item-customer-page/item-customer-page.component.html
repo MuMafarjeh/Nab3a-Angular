@@ -1,14 +1,14 @@
 <div class="top-content">
 
   <div class="business-content" *ngIf="item" >
-    <img *ngIf="businessData && businessData.image" [src]="businessData.image">  
-    <img *ngIf="!businessData || !businessData.image" src="assets/blank_profile_image.png">  
+    <img *ngIf="businessData && businessData.image" [src]="businessData.image">
+    <img *ngIf="!businessData || !businessData.image" src="assets/blank_profile_image.png">
     <div class="business-title" *ngIf="businessData" >
       <h2 class="business-name">{{ businessData.name }}</h2>
       <div class="italic">{{ businessData.city | uppercase }}</div>
       <div class="italic">{{ businessData.locationDescription | uppercase }}</div>
     </div>
-   
+
   </div>
 
   <div class="item-card" *ngIf="item" >
@@ -21,9 +21,9 @@
           <div class="rows">{{ item.price | currency:'ILS':'symbol':'1.1-1' }}</div>
           <div class="rows">{{ item.stock }} pcs.</div>
         </div>
-        
+
         <div class="data right-side">
-          
+
         </div>
       </div>
 
@@ -48,7 +48,7 @@
       <button *ngIf="isLoggedIn" (click)="btnAddToCart()"
         mat-mini-fab color="accent" class="order-btn" [disabled]="quantityForm.invalid">
         <mat-icon svgIcon="add-to-cart-icon"></mat-icon>
-      </button>  
+      </button>
     </div>
 
   </div>
