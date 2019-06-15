@@ -217,7 +217,7 @@ export class AuthService{
     this.previousURL = this.router.url;
     this.doneLoadingUserAuth.next(false);
     
-    this.router.navigate(['/']).then(async () => 
+    this.router.navigate(['/customer-browse-items']).then(async () => 
     {
       this._user = null;
       this._userData = null;

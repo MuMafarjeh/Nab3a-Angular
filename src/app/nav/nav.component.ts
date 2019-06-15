@@ -86,6 +86,6 @@ export class NavComponent implements OnInit {
   {
     hit.id = hit.objectID;
     return hit;
-  }
+  } 
 
 }

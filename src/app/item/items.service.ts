@@ -52,7 +52,8 @@ export class ItemsService {
     var categories = [];
     this.firestore.collection("category").ref.get().then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
-        categories.push(doc.data())
+        if(doc.data().type == 'product')
+          categories.push(doc.data())
       });
     });
     return categories;
