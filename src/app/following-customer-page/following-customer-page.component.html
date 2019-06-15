@@ -1,11 +1,11 @@
 <p  class="title">Following Page</p>
 <!--  -->
-<div  *ngFor="let followingcustomer of follow">
+<div  *ngFor="let followingcustomer of follow; let i = index ">
   <div class="followingDiv">
    <div class="ico" >   <mat-icon class="icon"> check_box</mat-icon> </div>
    <div class="data" ><p class="pName">Business Name</p> {{followingcustomer.businessName}}</div>
    <div  class="data"><p class="pName">The City</p> {{followingcustomer.city}}</div>
    <div  class="data"><p class="pName">The LocationDescription</p> {{followingcustomer.locationDescription}}</div>
-   <div  class="data"> <button mat-fab color="primary" class="btn" (click)=delete(followingcustomer)>Unfollow</button> </div>
+   <div  class="data"> <button mat-fab color="primary" class="btn" (click)="delete(followingcustomer, i)">Unfollow</button> </div>
   </div>
 </div>

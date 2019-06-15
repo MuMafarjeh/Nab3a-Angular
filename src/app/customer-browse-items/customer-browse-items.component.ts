@@ -10,6 +10,7 @@ import { following } from '../following-customer-page/following';
 import { AuthService } from '../auth/auth.service';
 import { FollowingService } from '../services/following.service';
 import { emptyScheduled, empty } from 'rxjs/internal/observable/empty';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-customer-browse-items',
@@ -29,16 +30,16 @@ export class CustomerBrowseItemsComponent implements OnInit {
   items: Item[];
 
   currentCategory:string;
-  
+
 
   constructor(private categoryServic: CategoryService,private userServic: UserService,
-    private auth: AuthService,private itemServic: ItemsService,private following: FollowingService) {
+    private auth: AuthService,private itemServic: ItemsService,private following: FollowingService, private router: Router) {
 
   }
 
   ngOnInit() {
     this.getMyCategory();
-    
+
   }
 
   async getMyCategory() {
@@ -69,7 +70,7 @@ export class CustomerBrowseItemsComponent implements OnInit {
     this.follow.status = "active";
 
     this.following.addFollow(this.follow);
-    
+
   }
   async onClick(category) {
     this.users = await this.userServic.getUsersByCategory(category.name);
@@ -78,6 +79,11 @@ export class CustomerBrowseItemsComponent implements OnInit {
   async brawseByBusiness(category){
     this.items = await this.itemServic.getProductsByCategory(category.name);
     this.currentCategory = 'product';
+  }
+
+  onClickBusinessProfile(user: UserBusiness)
+  {
+    this.router.navigate([`/business/${user.id}`])
   }
 
 

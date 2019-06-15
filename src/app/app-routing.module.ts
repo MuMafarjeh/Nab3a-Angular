@@ -1,5 +1,6 @@
 import { FollowingCustomerPageComponent } from './following-customer-page/following-customer-page.component';
 import { BusinessOrderComponent } from './business-order/business-order.component';
+import { CustomerOrderComponent } from './customer-order/customer-order.component';
 import { BusinessGuard } from './auth/business-guard.service';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { LoginEmailComponent } from './registration/login/login-email/login-email.component';
@@ -63,6 +64,9 @@ const routes: Routes = [
   {
     path: 'item/:id', component: ItemCustomerPageComponent,
     runGuardsAndResolvers: 'paramsChange'
+  },
+  {
+    path: 'customer-order', component: CustomerOrderComponent
   }
 ];
 

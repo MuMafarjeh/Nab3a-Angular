@@ -1,3 +1,4 @@
+import { CustomerOrderComponentComponent } from './customer-order/customer-order-component/customer-order-component.component';
 import { MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { MatBottomSheetRef, MatMenuItem } from '@angular/material';
 import { BrowserModule, Title } from '@angular/platform-browser';
@@ -52,7 +53,7 @@ import { BusinessFindProductComponent } from './items-page/business-find-product
 import { ItemCustomerCartComponent } from './item-customer-cart/item-customer-cart.component';
 import { DeliveryManComponent } from './registration/delivery-man/delivery-man.component';
 import { FollowingCustomerPageComponent } from './following-customer-page/following-customer-page.component';
-//anmation 
+//anmation
 //anmation
 import { SliderModule } from 'angular-image-slider';
 import { HomePageBusinessComponent } from './home-page-business/home-page-business.component';
@@ -60,6 +61,7 @@ import { HomePageBusinessComponent } from './home-page-business/home-page-busine
 //
 //promeFases
 import { ChartModule } from 'primeng/chart';
+import { CustomerOrderComponent } from './customer-order/customer-order.component';
 //
 //
 @NgModule({
@@ -85,6 +87,8 @@ import { ChartModule } from 'primeng/chart';
     LoginEmailComponent,
     PageNotFoundComponent,
     BusinessOrderComponent,
+    CustomerOrderComponent,
+    CustomerOrderComponentComponent,
     BusinessOrderComponentComponent,
     MyDialogComponent,
     ItemCustomerSuggestionComponent,
