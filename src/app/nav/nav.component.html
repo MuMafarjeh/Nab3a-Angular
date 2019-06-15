@@ -48,15 +48,16 @@
       <ul>
         <li *ngIf="username" ><div id="username">{{username}}</div></li>
 
-        <li><a routerLink="/home-page-business" *ngIf="isBusiness"matTooltip=" Home Page"><mat-icon>home</mat-icon></a></li>
+        <li><a routerLink="/home-page-business" *ngIf="isBusiness" matTooltip=" Home Page"><mat-icon>home</mat-icon></a></li>
         <li><a routerLink="/mystore" *ngIf="isBusiness && isVerified" matTooltip=" My Store"><mat-icon>store</mat-icon></a></li>
-        <li><a routerLink="/business-order" *ngIf="isBusiness"matTooltip="Orders"><mat-icon>reorder</mat-icon></a></li>
-        <li><a routerLink="/home-page-customer" *ngIf="!isBusiness"matTooltip=" Home Page"><mat-icon>home</mat-icon></a></li>
+        <!-- <li><a routerLink="/business-order" *ngIf="isBusiness" matTooltip="Orders"><mat-icon>reorder</mat-icon></a></li> -->
+        <li><a routerLink="/home-page-customer" *ngIf="isCustomer" matTooltip=" Home Page"><mat-icon>home</mat-icon></a></li>
         <li><a routerLink="/customer-browse-items" *ngIf="!isBusiness" matTooltip=" Browse Products"><mat-icon>category</mat-icon></a></li>
-        <li><a routerLink="/customer-notification-page" *ngIf="!isBusiness"matTooltip="Notification Page"><mat-icon>notifications_active</mat-icon></a></li>
-        <li><a routerLink="/customer-order" *ngIf="!isBusiness"matTooltip="History Of Orders"><mat-icon>reorder</mat-icon></a></li>
-        <li><a routerLink="/customer-cart-page" *ngIf="!isBusiness"matTooltip="Cart Page"><mat-icon>shopping_cart</mat-icon></a></li>
-        <li><a routerLink="/following-customer-page" *ngIf="!isBusiness"matTooltip="Following Page"><mat-icon> check_box</mat-icon></a></li>
+        <li><a routerLink="/customer-order" *ngIf="isCustomer"matTooltip="History Of Orders"><mat-icon>reorder</mat-icon></a></li>
+        <li><a routerLink="/customer-notification-page" *ngIf="isCustomer"matTooltip="Notification Page"><mat-icon>notifications_active</mat-icon></a></li>
+        <li><a routerLink="/business-order" *ngIf="isBusiness" matTooltip="History Of Orders"><mat-icon>reorder</mat-icon></a></li>
+        <li><a routerLink="/customer-cart-page" *ngIf="isCustomer" matTooltip="Cart Page"><mat-icon>shopping_cart</mat-icon></a></li>
+        <li><a routerLink="/following-customer-page" *ngIf="isCustomer" matTooltip="Following Page"><mat-icon> check_box</mat-icon></a></li>
         <!-- <li><a routerLink="/about">About</a></li> -->
         <li><a routerLink="/contact"matTooltip="Contact us"><mat-icon>contact_mail</mat-icon></a></li>
         <li><a routerLink="/login" *ngIf="!canLogout"> Login </a></li>
@@ -87,10 +88,10 @@
           <ng-template let-hits="hits" class="dropdown" class="overflowVisible" >
             <div *ngFor="let hit of hits" >
               <div *ngIf="hit.type != 'business'" >
-                <app-item-customer-suggestion class="dropdown-content" [item]="prepareItem(hit)" (closeResults)="closeResults()"></app-item-customer-suggestion>
+                <app-item-customer-suggestion class="dropdown-content" [isBusiness]="false" [item]="prepareItem(hit)" (closeResults)="closeResults()"></app-item-customer-suggestion>
               </div>
               <div *ngIf="hit.type == 'business'" >
-                <app-item-customer-suggestion class="dropdown-content" [item]="prepareItem(hit)" (closeResults)="closeResults()"></app-item-customer-suggestion>
+                <app-item-customer-suggestion class="dropdown-content" [isBusiness]="true" [item]="prepareItem(hit)" (closeResults)="closeResults()"></app-item-customer-suggestion>
               </div>
             </div>
           </ng-template>

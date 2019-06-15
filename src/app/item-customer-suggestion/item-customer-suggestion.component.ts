@@ -21,6 +21,9 @@ export class ItemCustomerSuggestionComponent implements OnInit {
   @Input()
   displayMoreInfo: boolean = true;
 
+  @Input()
+  isBusiness: boolean = false;
+
   isEdit: boolean = false;
 
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer,
@@ -37,7 +40,15 @@ export class ItemCustomerSuggestionComponent implements OnInit {
     // if(!this.item.id && this.item.objectID)
     //   this.item.id = this.item.objectID;
 
-    await this.router.navigate([`item/${this.item.id}`]);
+    if(this.isBusiness)
+    {
+      await this.router.navigate([`business/${this.item.id}`]);
+    }
+    else
+    {
+      await this.router.navigate([`item/${this.item.id}`]);
+    }
+
     this.closeResults.emit();
   }
 }
