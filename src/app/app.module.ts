@@ -60,6 +60,7 @@ import { HomePageBusinessComponent } from './home-page-business/home-page-busine
 //
 //promeFases
 import { ChartModule } from 'primeng/chart';
+import { StoreCustomerPageComponent } from './store-customer-page/store-customer-page.component';
 //
 //
 @NgModule({
@@ -100,6 +101,7 @@ import { ChartModule } from 'primeng/chart';
     DeliveryManComponent,
     FollowingCustomerPageComponent,
     HomePageBusinessComponent,
+    StoreCustomerPageComponent
   ],
   imports: [
     FormsModule,

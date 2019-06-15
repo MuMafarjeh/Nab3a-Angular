@@ -34,6 +34,8 @@ export class ItemCustomerPageComponent implements OnInit{
   inCart: boolean;
   cartID: string;
 
+  isLoggedIn: boolean = false;
+
   constructor(private itemsService: ItemsService, private router: Router,
     iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private authService: AuthService,
     private userService: UserService, private formBuilder: FormBuilder,
@@ -84,6 +86,8 @@ export class ItemCustomerPageComponent implements OnInit{
       this.getItemsOfBusiness();
       this.getBusinessInfo();
     }
+    
+    this.isLoggedIn = this.authService.isLoggedIn;
   }
 
   async btnAddToCart()
