@@ -17,7 +17,7 @@ body {
 
 header{
   max-height: 7.2em;
-  
+
 }
 
 section
@@ -28,22 +28,30 @@ section
 
 a {
   text-decoration: none;
-  
+
 }
+
+// .footer{
+//   height: 50px;
+//   width: 200px;
+//   margin-bottom: -30px;
+//}
+
+
 
 .nav-container {
   width: 96%;
   margin: 0 auto;
   padding: 1.3em;
 
-  display: grid; 
+  display: grid;
   grid-gap: 1.3em;
   grid-template-rows: 1fr 1fr;
   grid-template-columns: auto;
   grid-template-areas:
     "nav-buttons nav-buttons nav-buttons title"
     "search search user title";
-  
+
 
   a {
     color: white;
@@ -86,9 +94,9 @@ section {
   width: 100%;
   min-height: 100%;
 
-  
+
   mat-spinner, img
-  { 
+  {
     position: fixed;
     z-index: 999;
 
@@ -99,7 +107,7 @@ section {
     bottom: 0;
     right: 0;
   }
-  
+
   mat-spinner
   {
     height: 2em;
