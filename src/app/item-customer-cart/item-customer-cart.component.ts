@@ -46,9 +46,11 @@ export class ItemCustomerCartComponent implements OnInit {
   originalQuantity: number;
 
   businessData: UserBusiness;
-
+  
+  isLoggedIn: boolean = false;
+  
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, 
-    private userService: UserService, private formBuilder: FormBuilder) 
+    private userService: UserService, private formBuilder: FormBuilder, private authService: AuthService) 
   { 
     iconRegistry.addSvgIcon(
       'remove-from-cart-icon',
@@ -62,6 +64,8 @@ export class ItemCustomerCartComponent implements OnInit {
     });
 
     this.originalQuantity = this.item.quantity;
+
+    this.isLoggedIn = this.authService.isLoggedIn;
   }
 
   getFinalPrice(): number

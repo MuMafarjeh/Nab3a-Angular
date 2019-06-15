@@ -1,3 +1,4 @@
+import { Guard } from './auth/guard.service';
 import { FollowingCustomerPageComponent } from './following-customer-page/following-customer-page.component';
 import { BusinessOrderComponent } from './business-order/business-order.component';
 import { CustomerOrderComponent } from './customer-order/customer-order.component';
@@ -25,7 +26,10 @@ import { CustomerGuard } from './auth/customer-guard.service';
 import { StoreCustomerPageComponent } from './store-customer-page/store-customer-page.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { 
+    path: '', component: HomeComponent,
+    canActivate: [Guard]
+  },
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactComponent },
   {

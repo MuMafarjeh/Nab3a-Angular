@@ -37,7 +37,7 @@
         <img class="check" src="assets/icons/check_icon.svg">
         <div class="in-cart-text">Added to cart!</div>
       </div>
-      <p *ngIf="!inCart isLoggedIn">Add to cart</p>
+      <p *ngIf="!inCart && isLoggedIn">Add to cart</p>
       <mat-form-field *ngIf="isLoggedIn">
         <mat-label>Quantity</mat-label>
         <input matInput type="number" [value]="quantity"
