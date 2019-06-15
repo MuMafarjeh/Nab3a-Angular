@@ -104,10 +104,11 @@ export class HomePageBusinessComponent implements OnInit {
   public async getData() {
     this.orders = await this.OrderService.getOrder("businessID");
     for (let index = 0; index < this.orders.length; index++) {
-      var indexIn = this.orders[index].TGDate.getDay() + 2;
+      var indexIn = this.orders[index].TGDate.getDay() + 8;
       this.lableY[indexIn]++;
-
+      console.log(this.orders[index].TGDate.getDay());
     }
+    
   }
 
 }

@@ -46,8 +46,9 @@ export class CustomerBrowseItemsComponent implements OnInit {
 
     this.category = await this.categoryServic.getMyCategory();
     console.log(this.category.length);
-    for (var i = 1; i <= this.category.length; i++) {
-      var checkCategory = this.category.pop();
+    for (var i = 0; i < this.category.length; i++) {
+      var checkCategory = this.category[i];
+      console.log(checkCategory.name)
       if (checkCategory.type == "business") {
         this.categoryBusiness.push(checkCategory);
       }
