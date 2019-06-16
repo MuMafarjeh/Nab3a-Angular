@@ -23,7 +23,7 @@ export class CustomerBrowseItemsComponent implements OnInit {
   categoryBusiness: category[] = [];
   categoryProducts: category[] = [];
 
-  users: User[];
+  users: UserBusiness[];
 
   follow:following={} as any;
 
