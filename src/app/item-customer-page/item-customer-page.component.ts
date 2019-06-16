@@ -106,6 +106,7 @@ export class ItemCustomerPageComponent implements OnInit{
 
   getInCart()
   {
+    this.cartService.getCartsForUser(this.authService.userID);
     const cartID = this.cartService.getInCart(this.item);
     this.inCart = cartID != null;
     if(cartID)
